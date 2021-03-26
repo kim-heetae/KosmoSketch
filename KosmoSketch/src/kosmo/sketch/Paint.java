@@ -1,4 +1,4 @@
-package kosmo.sketch;
+package kosmo.sketch;     
 
 import java.awt.BasicStroke;
 import java.awt.Color;
