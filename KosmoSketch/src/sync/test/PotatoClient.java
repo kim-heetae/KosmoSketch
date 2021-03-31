@@ -43,7 +43,7 @@ public class PotatoClient extends JFrame implements KeyListener {
 	public void init() {
 		try {
 			// 서버측의 ip주소 작성하기
-			socket = new Socket("localhost", 3002);
+			socket = new Socket("192.168.0.37", 3002);
 			oos = new ObjectOutputStream(socket.getOutputStream());
 			ois = new ObjectInputStream(socket.getInputStream());
 			PotatoClientThread pct = new PotatoClientThread(this);
