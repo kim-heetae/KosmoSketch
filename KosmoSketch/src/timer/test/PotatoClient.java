@@ -37,6 +37,8 @@ public class PotatoClient extends JFrame implements KeyListener {
 		PotatoClient pc = new PotatoClient();
 		pc.initDisplay();
 		pc.init();
+//		TimerTest tt = new TimerTest();
+//		tt.notify();
 	}
 
 	// 소켓 관련 초기화

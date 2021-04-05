@@ -2,9 +2,10 @@ package timer.test;
 
 public class TimerTest implements Runnable{
 
-	int timerSet = 59;
+	int timerSet = 3;
+	boolean isON = false;
 	String currentTime;
-//	PotatoServer ps = new PotatoServer();
+	PotatoServer ps = new PotatoServer();
 	public static void main(String[] args) {
 		TimerTest ts = new TimerTest();
 		Thread th = new Thread(ts);
@@ -18,14 +19,21 @@ public class TimerTest implements Runnable{
 		
 		try {
 			while(!isStop) {
-//				currentTime = String.format("00:00:%02d", timerSet);
-//				timerSet--;
-//				Thread.sleep(1000);
+				currentTime = String.format("00:00:%02d", timerSet);
+				System.out.println(currentTime);
+				timerSet--;
+				Thread.sleep(1000);
 //				ps.jta_server.setText(currentTime);
-//				if(timerSet == 0) {
+				if(timerSet < 0) {
 //					서버에 알리고
-//					return;
-//				}
+					try {
+						while(isON != true) {
+							this.wait();
+						}
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
+				}
 			}
 		} catch (Exception e) {
 		}

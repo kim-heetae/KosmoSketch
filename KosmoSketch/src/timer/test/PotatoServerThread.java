@@ -63,21 +63,21 @@ public class PotatoServerThread extends Thread {
 			while(!isStop) {
 				Thread.sleep(4000);
 				System.out.println(123);
-//				ps.currentTime = String.format("00:00:%02d", ps.timerSet);
-//				ps.jta_server.setText(ps.currentTime);
-//				for(PotatoServerThread pst : ps.globalList) {
-//					pst.oos.writeObject(ps.currentTime);
-//				}
-//				if(this == ps.globalList.get(0)) {
-//					ps.timerSet--;
-//				}
-//				ps.getTimer(this);
-//				Thread.sleep(1000);
-//				ps.jta_server.setText(currentTime);
-//				if(ps.timerSet == 0) {
-//					//서버에 알리고
-//					return;
-//				}
+				ps.currentTime = String.format("00:00:%02d", ps.timerSet);
+				ps.jta_server.setText(ps.currentTime);
+				for(PotatoServerThread pst : ps.globalList) {
+					pst.oos.writeObject(ps.currentTime);
+				}
+				if(this == ps.globalList.get(0)) {
+					ps.timerSet--;
+				}
+				ps.getTimer(this);
+				Thread.sleep(1000);
+				ps.jta_server.setText(ps.currentTime);
+				if(ps.timerSet == 0) {
+					//서버에 알리고
+					return;
+				}
 			}
 		} catch (Exception e) {
 		}

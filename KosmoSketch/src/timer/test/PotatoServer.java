@@ -33,21 +33,21 @@ public class PotatoServer extends JFrame implements Runnable{
 	String currentTime = null;
 	int timerSet = 60;
 
-//	public void getTimer(PotatoServerThread ppst) {
-//		currentTime = String.format("00:00:%02d", timerSet);
-//		jta_server.setText(currentTime);
-//		for(PotatoServerThread pst : globalList) {
-//			try {
-//				pst.oos.writeObject(currentTime);
-//			}
-//			catch (Exception e) {
-//				// TODO: handle exception
-//			}
-//		}
-//		if(ppst == globalList.get(0)) {
-//			timerSet--;
-//		}
-//	}
+	public void getTimer(PotatoServerThread ppst) {
+		currentTime = String.format("00:00:%02d", timerSet);
+		jta_server.setText(currentTime);
+		for(PotatoServerThread pst : globalList) {
+			try {
+				pst.oos.writeObject(currentTime);
+			}
+			catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+		if(ppst == globalList.get(0)) {
+			timerSet--;
+		}
+	}
 	
 	@Override
 	public void run() {
