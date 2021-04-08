@@ -59,7 +59,9 @@ public class RankView extends JPanel {
 		jbtn_exit 				= new JButton("종료");
 		jlb_ranking.setFont(new Font("맑은 고딕", Font.BOLD, 20));
 		jlb_nickname.setFont(new Font("맑은 고딕", Font.BOLD, 15));
-		jlb_totalscore.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+		jlb_nickname_data.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+		jlb_totalscore.setFont(new Font("맑은 고딕", Font.BOLD, 15));
+		jlb_totalscore_data.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
 		
 		jp_north.add(jlb_ranking);
 		jp_south_south.add(jbtn_back);

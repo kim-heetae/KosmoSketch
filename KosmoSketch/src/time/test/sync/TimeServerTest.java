@@ -2,13 +2,13 @@ package time.test.sync;
 
 public class TimeServerTest extends Thread {
 
-	int remainTime = 59;
+	int remainTime = 10;
 	boolean isStop;
 	
 	@Override
 	public void run() {
 		while (!isStop) {
-			System.out.println(remainTime);
+//			System.out.println(remainTime);
 			remainTime--;
 			try {
 				Thread.sleep(1000);

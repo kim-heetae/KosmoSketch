@@ -1,21 +1,19 @@
 package trash.can;
 
 import java.awt.Canvas;
-import java.awt.Color;
 import java.awt.Font;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
+import javax.swing.table.DefaultTableModel;
 
-public class CatchFrame extends JFrame {
-   JPanel jp_north, jp_modes, jp_chat, jp_users;
-   
+public class catchFrame extends JFrame {
+   JPanel jp_north, jp_modes, jp_chat, jp_users, jp_rank, jp_main;
    JLabel jlb_tag, jlb_time
        , jlb_user1, jlb_user2, jlb_user3, jlb_user4
        , jlb_penM, jlb_eraseM, jlb_colors, jlb_thick, jlb_eraseAll, jlb_send;
@@ -24,9 +22,11 @@ public class CatchFrame extends JFrame {
    
    JTextField jtf_chat, jtf_thick;
    
-   JButton jbtn_exit;
+   boolean isready = false;
    
-   JScrollPane jsp;
+   JTable jtbl_rank;
+   DefaultTableModel dtm_rank;
+   String cols[] = {"","",""};
    
    Canvas canvas; //그림판   paint(Graphic g) 메소드 만들어주기
    
@@ -37,8 +37,8 @@ public class CatchFrame extends JFrame {
       jp_users = new JPanel();
       
       jlb_tag = new JLabel("KosmoCatch");
-      jlb_time = new JLabel("00:00");
-      jbtn_exit = new JButton("x");
+      jlb_time = new JLabel("00:00:00");
+      
       
       jlb_user1 = new JLabel("1번");
       jlb_user2 = new JLabel("2번");
@@ -70,16 +70,13 @@ public class CatchFrame extends JFrame {
       jlb_tag.setBorder(border);
       jp_north.add(jlb_tag);
       
-      jlb_time.setBounds(125, 70, 85, 50);
+      jlb_time.setBounds(85, 70, 125, 50);
       jlb_time.setFont(font);
       jlb_time.setBorder(border);
       jp_north.add(jlb_time);
       
-      jbtn_exit.setBounds(1500, 10, 50, 50);
-      jbtn_exit.setFont(font);
-      jp_north.add(jbtn_exit);
       
-      canvas.setBounds(210, 70, 1350, 680);
+      canvas.setBounds(210, 10, 1350, 500);
       //캔버스 머로 그릴지 정해요
       jp_north.add(canvas);
       
@@ -177,7 +174,7 @@ public class CatchFrame extends JFrame {
    }
    
    public static void main(String[] args) {
-      CatchFrame c = new CatchFrame();
+      catchFrame c = new catchFrame();
       c.initDisplay();
    }
 
