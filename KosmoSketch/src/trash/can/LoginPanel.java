@@ -18,7 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
-
+//
 
 public class LoginPanel extends JPanel implements ActionListener{
 	JPanel jp_north, jp_center, jp_south, jp_east, jp_west, jp_cWest, jp_cCenter;
