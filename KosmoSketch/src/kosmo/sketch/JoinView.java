@@ -15,42 +15,42 @@ import javax.swing.JTextField;
 
 public class JoinView extends JPanel {
 
-	Font	font_label						= new Font("맑은 고딕", Font.BOLD, 20);
-	Font	font_labels						= new Font("맑은 고딕", Font.BOLD, 12);
-	JPanel	jp_label						= null;			// 북쪽에 배치."회원가입" 글자 라벨을 담는 패널 선언.
-	JPanel	jp_button						= null;			// 남쪽에 배치. [회원가입] 버튼과 [뒤로가기] 버튼을 담는 패널
-															// 선언.
-	JPanel	jp_main							= null;			// 중앙에 배치. 매인 패널 선언.
-	JLabel	jlb_join						= null;			// "회원가입" 라벨 선언.
-	JButton	jbtn_join						= null;			// 회원가입 버튼 선언.
-	JButton	jbtn_back						= null;			// 뒤로가기 버튼 선언.
+	Font		font_label			= new Font("맑은 고딕", Font.BOLD, 20);
+	Font		font_labels			= new Font("맑은 고딕", Font.BOLD, 12);
+	JPanel		jp_label			= null;								// 북쪽에 배치."회원가입" 글자 라벨을 담는 패널 선언.
+	JPanel		jp_button			= null;								// 남쪽에 배치. [회원가입] 버튼과 [뒤로가기] 버튼을 담는 패널
+																		// 선언.
+	JPanel		jp_main				= null;								// 중앙에 배치. 매인 패널 선언.
+	JLabel		jlb_join			= null;								// "회원가입" 라벨 선언.
+	JButton		jbtn_join			= null;								// 회원가입 버튼 선언.
+	JButton		jbtn_back			= null;								// 뒤로가기 버튼 선언.
 	// 메인 패널에 들어갈 패널 선언
-	JPanel		jp_label_left				= null;
-	JPanel		jp_textfield_center			= null;
-	JPanel		jp_button_right				= null;
+	JPanel		jp_label_left		= null;
+	JPanel		jp_textfield_center	= null;
+	JPanel		jp_button_right		= null;
 	// 메인 패널에 들어갈 라벨 선언
-	JLabel	jlb_id							= null;
-	JLabel	jlb_pw							= null;
-	JLabel	jlb_pw_confirm					= null;
-	JLabel	jlb_nickname					= null;
-	JLabel	jlb_email						= null;
-	JLabel	jlb_code						= null;
-	
+	JLabel		jlb_id				= null;
+	JLabel		jlb_pw				= null;
+	JLabel		jlb_pw_confirm		= null;
+	JLabel		jlb_nickname		= null;
+	JLabel		jlb_email			= null;
+	JLabel		jlb_code			= null;
+
 	// 메인 패널-중앙 패널에 들어갈 텍스트 필드 선언
-	JTextField	jtf_id						= null;
-	JTextField	jtf_pw						= null;
-	JTextField	jtf_pw_confirm				= null;
-	JTextField	jtf_nickname				= null;
-	JTextField	jtf_email					= null;
-	JTextField	jtf_code					= null;
-	
+	JTextField	jtf_id				= null;
+	JTextField	jtf_pw				= null;
+	JTextField	jtf_pw_confirm		= null;
+	JTextField	jtf_nickname		= null;
+	JTextField	jtf_email			= null;
+	JTextField	jtf_code			= null;
+
 	// 메인 패널-우측 패널에 들어갈 버튼 선언
-	JButton		jbtn_id						= null;
-	JButton		transparent1				= null;
-	JButton		transparent2				= null;
-	JButton		jbtn_nickname				= null;
-	JButton		jbtn_email					= null;
-	JButton		jbtn_code					= null;
+	JButton		jbtn_id				= null;
+	JButton		transparent1		= null;
+	JButton		transparent2		= null;
+	JButton		jbtn_nickname		= null;
+	JButton		jbtn_email			= null;
+	JButton		jbtn_code			= null;
 	
 
 	public void initDisplay() {
