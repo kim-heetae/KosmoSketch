@@ -1,6 +1,8 @@
 package kosmo.sketch;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 
 import javax.swing.JButton;
@@ -57,6 +59,10 @@ public class RankView extends JPanel {
 		jsp 					= new JScrollPane(jtb, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		jbtn_back 				= new JButton("돌아가기");
 		jbtn_exit 				= new JButton("종료");
+		jtb.getTableHeader().setReorderingAllowed(false);
+		jtb.setPreferredSize(new Dimension(500, 800));
+		jtb.setOpaque(true);
+		jtb.setBackground(Color.white);
 		jlb_ranking.setFont(new Font("맑은 고딕", Font.BOLD, 20));
 		jlb_nickname.setFont(new Font("맑은 고딕", Font.BOLD, 15));
 		jlb_nickname_data.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
