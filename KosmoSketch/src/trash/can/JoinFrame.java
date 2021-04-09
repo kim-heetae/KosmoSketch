@@ -32,8 +32,8 @@ public class JoinFrame implements ActionListener {
    JPanel dataPanel = new JPanel();
 
    // 가운데 좌,우 패널
-   JPanel fieldPanel = new JPanel(new GridLayout(4, 1));
-   JPanel labelPanel = new JPanel(new GridLayout(4, 1));
+   JPanel fieldPanel = new JPanel(new GridLayout(5, 1));
+   JPanel labelPanel = new JPanel(new GridLayout(5, 1));
    JPanel buttonPanel = new JPanel();
 
    // 왼쪽 라벨
