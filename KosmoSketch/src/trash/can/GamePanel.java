@@ -2,6 +2,7 @@ package trash.can;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -125,6 +126,7 @@ public class GamePanel extends JPanel {
       jta_log = new JTextArea();
       
       canvas = new Canvas();
+      canvas.setBackground(Color.yellow);
       
       jbtn_insert = new JButton("입력");
       
@@ -195,8 +197,8 @@ public class GamePanel extends JPanel {
       
       jp_center.setLayout(new BorderLayout());
       canvas.setPreferredSize(new Dimension(1600,620));
-      jp_center.add("South", rv_panel);
-      jp_center.add(canvas);
+      jp_center.add("West", rv_panel);
+      jp_center.add("East", canvas);
       //여기에 cw
 //      this.add(jp_center);
       
