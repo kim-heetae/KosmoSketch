@@ -165,10 +165,10 @@ public class Paint extends JFrame {
 
                 endY = e.getY(); 
                // 드래그 되는 시점에서 Y좌표가 저장 - 밑에서 시작좌표와 끝좌표를 연결 해주어 선이 그어지게된다.
-            
+                System.out.println(123);
  
                 g.setStroke(new BasicStroke(thickness, BasicStroke.CAP_ROUND,0)); //선굵기
-                g.drawLine(startX+10, startY+121, endX+10, endY+121); // 라인이 그려지게 되는부분        
+                g.drawLine(startX+10, startY+10, endX+10, endY+10); // 라인이 그려지게 되는부분        
                 
                 startX = endX; 
                         // 시작부분이 마지막에 드래그된 X좌표로 찍혀야 다음에 이어 그려질수 있다.
