@@ -15,7 +15,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-public class MainNorthLeft extends JFrame {
+//단위테스트용  JFrame 상속
+//public class MainNorthLeft extends JFrame {
+public class MainNorthLeft extends JPanel {
 
 	// 선언부
 	JPanel				jp_north_left	= null;
@@ -44,7 +46,7 @@ public class MainNorthLeft extends JFrame {
 		jp_for_button 		= new JPanel();
 		jlb_logo 			= new JLabel("KosmoCatch");
 		jlb_timer 			= new JLabel("00:00:00");
-		jlb_ranking 		= new JLabel("현재 게임의 RANKING");
+		jlb_ranking 		= new JLabel("■■■ 현재 게임의 랭킹 ■■■");
 		jbtn_ready 			= new JButton("게임준비");
 		jbtn_exit 			= new JButton("나가기");
 		dtm_ranking 		= new DefaultTableModel(new String[0][3], cols_ranking);
@@ -52,14 +54,12 @@ public class MainNorthLeft extends JFrame {
 		jsp_ranking 		= new JScrollPane(jtb_ranking);
 
 		jbtn_ready.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("[게임준비] 버튼 호출 완료");
 			}
 		});
 		jbtn_exit.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("[나가기] 버튼 호출 완료");
@@ -94,13 +94,15 @@ public class MainNorthLeft extends JFrame {
 		jp_north_left.add("Center", jp_for_table);
 		jp_north_left.add("South", jp_for_button);
 
+		this.setLayout(new BorderLayout());
 		this.add("Center", jp_north_left);
-		this.setSize(300, 600);
+		this.setPreferredSize(new Dimension(300, 600));
 		this.setVisible(true);
 	}
 
-	public static void main(String[] args) {
-		new MainNorthLeft();
-	}
-
+	//단위 테스트용 메인
+//	public static void main(String[] args) {
+//		new MainNorthLeft();
+//	}
+	
 }
