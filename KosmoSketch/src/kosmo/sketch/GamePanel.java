@@ -1,6 +1,14 @@
 package kosmo.sketch;
 
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -31,6 +39,7 @@ public class GamePanel extends JPanel {
 
 	public GamePanel() {
 		initDisplay();
+		bgm();
 	}
 
 	public void initDisplay() {
@@ -62,6 +71,7 @@ public class GamePanel extends JPanel {
 		jlb_nickName2 = new JLabel("유저2");
 		jlb_nickName3 = new JLabel("유저3");
 		jlb_nickName4 = new JLabel("유저4");
+		JLabel[] jlb_nicknames = {jlb_nickName1, jlb_nickName2, jlb_nickName3, jlb_nickName4};
 		jlb_scoreTag1 = new JLabel("현재점수");
 		jlb_scoreTag2 = new JLabel("현재점수");
 		jlb_scoreTag3 = new JLabel("현재점수");
@@ -93,6 +103,9 @@ public class GamePanel extends JPanel {
 		}
 		jbtn_thick.setEnabled(false);
 		jbtn_thick.setBorder(new EmptyBorder(getInsets()));
+		
+		
+		
 //		jlb_nickName1.setBorder(new BevelBorder(BevelBorder.RAISED));
 //		jlb_nickName2.setBorder(new BevelBorder(BevelBorder.RAISED));
 //		jlb_nickName3.setBorder(new BevelBorder(BevelBorder.RAISED));
@@ -179,19 +192,26 @@ public class GamePanel extends JPanel {
 		jp_user4.setLayout(new GridLayout(2, 3, 10, 2));
 
 //		jlb_nickName1.setPreferredSize(new Dimension(50, 55));
-		jlb_nickName1.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
-		jlb_nickName1.setHorizontalAlignment(JLabel.CENTER);
+//		jlb_nickName1.setFont(jlb_nickName1.getFont().deriveFont(3));
 //		jlb_nickName2.setPreferredSize(new Dimension(50, 55));
-		jlb_nickName2.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
-		jlb_nickName2.setHorizontalAlignment(JLabel.CENTER);
+//		jlb_nickName2.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
+//		jlb_nickName2.setHorizontalAlignment(JLabel.CENTER);
 //		jlb_nickName3.setPreferredSize(new Dimension(50, 55));
-		jlb_nickName3.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
-		jlb_nickName3.setHorizontalAlignment(JLabel.CENTER);
+//		jlb_nickName3.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
+//		jlb_nickName3.setHorizontalAlignment(JLabel.CENTER);
 //		jlb_nickName4.setPreferredSize(new Dimension(50, 55));
-		jlb_nickName4.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
-		jlb_nickName4.setHorizontalAlignment(JLabel.CENTER);
+//		jlb_nickName4.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
+//		jlb_nickName4.setHorizontalAlignment(JLabel.CENTER);
+		for(JLabel jlb : jlb_nicknames) {
+			jlb.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
+			jlb.setHorizontalAlignment(JLabel.CENTER);
+			jlb.setOpaque(true);
+			jlb.setBackground(Color.GRAY);
+			setResizeFont(jlb);
+		}
+//		setResizeFont(jlb_nickName1);
+//		System.out.println(jlb_nickName1.getFontMetrics(jlb_nickName1.getFont()));	////////////////////////////////////////
 
-		jp_user1.add(jlb_nickName1);
 		jlb_scoreTag1.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
 		jlb_scoreTag2.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
 		jlb_scoreTag3.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
@@ -209,6 +229,7 @@ public class GamePanel extends JPanel {
 		jlb_cumul3.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
 		jlb_cumul4.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
 
+		jp_user1.add(jlb_nickName1);
 		jp_user2.add(jlb_nickName2);
 		jp_user3.add(jlb_nickName3);
 		jp_user4.add(jlb_nickName4);
@@ -261,6 +282,31 @@ public class GamePanel extends JPanel {
 		jf.setSize(1600, 1000);
 		jf.setLocationRelativeTo(null);
 
+	}
+	
+	public void setResizeFont(JLabel label) {
+		int size = label.getText().length();
+		label.setFont(label.getFont().deriveFont((float)120/size));
+	}
+	
+	
+	public void bgm() {
+		 try {
+			AudioInputStream ais = AudioSystem.getAudioInputStream(new File("src\\kosmo\\sketch\\kosmo_nore.wav"));
+			Clip clip = AudioSystem.getClip();
+//			clip.stop();
+			clip.open(ais);
+			clip.start();
+		 } catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public static void main(String[] args) {

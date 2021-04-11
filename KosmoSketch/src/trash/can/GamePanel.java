@@ -7,7 +7,14 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.io.File;
+import java.io.IOException;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -50,6 +57,7 @@ public class GamePanel extends JPanel {
 	
 	public GamePanel() {
 		initDisplay();
+		bgm();
 	}
 
 	public void initDisplay() {
@@ -276,6 +284,26 @@ public class GamePanel extends JPanel {
 		jf.setResizable(false);
 		jf.setLocationRelativeTo(null);
 
+	}
+	
+	public void bgm() {
+		 try {
+			AudioInputStream ais = AudioSystem.getAudioInputStream(new File("src\\kosmo\\sketch\\kosmo_bgm.wav"));
+			Clip clip = AudioSystem.getClip();
+			clip.stop();
+			clip.open(ais);
+			System.out.println("노래");
+			clip.start();
+		 } catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public static void main(String[] args) {

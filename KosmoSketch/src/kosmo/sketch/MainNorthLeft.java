@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -65,6 +66,9 @@ public class MainNorthLeft extends JPanel {
 				System.out.println("[나가기] 버튼 호출 완료");
 			}
 		});
+		jbtn_ready.setFont(new Font("휴먼모음T", Font.BOLD, 30));
+		jbtn_exit.setFont(new Font("휴먼모음T", Font.BOLD, 30));
+//		jbtn_ready.setPreferredSize(new Dimension(100, 50));
 
 		jlb_logo.setHorizontalAlignment(JLabel.CENTER);
 		jlb_timer.setHorizontalAlignment(JLabel.CENTER);
@@ -74,6 +78,8 @@ public class MainNorthLeft extends JPanel {
 		jlb_ranking.setFont(new Font("휴먼모음T", Font.PLAIN, 20));
 		jlb_ranking.setOpaque(true);
 		jp_for_logo.setBackground(Color.yellow);
+		jp_for_button.setLayout(new GridLayout(1, 2, 5, 0));
+		jp_for_button.setPreferredSize(new Dimension(300, 100));
 		jlb_ranking.setBackground(Color.orange);
 		jtb_ranking.getTableHeader().setReorderingAllowed(false);
 		jtb_ranking.setOpaque(true);
