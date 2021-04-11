@@ -1,5 +1,5 @@
 package kosmo.sketch;
 
 public class BranchTest {
-	int i = 15; 
+ //현재시간 17:27
 }
