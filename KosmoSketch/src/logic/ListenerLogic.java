@@ -8,20 +8,19 @@ import java.util.StringTokenizer;
 import javax.swing.*;
 
 public class ListenerLogic extends Thread {
-	Socket socket = null;
-	ObjectInputStream ois = null;
-	ObjectOutputStream oos = null;
-	JTextArea jta_client = new JTextArea();
-	JTextArea       jta_display = new JTextArea();
-	JScrollPane     jsp_display = new JScrollPane(jta_display);
-	JPanel 			jp_south 	= new JPanel();
-	JTextField 		jtf_msg 	= new JTextField(20);
-	
+	Socket				socket		= null;
+	ObjectInputStream	ois			= null;
+	ObjectOutputStream	oos			= null;
+	JTextArea			jta_client	= new JTextArea();
+	JTextArea			jta_display	= new JTextArea();
+	JScrollPane			jsp_display	= new JScrollPane(jta_display);
+	JPanel				jp_south	= new JPanel();
+	JTextField			jtf_msg		= new JTextField(20);
+
 	public class protocol{
 		public final int protocol = 500; 
+	}
 
-		
-		
 	public void init() {
 		try {
 			oos = new ObjectOutputStream(socket.getOutputStream());
@@ -30,8 +29,8 @@ public class ListenerLogic extends Thread {
 			
 			
 		} catch (Exception e) {
-		
-			public void chat() {
+
+	public void chat() {
 				String data = chat.getText();
 				if (data == null || data.length() == 0) {
 					return;
