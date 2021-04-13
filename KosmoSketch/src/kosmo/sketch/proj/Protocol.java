@@ -4,6 +4,7 @@ public class Protocol {
 	public final static int	_CLIENT_INFO	= 100;
 	public final static int	_READY			= 201;
 	public final static int	_NOT_READY		= 202;
+	public final static int	_START			= 250;
 	public final static int	_DAP			= 301;
 	public final static int	_CHAT			= 302;
 	public final static int	_CORRECT		= 303;
