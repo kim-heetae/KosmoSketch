@@ -57,7 +57,7 @@ public class JoinView extends JPanel {
 		// 테스트용 JFrame 시작(1)-------------------------------------
 		JFrame jf = new JFrame();
 		// 테스트용 JFrame 종료(1)-------------------------------------
-
+ 
 		BorderLayout bl = new BorderLayout(0, 30);
 		this.setLayout(bl);
 		// 생성부
