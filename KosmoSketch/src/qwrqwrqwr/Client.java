@@ -290,7 +290,7 @@ public class Client extends JPanel{//viewasdadasdas
 		jf.setVisible(true);
 		jf.setSize(1600, 1000);
 		jf.setLocationRelativeTo(null);
-
+		
 	}
 	
 	public void setResizeFont(JLabel label) {
@@ -301,7 +301,7 @@ public class Client extends JPanel{//viewasdadasdas
 	
 	public void bgm() {
 		 try {
-			AudioInputStream ais = AudioSystem.getAudioInputStream(new File("src\\kosmo\\sketch\\kosmo_nore.wav"));
+			AudioInputStream ais = AudioSystem.getAudioInputStream(new File("KosmoSketch\\src\\qwrqwrqwr\\kosmo_nore.wav"));
 			Clip clip = AudioSystem.getClip();
 //			clip.stop();
 			clip.open(ais);
@@ -321,7 +321,6 @@ public class Client extends JPanel{//viewasdadasdas
 	public static void main(String[] args) {
 		new Client();
 		ClientLogic cl = new ClientLogic();
-		cl.init();
 		
 	}
 
