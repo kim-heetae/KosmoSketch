@@ -67,10 +67,15 @@ public class ClientLogic extends Thread {
 							// [현재랭킹패널]: 해당 클라이언트의 점수를 갱신한다. - 닉네임을 이용하면 row를 int로 반환 받을 수 잇음.
 						break;
 					case Protocol._OVER_MEM:
-							// 인원이 4명 초과시 새 접속하려는 사람에게 JOptionPane.ShowMessageDialog 으로 "인원을 초과하였습니다"를 띄우고 로그인 창으로 다시 되돌아가도록 한다.   
+							// 대기실에서 인원이 모두 찬 방을 더블클릭하였을 때 처리해주어야 할 내용임.
+							// 인원이 4명 초과시 새로 접속하려는 사람에게 JOptionPane.ShowMessageDialog 으로 "인원을 초과하였습니다"를 띄우고 로그인 창으로 다시 되돌아가도록 한다.   
 						break;
 					case Protocol._PAINT:
-							// 
+							// 출제자도 서버 스레드를 거친 뒤 화면에 그림이 그려지도록 하자.
+							// Graphics와 start 및 end 지점에 해당하는 4개의 좌표를 이용해서 그림을 화면에 그려준다.
+						break;
+					case Protocol._ERASE:
+							
 						break;
 					case Protocol._EXIT:
 	

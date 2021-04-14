@@ -1,13 +1,14 @@
 package qwrqwrqwr;
 
 public class Protocol {
-	final static int	_CLIENT_INFO	= 100;
-	final static int	_READY			= 201;
-	final static int	_NOT_READY		= 202;
-	final static int	_DAP			= 301;
-	final static int	_CHAT			= 302;
-	final static int	_CORRECT		= 303;
-	final static int	_OVER_MEM		= 400;
-	final static int	_PAINT			= 500;
-	final static int	_EXIT			= 600;
+	public final static int	_CLIENT_INFO	= 100;
+	public final static int	_READY			= 201;
+	public final static int	_NOT_READY		= 202;
+	public final static int	_DAP			= 301;
+	public final static int	_CHAT			= 302;
+	public final static int	_CORRECT		= 303;
+	public final static int	_OVER_MEM		= 400;
+	public final static int	_PAINT			= 501;
+	public final static int	_ERASE			= 502;
+	public final static int	_EXIT			= 600;
 }
