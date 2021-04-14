@@ -44,7 +44,7 @@ public class ListenerLogic extends Thread implements ActionListener {
 		if (data == null || data.length() == 0) {
 			return;
 		} else {
-			oos.writeObject(Protocol._CHAT + "#" + nickname + "#" + data);
+//			oos.writeObject(Protocol._CHAT + "#" + nickname + "#" + data);
 		}
 	}
 
@@ -52,7 +52,7 @@ public class ListenerLogic extends Thread implements ActionListener {
 	public void run() {
 		boolean isFlag = false;
 		while(!isFlag) {
-			String msg = (String)ois.readObject();
+//			String msg = (String)ois.readObject();
 		}
 	}
 	
