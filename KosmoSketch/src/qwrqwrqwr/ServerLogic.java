@@ -34,6 +34,11 @@ public class ServerLogic implements Runnable{
 				while (!isFlag) {
 					socket = server.accept();
 					stl = new ServerThreadLogic(this);
+					///////////////////////////////////////////////
+					if(globalList.size() > 3) {
+						stl.send(Protocol._OVER_MEM+"");
+					}
+					//////////////////////////////////////////////
 					globalList.add(stl);
 					sv.jta.append(socket.toString()+"입장");
 				}

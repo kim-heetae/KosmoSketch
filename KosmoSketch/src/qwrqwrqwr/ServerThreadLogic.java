@@ -5,6 +5,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.StringTokenizer;
 
+import kosmo.sketch.proj.Protocol;
+
 
 public class ServerThreadLogic extends Thread{
 	ObjectOutputStream oos = null;
@@ -17,17 +19,17 @@ public class ServerThreadLogic extends Thread{
 	}
 	public void broadCasting(String msg) {
 		for (ServerThreadLogic stl : sl.globalList) {
-			try {
-				stl.oos.writeObject(msg);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			send(msg);
+		}
+	}
+	public void send(String msg) {
+		try {
+			oos.writeObject(msg);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
-	public void asdasdas() {
-		
-	}
 	
 	@Override
 	public void run() {
@@ -53,27 +55,31 @@ public class ServerThreadLogic extends Thread{
 //						sl.readyCount--;
 						break;
 					case Protocol._CHAT:
-//						broadCasting(200 + "#" + msg + "#" + msg);
+//						String 클라정보 = st.nextToken();
+//						String msg = st.nextToken();
+//						
+//						broadCasting(Protocol_CHAT + "#" + 클라정보 + "#" + msg);
 						break;
 					
 					case Protocol._PAINT:
-						
+//						broadCasting(Protocol._PAINT + "#" + 클라정보 + "#" + startX + "#"
+//														   + startY+ "#" + endX + "#" + endY);
+//						plan1. 그림은 클라에서 ois로 받을때 자신이 questioner라면 Protocol._PAINT로 들어온 msg는 모두 무시한다?
+//						plan2. 아니라면 broadCasting메소드 안에 if문추가해서 보낸 사람은 받지못하게 한다? 면은 다른 case들도 바꿔준다?
 						break;
 					case Protocol._EXIT:
-						
+//						broadCasting(Protocol._EXIT + "#" + 유저정보 + "#" + nickName);
+//						sl.globalList.remove(클라정보); - nickname이 아닌 클라정보로
 						break;
 						
 					}
 				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
+	}	
 
 }
