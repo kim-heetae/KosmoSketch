@@ -40,7 +40,8 @@ public class ClientLogic extends Thread {
 				switch (protocol) {
 					case Protocol._CLIENT_INFO:
 							// 라벨의 초기화
-							// 클라이언트 측의 JTextArea에 "[닉네임]님이 입장하셨습니다."를 출력(append)해준다.
+							// 클라이언트 측의 JTextArea에 "[닉네임]님이 입장하였습니다."를 출력(append)해준다.
+							// 왼쪽 랭킹 테이블에 입장한 순서대로(globalList의 순서대로) 붙여준다.
 						break;
 					case Protocol._READY:
 							// 받아온 닉네임에 해당하는 클라이언트의  READY라벨 색을 변경한다. (white > orange)
@@ -75,10 +76,12 @@ public class ClientLogic extends Thread {
 							// Graphics와 start 및 end 지점에 해당하는 4개의 좌표를 이용해서 그림을 화면에 그려준다.
 						break;
 					case Protocol._ERASE:
-							
+							//
 						break;
 					case Protocol._EXIT:
-	
+							// 받아온 닉네임에 해당하는 클라이언트를 왼쪽 랭킹 테이블에서 제거(remove)해준다.
+							// 해당 클라이언트의 라벨의 텍스트를 빈문자열("")로 변경해준다.
+							// 클라이언트 측의 JTextArea에 "[닉네임]님이 퇴장하였습니다."를 출력(append)해준다.
 						break;
 				}
 			}
