@@ -7,7 +7,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.StringTokenizer;
 
-import kosmo.sketch.proj.Protocol;
+import qwrqwrqwr.Protocol;
 
 public class ClientLogic extends Thread {
 	Container			cont		= null;
