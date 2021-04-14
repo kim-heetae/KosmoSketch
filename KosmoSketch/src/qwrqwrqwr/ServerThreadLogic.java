@@ -19,17 +19,13 @@ public class ServerThreadLogic extends Thread{
 	}
 	public void broadCasting(String msg) {
 		for (ServerThreadLogic stl : sl.globalList) {
-			send(msg);
+			try {
+				oos.writeObject(msg);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
-	public void send(String msg) {
-		try {
-			oos.writeObject(msg);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
 	
 	@Override
 	public void run() {
@@ -46,16 +42,20 @@ public class ServerThreadLogic extends Thread{
 					switch (protocol) {
 					case Protocol._READY:
 						//sl.readycount를 1씩 증가시킨다.
+						//globalList의 사이즈가 1이거나
+						//readycount의 사이즈가 globalList.size()보다 작을때는 
+						//Protocol._READY프로토콜과 nickname을 oos로 보내준다.
 						//globalList의 사이즈가 2 이상이고
 						//readycount 가 globalList.size()와 같아질때 게임을 시작
 						//Protocol._START를 사용하여 oos로 ClientThread에게 게임이 시작했음을 알려준다.
 						//게임을 시작하면 dap을 random으로 정하고 Protocol._DAP을 사용하여 oos로 ClientThread에게 알려준다.
 						//타이머를 작동시킨다.
-						 
 						break;
 						
 					case Protocol._NOT_READY:	
 //						sl.readyCount--;
+						//Protocol._NOT_READY프로토콜을 사용하여 oos로 ClientThread에게 보내준다.
+						//---- Client의 Label색을 바꿔주기 위해
 						break;
 					case Protocol._CHAT:
 //						String 클라정보 = st.nextToken();

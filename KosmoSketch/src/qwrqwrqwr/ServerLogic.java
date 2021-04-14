@@ -36,7 +36,7 @@ public class ServerLogic implements Runnable{
 					stl = new ServerThreadLogic(this);
 					///////////////////////////////////////////////
 					if(globalList.size() > 3) {
-						stl.send(Protocol._OVER_MEM+"");
+//						stl.send(Protocol._OVER_MEM+"");
 					}
 					//////////////////////////////////////////////
 					globalList.add(stl);
