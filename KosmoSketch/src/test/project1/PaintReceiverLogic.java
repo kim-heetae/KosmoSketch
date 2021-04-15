@@ -13,6 +13,8 @@ import java.util.StringTokenizer;
 
 import javax.swing.JOptionPane;
 
+import kosmo.sketch.proj.TestPanelForPaint;
+
 //class ClientLogic의 ois를 통해 읽어들인 좌표 정보를 이용해
 //(보낸 닉네임이 나 자신이 아니라면) 패널에 그림을 똑같이 구현해주는 역할을 담당하는 클래스이다.
 public class PaintReceiverLogic implements Runnable, MouseListener, MouseMotionListener{
