@@ -1,6 +1,7 @@
 package test.project1;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.util.Vector;
@@ -12,6 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 
 public class WaitRoom extends JPanel {
 
@@ -39,7 +42,11 @@ public class WaitRoom extends JPanel {
 		jp_south_right = new JPanel();
 		jlb_logo = new JLabel("KosmoCatch");
 		// 임시로 3 넣었음.
-		dtm_room = new DefaultTableModel(new Object[3][4], cols);
+		dtm_room = new DefaultTableModel(new Object[3][4], cols) {
+			public boolean isCellEditable(int row, int col){
+				return false;
+			}
+		};
 		jtb_room = new JTable(dtm_room);
 		jsp_room = new JScrollPane(jtb_room, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS
 										   , JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -48,6 +55,8 @@ public class WaitRoom extends JPanel {
 		jbtn_createRoom = new JButton("방만들기");
 				
 		// 상세설정
+		jtb_room.getTableHeader().setReorderingAllowed(false);
+		resizeColumnWidth(jtb_room);
 		jlb_logo.setFont(new Font("맑은 고딕", Font.BOLD, 60));
 		jlb_logo.setHorizontalAlignment(JLabel.CENTER);
 		
@@ -76,6 +85,20 @@ public class WaitRoom extends JPanel {
 		jf.setVisible(true);
 	}
 	
+	// column 너비 자동맞춤을 위한 메소드
+	public void resizeColumnWidth(JTable table) {
+		final TableColumnModel columnModel = table.getColumnModel();
+		for (int column = 0; column < table.getColumnCount(); column++) {
+			int width = 50; // Min width
+			for (int row = 0; row < table.getRowCount(); row++) {
+				TableCellRenderer renderer = table.getCellRenderer(row, column);
+				Component comp = table.prepareRenderer(renderer, row, column);
+				width = Math.max(comp.getPreferredSize().width +1 , width);
+			}
+			columnModel.getColumn(column).setPreferredWidth(width);
+		}
+	}
+
 	public static void main(String[] args) {
 		new WaitRoom();
 	}
