@@ -1,6 +1,8 @@
 package eunTest;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -16,44 +18,44 @@ import javax.swing.JFrame;
 public class SoS extends JFrame implements Runnable {
 
 	// 선언부___________________________________________________________________________________________
-	ServerSocket	waitRoomServerSocket	= null;
-//	ServerSocket	inoutServerSocket		= null;
-//	ServerSocket	chatServerSocket		= null;
-//	ServerSocket	timerServerSocket		= null;
-//	ServerSocket	paintServerSocket		= null;
-	Socket			waitRoomClientSocket	= null;
-//	Socket			inoutClientSocket		= null;
-//	Socket			chatClientSocket		= null;
-//	Socket			timerClientSocket		= null;
-//	Socket			paintClientSocket		= null;
+	ServerSocket			waitRoomServerSocket	= null;
+	Socket					waitRoomClientSocket	= null;
+	ObjectOutputStream		oos_server				= null;
+	ObjectInputStream		ois_server				= null;
+	WaitRoomServerThread	waitRoomServerThread	= null;
 
 	// 생성자___________________________________________________________________________________________
 	public SoS() {
 		
 	}
 
-	// SoS서버소켓을 생성하는
-	// 메소드이다.________________________________________________________________________
+	// 대기실을 위한 서버소켓을 생성하는 메소드이다.___________________________________________________________________
 	public void createServerSocket() {
 		try {
 			waitRoomServerSocket = new ServerSocket(Port._WAITROOM);
-			waitRoomClientSocket = waitRoomServerSocket.accept();
-//			inoutServerSocket = new ServerSocket(7375);
-//			chatServerSocket = new ServerSocket(7375);
-//			timerServerSocket = new ServerSocket(7375);
-//			paintServerSocket = new ServerSocket(7375);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void main(String[] args) {
-
-	}
-
+	// 콜백메소드 run()___________________________________________________________________________________
 	@Override
 	public void run() {
-		
+		boolean isStop = false;
+		while (!isStop) {
+			try {
+				waitRoomClientSocket = waitRoomServerSocket.accept();
+				oos_server = new ObjectOutputStream(waitRoomClientSocket.getOutputStream());
+				ois_server = new ObjectInputStream(waitRoomClientSocket.getInputStream());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public static void main(String[] args) {
+		new SoS();
 	}
 
+	
 }
