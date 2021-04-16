@@ -13,5 +13,6 @@ public interface LoginDAO {
 	public void LoginModify(LoginDTO dto);
 
 	// 로그인
-	public boolean checkPw(String user_id, String password, String nickname, String email);
+//	public String checkPw(String user_id, String password, String nickname, String email);
+	public String checkPw(String user_id, String password);
 }

@@ -9,7 +9,9 @@ public class LoginDTO {
 	private String nickname;
 
 	private String email;
-
+	
+	private String result;
+	
 	public String getuser_Id() {
 
 		return user_Id;
@@ -56,6 +58,14 @@ public class LoginDTO {
 
 		this.email = email;
 
+	}
+
+	public String getResult() {
+		return result;
+	}
+
+	public void setResult(String result) {
+		this.result = result;
 	}
 
 }
