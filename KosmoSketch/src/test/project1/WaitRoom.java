@@ -4,17 +4,23 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Vector;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
+
+import org.springframework.core.env.JOptCommandLinePropertySource;
 
 public class WaitRoom extends JPanel {
 
@@ -30,6 +36,7 @@ public class WaitRoom extends JPanel {
 	JButton jbtn_exit = null;
 	JButton jbtn_createRoom = null;
 	Vector roomlist = new Vector();
+	String roomname = null;
 	
 	public WaitRoom() {
 		initDisplay();
@@ -59,6 +66,20 @@ public class WaitRoom extends JPanel {
 		resizeColumnWidth(jtb_room);
 		jlb_logo.setFont(new Font("맑은 고딕", Font.BOLD, 60));
 		jlb_logo.setHorizontalAlignment(JLabel.CENTER);
+		jbtn_createRoom.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				while(true) {
+					String imsi = JOptionPane.showInputDialog("방 제목을 입력하세요.");
+					System.out.println("");
+					if(!"".equals(imsi)) {
+						roomname = imsi;
+						break;
+					}
+				}
+			}
+		});
 		
 		// add 하자.
 		jp_south_left.setAlignmentX(LEFT_ALIGNMENT);

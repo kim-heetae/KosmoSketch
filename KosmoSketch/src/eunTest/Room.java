@@ -1,12 +1,27 @@
 package eunTest;
 
+import java.io.IOException;
+
+import eunTest.SoS;
+
 public class Room {
-	WaitRoomServerThread wrst;
-	Room(){
-		
+	InOutServer inoutServer = null;
+	ChatServer chatServer  = null;
+	TimerServer timerServer = null;
+	PaintServer paintServer = null;
+	SoS sos = null;
+	
+	public Room() {
+		try {
+			inoutServer = new InOutServer();
+			chatServer = new ChatServer();
+			timerServer = new TimerServer();
+			paintServer = new PaintServer();
+		}
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-	Room(WaitRoomServerThread wrst){
-		this.wrst =wrst;
-	}
 }
