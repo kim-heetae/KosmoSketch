@@ -13,24 +13,37 @@ public class ClientTest {
 	Socket	client_timer	= null;
 	Socket	client_inout	= null;
 	
-	//as 필요합읍니다
+	//as 필요합읍니다/////////////////////////
 	Socket client_wait		= null;
 	ObjectOutputStream oos;
 	ObjectInputStream ois;
 	boolean isLoggedIn = false;
-	//
+	String id = null;
+	String pw= null;
+	TestClientView tc = null;
+	///////////////////////////////////////
 	
 	// 생성자
+	
 	public ClientTest() {
+		
+	}
+	
+	public ClientTest(TestClientView tc) {
+		this.tc = tc;
 		getSockets();
 	}
 
 	// 소켓생성 메소드
 	public void getSockets() {
 		try {
-			client_paint = new Socket("localhost", 10329);
+			client_wait = new Socket("localhost", 10329);
 			oos		= new ObjectOutputStream(client_wait.getOutputStream());
 			ois		= new ObjectInputStream(client_wait.getInputStream());
+			id = tc.idField.getText();
+			pw = tc.pwField.getText();
+//			System.out.println(id+"\n"+pw);
+			oos.writeObject(id+"#"+pw);
 			String msg = ois.readObject().toString();
 			while(!isLoggedIn) {
 			if(msg == "_LOGINSUCCESSS") {								//프로토콜만들어주새요 1
@@ -49,13 +62,5 @@ public class ClientTest {
 		}
 	}
 	
-	public void join() {//회원가입버튼 누를시 call
-		//클라 view를 회원가입뷰로 교체
-		//
-	}
-
-	public static void main(String[] args) {
-		new ClientTest();
-	}
 
 }
