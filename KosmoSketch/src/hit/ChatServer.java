@@ -9,6 +9,7 @@ import eunTest.Port;
 public class ChatServer extends ServerSocket implements Runnable{
 	Socket client = null;
 	Thread chatThread = null;
+	ChatServerThread chatServerThread = null;
 	public ChatServer() throws IOException {
 		super(Port._CHAT);
 		chatThread = new Thread(this);

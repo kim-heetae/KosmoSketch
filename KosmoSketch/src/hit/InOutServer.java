@@ -3,12 +3,14 @@ package hit;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.List;
 
 import eunTest.Port;
 
 public class InOutServer extends ServerSocket implements Runnable{
 	Socket client = null;
 	Thread inoutThread = null;
+	List<Thread> inoutList = null;
 	public InOutServer() throws IOException {
 		super(Port._INOUT);
 		inoutThread = new Thread(this);
@@ -19,7 +21,7 @@ public class InOutServer extends ServerSocket implements Runnable{
 		boolean isStop = false;
 		try {
 			while(!isStop) {
-				client = this.accept();				
+				client = this.accept();
 			}
 		}
 		catch (IOException e) {

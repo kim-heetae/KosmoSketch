@@ -6,11 +6,27 @@ import java.net.Socket;
 
 import eunTest.Port;
 
-public class TimerServer extends ServerSocket{
+public class TimerServer extends ServerSocket implements Runnable{
 	Socket client = null;
+	Thread timerThread = null;
 	public TimerServer() throws IOException {
 		super(Port._TIMER);
-		client = this.accept();
+		timerThread = new Thread(this);
+		timerThread.start();
+	}
+	@Override
+	public void run() {
+		boolean isStop = false;
+		try {
+			while(!isStop) {
+				client = this.accept();				
+			}
+		}
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }
