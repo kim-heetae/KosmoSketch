@@ -11,7 +11,6 @@ public class Room {
 	PaintServer paintServer = null;
 	SoS sos = null;
 	
-	
 	public Room() {
 		try {
 			inoutServer = new InOutServer();

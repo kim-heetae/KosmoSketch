@@ -1,15 +1,20 @@
 package hit;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.List;
+import java.util.Vector;
 
 import eunTest.Port;
 
 public class ChatServer extends ServerSocket implements Runnable{
 	Socket client = null;
 	Thread chatThread = null;
-	ChatServerThread chatServerThread = null;
+	List<ChatServerThread> chatServerThreadList = null;
+	
 	public ChatServer() throws IOException {
 		super(Port._CHAT);
 		chatThread = new Thread(this);
@@ -18,9 +23,12 @@ public class ChatServer extends ServerSocket implements Runnable{
 	@Override
 	public void run() {
 		boolean isStop = false;
+		chatServerThreadList = new Vector<>();
 		try {
 			while(!isStop) {
-				client = this.accept();      //
+				client = this.accept();
+				ChatServerThread chatServerThread = new ChatServerThread(this);
+				chatServerThreadList.add(chatServerThread);
 			}			 
 		}
 		catch (IOException e) {
