@@ -13,7 +13,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import javax.swing.border.*;
- 
+
 public class Client extends JPanel{//viewasdadasdas
 	JPanel			jp_center, jp_south, jp_sChat, jp_chatANDlog, jp_sRight, jp_tools, jp_users, jp_user1, jp_user2,
 			jp_user3, jp_user4;
