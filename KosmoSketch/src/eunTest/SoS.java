@@ -36,7 +36,7 @@ public class SoS extends JFrame implements Runnable {
 	public SoS() {
 		// 서버소켓 생성 - 서버 start
 		createServerSocket();
-		clientList = new HashMap<>();
+		clientList = null;
 		// 클라이언트가 입력한 id와 pw를 읽어들이고, 그것들을 가지고 오라클 DB에 접근해 아이디 존재여부, 패스워드 일치여부를 판단해 오는 메소드 호출(또는 클래스 생성)
 		serverView = new SoSView();
 		serverView.jta_sos.append("Server is now running...");
@@ -72,15 +72,20 @@ public class SoS extends JFrame implements Runnable {
 				// DAO 클래스를 통해 로그인 성공 여부(id와 pw 존재, 일치 여부)가 파악되었으면, 그 정보를 클라이언트에게도 알려야 한다.
 				/*	DAO 완성되면 주석 제거해야 됨~~~~!
 				if("로그인 성공".equals(dao.result)) {
-					oos_server.writeObject(
+					oos_server.writeObject(Protocol._LOGIN_SUCCESS + Protocol._CUT + "로그인 성공");
 				} else if("비밀번호를 확인해주세요.".equals(dao.result)) {
-					
-				} else if("존재하지 않는 아이디입니다.".equals()) {
-					
+					oos_server.writeObject(Protocol._PW_FAILURE + Protocol._CUT + "로그인 성공");
+				} else if("존재하지 않는 아이디입니다.".equals(dao.result)) {
+					oos_server.writeObject(Protocol._ID_FAILURE + Protocol._CUT + "로그인 성공");
 				} else {
 					System.out.println("프로시저 수정????!!!!");
 				}
 				*/
+				clientList = new HashMap<>();
+				waitRoomServerThread = new WaitRoomServerThread(this);
+//				waitRoomServerThread.client = waitRoomClientSocket;
+				Thread th = new Thread(waitRoomServerThread);
+				th.start();
 			} catch (ClassNotFoundException cnfe) {
 				cnfe.printStackTrace();
 			} catch (IOException ioe) {
