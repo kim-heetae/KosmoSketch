@@ -12,4 +12,7 @@ public class Protocol {
 	public final static int	_PAINT			= 501;
 	public final static int	_ERASE			= 502;
 	public final static int	_EXIT			= 600;
+
+	public static final int _MAKEROOM 		= 1001;
+	public static final int	_ROOMIN			= 1002;
 }
