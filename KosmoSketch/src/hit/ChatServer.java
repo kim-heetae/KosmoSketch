@@ -15,7 +15,7 @@ public class ChatServer extends ServerSocket implements Runnable {
 	Socket client = null;
 	Thread chatThread = null;
 	List<ChatServerThread> chatServerThreadList = null;
-	
+	int portNum = 0;
 //	public ChatServer() throws IOException {
 //		super(Port._CHAT);
 //		chatThread = new Thread(this);
@@ -23,6 +23,7 @@ public class ChatServer extends ServerSocket implements Runnable {
 //	}
 	public ChatServer(int port) throws IOException {
 		super(port);
+		portNum = port;
 		chatThread = new Thread(this);
 		chatThread.start();
 	}

@@ -20,8 +20,11 @@ public class Protocol {
 	public final static int		_ERASE			= 502;
 	public final static int		_EXIT			= 600;
 
-	public static final int		_MAKEROOM		= 1001;
-	public static final int		_ROOMIN			= 1002;
-	public static final int		_ROOM_INFO		= 1003;
+	public final static int		_MAKEROOM		= 1001;
+	public final static int		_CLOSEROOM		= 1002;
+	public final static int		_ROOMIN			= 1003;
+	public final static int		_ROOM_INFO		= 1004;
+	
+	public final static int		_PORT_NUM		= 2000;
 	
 }

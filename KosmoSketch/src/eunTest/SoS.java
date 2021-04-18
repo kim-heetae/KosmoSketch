@@ -32,7 +32,7 @@ public class SoS extends JFrame implements Runnable {
 	ObjectOutputStream		oos_server				= null;
 	ObjectInputStream		ois_server				= null;
 	WaitRoomServerThread	waitRoomServerThread	= null;
-	// 로그인에 성공하여 대기실에 접속한 클라이언트의 [닉네임]과 [waitRoomServerThread 인스턴스 주소-동기화, broadCastind을 위함]를 담을 자료구조 선언
+	// 로그인에 성공하여 대기실에 접속한 클라이언트의 [닉네임]과 [waitRoomServerThread 인스턴스 주소-동기화, broadCasting을 위함]를 담을 자료구조 선언
 	Map<String, WaitRoomServerThread> clientList	= null;
 	// 방에 대한 정보(방번호, ROOM 인스턴스)를 원본으로 관리하기 위함
 //	Map<Integer, Room> 		roomList 				= null;
@@ -42,10 +42,11 @@ public class SoS extends JFrame implements Runnable {
 	public SoS() {
 		// 서버소켓 생성 - 서버 start
 		createServerSocket();
-		clientList = null;
 		// 클라이언트가 입력한 id와 pw를 읽어들이고, 그것들을 가지고 오라클 DB에 접근해 아이디 존재여부, 패스워드 일치여부를 판단해 오는 메소드 호출(또는 클래스 생성)
 		serverView = new SoSView();
 		serverView.jta_sos.append("Server is now running...");
+		Thread th = new Thread(this);
+		th.start();
 		
 	}
 
@@ -62,6 +63,11 @@ public class SoS extends JFrame implements Runnable {
 	@Override
 	public void run() {
 		boolean isStop = false;
+		String msg = null;
+		String id = null;
+		String pw = null;
+		String nickName = null;
+		String msg_isLoggedIn = null;
 		while (!isStop) {
 			try {
 				waitRoomClientSocket = waitRoomServerSocket.accept();
@@ -69,14 +75,15 @@ public class SoS extends JFrame implements Runnable {
 				ois_server = new ObjectInputStream(waitRoomClientSocket.getInputStream());
 				// 클라이언트가 로그인 버튼을 누를 때 클라이언트쪽에서 Socket이 생성되고 곧바로 입력한 id와 pw 정보를 stream을 통해 서버로 보낸다.
 				// msg: _LOGIN#아이디#패스워드
-				String msg = ois_server.readObject().toString();
+				msg = ois_server.readObject().toString();
 				StringTokenizer st = new StringTokenizer(msg, Protocol._CUT);
-				String id = st.nextToken();
-				String pw = st.nextToken();
+				id = st.nextToken();
+				pw = st.nextToken();
+				System.out.println(id+", "+pw);
 				// 데이터 연동을 위한 DAO 클래스 인스턴스 생성
-				// insert here
+				// insert here//////////////////////////////
 				// DAO 클래스를 통해 로그인 성공 여부(id와 pw 존재, 일치 여부)가 파악되었으면, 그 정보를 클라이언트에게도 알려야 한다.
-				/*	DAO 완성되면 주석 제거해야 됨~~~~!
+				/*	DAO 완성되면 주석 제거해야 됨~~~~!	// DB에서 id를 이용해서 nickName 가져와 변수에 담기~~!
 				if("로그인 성공".equals(dao.result)) {
 					oos_server.writeObject(Protocol._LOGIN_SUCCESS + Protocol._CUT + "로그인 성공");
 				} else if("비밀번호를 확인해주세요.".equals(dao.result)) {
@@ -87,13 +94,24 @@ public class SoS extends JFrame implements Runnable {
 					System.out.println("프로시저 수정????!!!!");
 				}
 				*/
-				clientList = new HashMap<>();
-//				roomList = new Hashtable<>();
-				roomList = new Vector<>();
-				waitRoomServerThread = new WaitRoomServerThread(this, oos_server, ois_server);
-//				waitRoomServerThread.client = waitRoomClientSocket;
-				Thread th = new Thread(waitRoomServerThread);
-				th.start();
+				nickName = "DAO를 통해 가져온 닉네임";
+				msg_isLoggedIn = "존재하지 않는 아이디입니다.";
+				
+				/////////////////////////////////////////////////////////////////////////////////////////////////////////
+				// 로그인 시 서버에 연결하는 메소드와 아이디, 비밀번호를 보내는 메소드를 나눠서 실행시켜야함
+				/////////////////////////////////////////////////////////////////////////////////////////////////////////
+				if("로그인 성공".equals(msg_isLoggedIn)) {
+					oos_server.writeObject(Protocol._CLIENT_INFO + Protocol._CUT + nickName + Protocol._CUT + msg_isLoggedIn);
+					clientList = new HashMap<>();
+//					roomList = new Hashtable<>();
+					roomList = new Vector<>();
+					// 대기실 서버스레드 인스턴스 생성
+					waitRoomServerThread = new WaitRoomServerThread(this, oos_server, ois_server);
+					clientList.put(nickName, waitRoomServerThread);
+//					waitRoomServerThread.client = waitRoomClientSocket;
+					Thread th = new Thread(waitRoomServerThread);
+					th.start();
+				}
 			} catch (ClassNotFoundException cnfe) {
 				cnfe.printStackTrace();
 			} catch (IOException ioe) {

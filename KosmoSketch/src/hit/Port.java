@@ -19,7 +19,7 @@ public class Port {
 		return port;
 	}
 
-//	public static int	_WAITROOM	= 9876;
+	public static int	_WAITROOM	= 9876;
 //	public static int	_INOUT		= 20000;
 //	public static int	_CHAT		= 30000;
 //	public static int	_TIMER		= 40000;

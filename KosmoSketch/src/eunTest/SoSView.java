@@ -36,7 +36,7 @@ public class SoSView extends JFrame {
 		this.setTitle("Server Window");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setSize(600, 800);
-		this.setAlwaysOnTop(true);
+//		this.setAlwaysOnTop(true);
 		this.setVisible(true);
 	}
 

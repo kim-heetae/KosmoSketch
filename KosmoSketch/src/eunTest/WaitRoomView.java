@@ -27,8 +27,13 @@ public class WaitRoomView extends JPanel {
 	JButton jbtn_exit = null;
 	JButton jbtn_createRoom = null;
 //	Vector roomlist = new Vector();
+	ClientView clientView = null;
 	
-	public WaitRoomView() {
+	int width = 1600;
+	int height = 1000;
+	
+	public WaitRoomView(ClientView clientView) {
+		this.clientView = clientView;
 		initDisplay();
 	}
 	
@@ -48,6 +53,9 @@ public class WaitRoomView extends JPanel {
 		jbtn_createRoom = new JButton("방만들기");
 				
 		// 상세설정
+		jbtn_logout.addActionListener(clientView);
+		jbtn_exit.addActionListener(clientView);
+		jbtn_createRoom.addActionListener(clientView);
 		jlb_logo.setFont(new Font("맑은 고딕", Font.BOLD, 60));
 		jlb_logo.setHorizontalAlignment(JLabel.CENTER);
 		
@@ -65,19 +73,19 @@ public class WaitRoomView extends JPanel {
 		this.add("Center", jsp_room);
 		this.add("South", jp_south);
 		
-		JFrame jf = new JFrame();
-		jf.add("Center", this);
-		
-		// JFrame 관련 설정
-		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		jf.setResizable(false);
-		jf.setVisible(true);
-		jf.setSize(1600, 1000);
-		jf.setVisible(true);
+//		JFrame jf = new JFrame();
+//		jf.add("Center", this);
+//		
+//		// JFrame 관련 설정
+//		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		jf.setResizable(false);
+//		jf.setVisible(true);
+//		jf.setSize(1600, 1000);
+//		jf.setVisible(true);
 	}
 	
-	public static void main(String[] args) {
-		new WaitRoomView();
-	}
+//	public static void main(String[] args) {
+//		new WaitRoomView();
+//	}
 
 }
