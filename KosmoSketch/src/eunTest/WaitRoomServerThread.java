@@ -26,6 +26,7 @@ public class WaitRoomServerThread implements Runnable {
 
 	SoS sos = null;
 	Room room = null;
+	static int roomNum = 1;
 	// Room에 있는 클라이언트의 정보(자료구조)는  Room클래스에서 관리함
 
 	WaitRoomServerThread(SoS sos) {
@@ -46,10 +47,11 @@ public class WaitRoomServerThread implements Runnable {
 				case Protocol._MAKEROOM:
 					String roomName = st.nextToken();
 					// Room클래스의 변수 초기화는 getter/setter대신 생성자를 이용하기로 한다
-					room = new Room(nickName, roomName);
+					room = new Room(roomNum, nickName, roomName);
+					sos.roomList.put(roomNum++, room);
 					break;
 				case Protocol._ROOMIN:
-					new Room(this);
+					new Room();
 					break;
 				}
 			} catch (Exception e) {
