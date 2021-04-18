@@ -12,7 +12,7 @@ public class Room {
 	TimerServer timerServer = null;
 	PaintServer paintServer = null;
 	SoS sos = null;
-	List<String> nickNameList = null;
+	List<String> nickNameList = new Vector<>();
 	String roomName = null;
 	int roomNum = 0;
 	public Room() {
@@ -27,7 +27,6 @@ public class Room {
 			chatServer = new ChatServer();
 			timerServer = new TimerServer();
 			paintServer = new PaintServer();
-			nickNameList = new Vector<>();
 		}
 		catch (IOException e) {
 			// TODO Auto-generated catch block

@@ -13,7 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-public class WaitRoom extends JPanel {
+public class WaitRoomView extends JPanel {
 
 	JPanel jp_south = null;
 	JPanel jp_south_left = null;
@@ -26,9 +26,9 @@ public class WaitRoom extends JPanel {
 	JButton jbtn_logout = null;
 	JButton jbtn_exit = null;
 	JButton jbtn_createRoom = null;
-	Vector roomlist = new Vector();
+//	Vector roomlist = new Vector();
 	
-	public WaitRoom() {
+	public WaitRoomView() {
 		initDisplay();
 	}
 	
@@ -77,7 +77,7 @@ public class WaitRoom extends JPanel {
 	}
 	
 	public static void main(String[] args) {
-		new WaitRoom();
+		new WaitRoomView();
 	}
 
 }

@@ -7,8 +7,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.Vector;
 
 import javax.swing.JFrame;
 
@@ -33,7 +35,8 @@ public class SoS extends JFrame implements Runnable {
 	// 로그인에 성공하여 대기실에 접속한 클라이언트의 [닉네임]과 [waitRoomServerThread 인스턴스 주소-동기화, broadCastind을 위함]를 담을 자료구조 선언
 	Map<String, WaitRoomServerThread> clientList	= null;
 	// 방에 대한 정보(방번호, ROOM 인스턴스)를 원본으로 관리하기 위함
-	Map<Integer, Room> 		roomList 				= null;
+//	Map<Integer, Room> 		roomList 				= null;
+	List<Room> 		roomList 				= null;
 
 	// 생성자___________________________________________________________________________________________
 	public SoS() {
@@ -85,8 +88,9 @@ public class SoS extends JFrame implements Runnable {
 				}
 				*/
 				clientList = new HashMap<>();
-				roomList = new Hashtable<>();
-				waitRoomServerThread = new WaitRoomServerThread(this);
+//				roomList = new Hashtable<>();
+				roomList = new Vector<>();
+				waitRoomServerThread = new WaitRoomServerThread(this, oos_server, ois_server);
 //				waitRoomServerThread.client = waitRoomClientSocket;
 				Thread th = new Thread(waitRoomServerThread);
 				th.start();

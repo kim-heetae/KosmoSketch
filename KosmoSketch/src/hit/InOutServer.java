@@ -11,8 +11,8 @@ public class InOutServer extends ServerSocket implements Runnable{
 	Socket client = null;
 	Thread inoutThread = null;
 	List<Thread> inoutList = null;
-	public InOutServer() throws IOException {
-		super(Port._INOUT);
+	public InOutServer(int port) throws IOException {
+		super(port);
 		inoutThread = new Thread(this);
 		inoutThread.start();
 	}

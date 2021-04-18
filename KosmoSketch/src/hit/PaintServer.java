@@ -9,8 +9,8 @@ import eunTest.Port;
 public class PaintServer extends ServerSocket implements Runnable{
 	Socket client = null;
 	Thread paintThread = null;
-	public PaintServer() throws IOException {
-		super(Port._PAINT);
+	public PaintServer(int port) throws IOException {
+		super(port);
 		paintThread = new Thread(this);
 		paintThread.start();
 	}

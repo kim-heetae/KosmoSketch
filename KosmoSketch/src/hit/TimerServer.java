@@ -9,8 +9,8 @@ import eunTest.Port;
 public class TimerServer extends ServerSocket implements Runnable{
 	Socket client = null;
 	Thread timerThread = null;
-	public TimerServer() throws IOException {
-		super(Port._TIMER);
+	public TimerServer(int port) throws IOException {
+		super(port);
 		timerThread = new Thread(this);
 		timerThread.start();
 	}

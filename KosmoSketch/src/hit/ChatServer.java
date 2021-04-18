@@ -10,13 +10,19 @@ import java.util.Vector;
 
 import eunTest.Port;
 
-public class ChatServer extends ServerSocket implements Runnable{
+public class ChatServer extends ServerSocket implements Runnable {
+
 	Socket client = null;
 	Thread chatThread = null;
 	List<ChatServerThread> chatServerThreadList = null;
 	
-	public ChatServer() throws IOException {
-		super(Port._CHAT);
+//	public ChatServer() throws IOException {
+//		super(Port._CHAT);
+//		chatThread = new Thread(this);
+//		chatThread.start();
+//	}
+	public ChatServer(int port) throws IOException {
+		super(port);
 		chatThread = new Thread(this);
 		chatThread.start();
 	}

@@ -22,4 +22,6 @@ public class Protocol {
 
 	public static final int		_MAKEROOM		= 1001;
 	public static final int		_ROOMIN			= 1002;
+	public static final int		_ROOM_INFO		= 1003;
+	
 }
