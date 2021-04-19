@@ -5,8 +5,7 @@ public class Protocol {
 
 	public final static int		_LOGIN			= 1;
 	public final static int		_LOGIN_SUCCESS	= 2;
-	public final static int		_ID_FAILURE		= 3;
-	public final static int		_PW_FAILURE		= 4;
+	public final static int		_LOGIN_FAILURE	= 3;
 
 	public final static int		_CLIENT_INFO	= 100;
 	public final static int		_READY			= 201;
