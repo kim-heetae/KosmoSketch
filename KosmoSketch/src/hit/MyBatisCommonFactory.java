@@ -16,8 +16,9 @@ public class MyBatisCommonFactory {
 				//동기화 블럭에 들어온 후에도 다시한번 널체크
 				if(sqlSessionFactory == null) {				
 					try {
-						String resource = "hit/MapperConfig.xml";
+						String resource = "hit//MapperConfig.xml";
 						Reader reader = Resources.getResourceAsReader(resource);
+						System.out.println(reader);
 						sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
 					}
 					catch (Exception e) {
