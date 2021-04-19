@@ -33,6 +33,7 @@ public class SoS extends JFrame implements Runnable {
 	ObjectInputStream					ois_server				= null;
 	ServerLoginThread					serverLoginThread		= null;
 	WaitRoomServerThread				waitRoomServerThread	= null;
+	LoginDAOImpl						loginDAO				= null;
 	// 로그인에 성공하여 대기실에 접속한 클라이언트의 [닉네임]과 [waitRoomServerThread 인스턴스 주소-동기화,
 	// broadCasting을 위함]를 담을 자료구조 선언
 	Map<String, WaitRoomServerThread>	clientList				= null;
@@ -40,23 +41,24 @@ public class SoS extends JFrame implements Runnable {
 //	Map<Integer, Room> 		roomList 				= null;
 	List<Room>							roomList				= null;
 
-	// 생성자___________________________________________________________________________________________
+	// 생성자
 	public SoS() {
 		// 서버소켓 생성 - 서버 start
 		createServerSocket();
-		// 클라이언트가 입력한 id와 pw를 읽어들이고, 그것들을 가지고 오라클 DB에 접근해 아이디 존재여부, 패스워드 일치여부를 판단해 오는
+		// 클라이언트가 입력한 id와 pw를 읽어들이고, 그것들을 가지고 오라클 DB에 접근해 아이디 존재 여부, 패스워드 일치여부를 판단해 오는
 		// 메소드 호출(또는 클래스 생성)
 		serverView = new SoSView();
 		serverView.jta_sos.append("Server is now running...");
 		clientList = new HashMap<>();
 		roomList = new Vector<>();
+		loginDAO = new LoginDAOImpl();
 		Thread th = new Thread(this);
 		th.start();
 
 	}
 
 	// 대기실을 위한 서버소켓을 생성하는
-	// 메소드이다.___________________________________________________________________
+	// 메소드
 	public void createServerSocket() {
 		try {
 			waitRoomServerSocket = new ServerSocket(Port._WAITROOM);
@@ -66,7 +68,7 @@ public class SoS extends JFrame implements Runnable {
 	}
 
 	// 콜백메소드
-	// run()___________________________________________________________________________________
+	// run()
 	@Override
 	public void run() {
 		boolean	isStop	= false;
@@ -74,6 +76,7 @@ public class SoS extends JFrame implements Runnable {
 		while (!isStop) {
 			try {
 				waitRoomClientSocket = waitRoomServerSocket.accept();
+				serverView.jta_sos.append(waitRoomClientSocket.toString());
 				oos_server = new ObjectOutputStream(waitRoomClientSocket.getOutputStream());
 				ois_server = new ObjectInputStream(waitRoomClientSocket.getInputStream());
 				serverLoginThread = new ServerLoginThread(this, oos_server, ois_server);
