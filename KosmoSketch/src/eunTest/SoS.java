@@ -89,7 +89,7 @@ public class SoS extends JFrame implements Runnable {
 				} else if("비밀번호를 확인해주세요.".equals(dao.result)) {
 					oos_server.writeObject(Protocol._PW_FAILURE + Protocol._CUT + "로그인 성공");
 				} else if("존재하지 않는 아이디입니다.".equals(dao.result)) {
-					oos_server.writeObject(Protocol._ID_FAILURE + Protocol._CUT + "로그인 성공");
+					s_server.writeObject(Protocol._ID_FAILURE + Protocol._CUT + "로그인 성공");
 				} else {
 					System.out.println("프로시저 수정????!!!!");
 				}
@@ -98,9 +98,9 @@ public class SoS extends JFrame implements Runnable {
 				msg_isLoggedIn = "존재하지 않는 아이디입니다.";
 				
 				/////////////////////////////////////////////////////////////////////////////////////////////////////////
-				// 로그인 시 서버에 연결하는 메소드와 아이디, 비밀번호를 보내는 메소드를 나눠서 실행시켜야함
+				// 로그인 시 서버에 연결하는 메소드   /////// 아이디,비밀번호를 보내는 메소드를 나눠서 실행시켜야함
 				/////////////////////////////////////////////////////////////////////////////////////////////////////////
-				if("로그인 성공".equals(msg_isLoggedIn)) {
+				if("존재하지 않는 아이디입니다.".equals(msg_isLoggedIn)) {
 					oos_server.writeObject(Protocol._CLIENT_INFO + Protocol._CUT + nickName + Protocol._CUT + msg_isLoggedIn);
 					clientList = new HashMap<>();
 //					roomList = new Hashtable<>();
@@ -123,6 +123,4 @@ public class SoS extends JFrame implements Runnable {
 	public static void main(String[] args) {
 		new SoS();
 	}
-
-	
 }
