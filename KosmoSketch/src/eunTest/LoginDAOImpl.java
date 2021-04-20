@@ -24,9 +24,13 @@ public class LoginDAOImpl implements LoginDAO {
 
 	// 회원 가입
 	@Override
-	public void insertMember(Map<String,String> newbie) {
+	public void insertMember(String id, String pw, String nickname, String email) {
+		ldto.setuser_Id(id);
+		ldto.setpassword(pw);
+		ldto.setnickname(nickname);
+		ldto.setemail(email);
 		sqlSession = sqlSessionFactory.openSession();
-		sqlSession.insert("join", newbie);
+		sqlSession.insert("join", ldto);
 	}
 
 	// 회원 정보 수정

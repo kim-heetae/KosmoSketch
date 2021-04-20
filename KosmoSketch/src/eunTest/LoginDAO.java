@@ -8,7 +8,7 @@ public interface LoginDAO {
 	public List<LoginDTO> LoginList();
 
 	// 회원가입
-	public void insertMember(Map<String,String> newbie);
+	public void insertMember(String id, String pw, String nickname, String email);
 
 	// 회원정보수정
 	public void LoginModify(LoginDTO dto);
