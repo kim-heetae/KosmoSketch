@@ -46,6 +46,7 @@ public class ServerLoginThread extends Thread {
 				System.out.println(id);
 				System.out.println(pw);
 				msg_isLoggedIn = sos.loginDAO.checkPw(id, pw);
+				System.out.println(msg_isLoggedIn);
 				System.out.println("보이니2");
 //				System.out.println(id + ", " + pw);
 				// 데이터 연동을 위한 DAO 클래스 인스턴스 생성
@@ -58,7 +59,6 @@ public class ServerLoginThread extends Thread {
 				// DAO - DB - 프로시저 를 거쳐 가져온 msg(out)에 따라 경우를 나누어 처리한다.
 				// "존재하지 않는 아이디입니다." || "비밀번호를 확인해주세요."
 				if ("존재하지 않는 아이디입니다.".equals(msg_isLoggedIn) || "비밀번호를 확인해주세요.".equals(msg_isLoggedIn)) {
-					System.out.println("틀렸어");
 					oos.writeObject(Protocol._LOGIN_FAILURE + Protocol._CUT + " " + Protocol._CUT + msg_isLoggedIn);
 				}
 				// "로그인 성공"
@@ -66,7 +66,7 @@ public class ServerLoginThread extends Thread {
 					nickName = "DAO를 통해 가져온 닉네임";
 					// 클라이언트측에서 _CLIENT_INFO 프로토콜을 받았다는 것 자체가 로그인에 성공하였음을 의미함. (접속 성공 시 딱 한번만 받는
 					// 프로토콜이다.)
-					oos.writeObject(Protocol._CLIENT_INFO + Protocol._CUT + nickName);
+					oos.writeObject(Protocol._CLIENT_INFO + Protocol._CUT + nickName + Protocol._CUT + msg_isLoggedIn);
 					sos.clientList.put(nickName, waitRoomServerThread);
 					waitRoomServerThread = new WaitRoomServerThread(sos, oos, ois);
 					Thread th = new Thread(waitRoomServerThread);

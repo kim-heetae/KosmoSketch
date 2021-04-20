@@ -12,14 +12,17 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-public class LoginPanel extends JPanel {
+public class LoginView extends JPanel {
 	JPanel		jp_north, jp_center, jp_south, jp_east, jp_west, jp_cWest, jp_cCenter;
 
 	JLabel		jlb_logo, jlb_id, jlb_pw;
 
-	JTextField	jtf_id, jtf_pw;
+	JTextField	jtf_id;
+	
+	JPasswordField jpf_pw;
 
 	JButton		jbtn_login, jbtn_join;
 	
@@ -28,7 +31,7 @@ public class LoginPanel extends JPanel {
 	int width = 300;
 	int height = 200;
 	
-	public LoginPanel(ClientView clientView) {
+	public LoginView(ClientView clientView) {
 		
 		this.clientView = clientView;
 		
@@ -55,9 +58,9 @@ public class LoginPanel extends JPanel {
 		jp_center.add("West", jp_cWest);
 		// center-center
 		jtf_id	= new JTextField(12);
-		jtf_pw	= new JTextField(12);
+		jpf_pw	= new JPasswordField(12);
 		jp_cCenter.add(jtf_id);
-		jp_cCenter.add(jtf_pw);
+		jp_cCenter.add(jpf_pw);
 		jp_center.add("Center", jp_cCenter);
 		this.add("Center", jp_center);
 
@@ -68,6 +71,12 @@ public class LoginPanel extends JPanel {
 		// 이벤트 관련 add
 		jbtn_join.addActionListener(clientView);
 		jbtn_login.addActionListener(clientView);
+		jtf_id.addActionListener(clientView);
+		jpf_pw.addActionListener(clientView);
+		jtf_id.addKeyListener(clientView);
+		jpf_pw.addKeyListener(clientView);
+		jtf_id.setFocusTraversalKeysEnabled(false);
+		jpf_pw.setFocusTraversalKeysEnabled(false);
 		
 		jp_south.add(jbtn_join);
 		jp_south.add(jbtn_login);

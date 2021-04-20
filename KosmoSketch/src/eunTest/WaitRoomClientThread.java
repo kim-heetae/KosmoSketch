@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
 
 import javax.swing.JOptionPane;
 
-import qwrqwrqwr.Protocol;
+import test.project1.Protocol;
 
 public class WaitRoomClientThread extends Thread {
 	
@@ -45,21 +45,22 @@ public class WaitRoomClientThread extends Thread {
 				StringTokenizer	tokenizer	= new StringTokenizer(msg, "#");
 				int				protocol	= Integer.parseInt(tokenizer.nextToken());	// 프로토콜을 가져와서 담음.
 				String			nickName	= tokenizer.nextToken();					// 닉네임을 가져와서 담음.
+				String msg_isLoggedIn = tokenizer.nextToken();
 				switch (protocol) {
-					case Protocol._CLIENT_INFO:
-						// 서버가 DB에 접근에서 가져온 [닉네임]을 받아온다.
+					case Protocol._LOGIN_FAILURE:
 						this.nickName = nickName;
-						System.out.println("여기 실행됨?");
-						String msg_isLoggedIn = tokenizer.nextToken();
-						if("로그인 성공".equals(msg_isLoggedIn)) {
-							clientView.remove(clientView.login);
-							clientView.setSize(clientView.waitRoom.width, clientView.waitRoom.height);
-							clientView.repaint();
-							clientView.add("Center", clientView.waitRoom);
-							clientView.revalidate();
-						} else if("비밀번호를 확인해주세요.".equals(msg_isLoggedIn) || "존재하지 않는 아이디입니다.".equals(msg_isLoggedIn)) {
-							JOptionPane.showMessageDialog(clientView, msg_isLoggedIn);
-						}
+						System.out.println(nickName);
+						JOptionPane.showMessageDialog(clientView, msg_isLoggedIn);
+						break;
+					case Protocol._CLIENT_INFO:	// _LOGIN_SUCCESS 프로토콜은 필요 없고, 바로 _CLIENT_INFO로 정보를 주자.
+						// 반복문 안에 있지만 이 프로토콜은 로그인 시 한번만 받기 때문에 문제되지 않을 것 같다.
+						clientView.remove(clientView.login);
+						clientView.setSize(clientView.waitRoom.width, clientView.waitRoom.height);
+						clientView.setTitle(nickName+"님의 창");
+						clientView.repaint();
+						clientView.add("Center", clientView.waitRoom);
+						clientView.revalidate();
+						// 서버가 DB에 접근에서 가져온 [닉네임]을 받아온다.
 							// 라벨의 초기화
 							// 클라이언트 측의 JTextArea에 "[닉네임]님이 입장하였습니다."를 출력(append)해준다. -XX 잘못적음
 							// 왼쪽 랭킹 테이블에 입장한 순서대로(globalList의 순서대로) 붙여준다.
