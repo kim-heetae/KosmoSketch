@@ -34,26 +34,36 @@ public class LoginDAOImpl implements LoginDAO {
 	public void LoginModify(LoginDTO dto) {
 		sqlSession.update("member.LoginModify", dto);
 	}
-	// 닉네임 가져오기
-	public String checknickName(String user_id) {
+	
+	// 중복ID체크
+	@Override
+	public void checkID(String id) {
 		sqlSession = sqlSessionFactory.openSession();
-		sqlSession.selectOne("getNickName", ldto);
-		String loginChecknickName = ldto.getnickname();
-		return loginChecknickName;
+		ldto.setuser_Id(id);
+		System.out.println(ldto.getuser_Id());
+		sqlSession.selectOne("proc_check_id", ldto);
+		String result = ldto.getResult();
+		System.out.println(result);
 	}
+
 	// 로그인 체크
 	@Override
 		public String checkPw(String user_id, String password) {
 		sqlSession = sqlSessionFactory.openSession();
 		ldto.setuser_Id(user_id);
 		ldto.setpassword(password);
+		System.out.println("aaaaaa");
 		sqlSession.selectOne("proc_login", ldto);
+		System.out.println("aaaaaa");
 		String loginCheckMsg = ldto.getResult();
+		System.out.println("aaaaaa");
 		return loginCheckMsg;
 	}
 	public LoginDAOImpl() {
 		sqlSessionFactory = MyBatisCommonFactory.getInstance();
 		ldto = new LoginDTO();
+//		System.out.println(checkPw("hit", "0329"));
+		checkID("hit");
 	}
 	public static void main(String[] args) {
 		new LoginDAOImpl();
