@@ -63,7 +63,7 @@ public class ServerLoginThread extends Thread {
 				}
 				// "로그인 성공"
 				else if ("로그인 성공".equals(msg_isLoggedIn)) {
-					nickName = "DAO를 통해 가져온 닉네임";
+					nickName = sos.loginDAO.ldto.getnickname();
 					// 클라이언트측에서 _CLIENT_INFO 프로토콜을 받았다는 것 자체가 로그인에 성공하였음을 의미함. (접속 성공 시 딱 한번만 받는
 					// 프로토콜이다.)
 					oos.writeObject(Protocol._CLIENT_INFO + Protocol._CUT + nickName + Protocol._CUT + msg_isLoggedIn);
