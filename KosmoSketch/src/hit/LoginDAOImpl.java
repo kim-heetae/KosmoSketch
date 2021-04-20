@@ -34,7 +34,13 @@ public class LoginDAOImpl implements LoginDAO {
 	public void LoginModify(LoginDTO dto) {
 		sqlSession.update("member.LoginModify", dto);
 	}
-
+	// 닉네임 가져오기
+	public String checknickName(String user_id) {
+		sqlSession = sqlSessionFactory.openSession();
+		sqlSession.selectOne("getNickName", ldto);
+		String loginChecknickName = ldto.getnickname();
+		return loginChecknickName;
+	}
 	// 로그인 체크
 	@Override
 		public String checkPw(String user_id, String password) {

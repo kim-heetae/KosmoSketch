@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace = "hit.login">
-	<select id="proc_login" parameterType="hit.LoginDTO" resultType="hit.LoginDTO" statementType="CALLABLE">
+	<select id="proc_login" parameterType="hit.LoginDTO" statementType="CALLABLE">
 		{CALL proc_login(#{user_Id} ,#{password} ,#{result, mode=OUT, jdbcType=VARCHAR, javaType=String})}
 	</select>
+	<select id="getNickName" parameterType="hit.LoginDTO">
+		SELECT nickname FROM usertbl WHERE id = #{user_Id}
+	</select> 
 </mapper>
