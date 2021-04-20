@@ -35,6 +35,7 @@ public class MailCheck {
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 	Properties props = null;
 	Session session = null;
+	int code = 0;
 	
 	public MailCheck(String receiveEmailAddress) {
 		int a = setReceiveEmail(receiveEmailAddress);
@@ -46,7 +47,6 @@ public class MailCheck {
 		this.receiveEmailAddress = receiveEmailAddress;
 		//랜덤 코드 생성
 		Random r = new Random();
-		int code = 0;
 		do {
 			code = r.nextInt(1000000);			
 		}while(code < 100000);
@@ -90,7 +90,7 @@ public class MailCheck {
     		//메시지 전송
     		Transport.send(message);
     	} catch (MessagingException e) {
-    		e.printStackTrace();
+    		code = 404;
     	}
     	
     }

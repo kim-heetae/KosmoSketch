@@ -6,6 +6,8 @@
 	</select>	
 	<select id="proc_check_id" parameterType="hit.LoginDTO" statementType="CALLABLE">
 		{CALL proc_check_id(#{user_Id} ,#{result, mode=OUT, jdbcType=VARCHAR, javaType=String})}
-	</select>
-	
+	</select>	
+	<insert id = "join" parameterType = "java.util.Map">
+		INSERT INTO usertbl VALUES(#{ID}, #{PW}, #{NICKNAME}, 0, #{EMAIL})
+	</insert>
 </mapper>
