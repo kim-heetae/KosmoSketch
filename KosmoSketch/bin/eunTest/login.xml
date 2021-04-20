@@ -4,7 +4,7 @@
 	<select id="proc_login" parameterType="eunTest.LoginDTO" statementType="CALLABLE">
 		{CALL proc_login(#{user_Id} ,#{password} ,#{result, mode=OUT, jdbcType=VARCHAR, javaType=String} ,#{nickname, mode=OUT, jdbcType=VARCHAR, javaType=String})}
 	</select>
-	<insert id = "join" parameterType = "java.util.Map">
-		INSERT INTO usertbl VALUES(#{ID}, #{PW}, #{NICKNAME}, 0, #{EMAIL})
+	<insert id="join" parameterType="eunTest.LoginDTO">
+		INSERT INTO usertbl VALUES(#{user_Id}, #{password}, #{nickname}, 0, #{email})
 	</insert>
 </mapper>

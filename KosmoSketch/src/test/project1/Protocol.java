@@ -6,6 +6,19 @@ public class Protocol {
 	public final static int		_LOGIN			= 1;
 	public final static int		_LOGIN_FAILURE	= 2;
 
+	public final static int		_CHECK_ID		= 10;
+	public final static int		_CHECK_NICKNAME	= 11;
+	public final static int		_SEND_EMAIL		= 12;
+	public final static int		_EMAIL_FAILURE	= 13;
+	public final static int		_EMAIL_SUCCESS	= 14;
+	public final static int		_CHECK_CODE		= 15;
+	public final static int		_CODE_FAILURE	= 16;
+	public final static int		_CODE_SUCCESS	= 17;
+	public final static int		_JOIN			= 18;
+	public final static int		_JOIN_FAILURE	= 19;
+	public final static int		_JOIN_SUCCESS	= 20;
+	
+	
 	public final static int		_CLIENT_INFO	= 100;
 	public final static int		_READY			= 201;
 	public final static int		_NOT_READY		= 202;

@@ -31,6 +31,9 @@ public class LoginDAOImpl implements LoginDAO {
 		ldto.setemail(email);
 		sqlSession = sqlSessionFactory.openSession();
 		sqlSession.insert("join", ldto);
+		// insert 후에는 커밋을 해주어야 한다!!! >_< !!!
+		sqlSession.commit();
+		sqlSession.close();
 	}
 
 	// 회원 정보 수정

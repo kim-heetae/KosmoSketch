@@ -16,30 +16,25 @@ import javax.swing.JFrame;
 
 import test.project1.Protocol;
 
-// 서버킹임.
-// 10329
-// 20329
-// 10628
-// 10408
-// 7375
-
 public class SoS extends JFrame implements Runnable {
 
-	// 선언부___________________________________________________________________________________________
-	ServerSocket						waitRoomServerSocket	= null;
-	SoSView								serverView				= null;
-	Socket								waitRoomClientSocket	= null;
-	ObjectOutputStream					oos_server				= null;
-	ObjectInputStream					ois_server				= null;
-	ServerLoginThread					serverLoginThread		= null;
-	WaitRoomServerThread				waitRoomServerThread	= null;
-	LoginDAOImpl						loginDAO				= null;
+	// 선언부
+	ServerSocket					waitRoomServerSocket	= null;
+	SoSView							serverView				= null;
+	Socket							client					= null;
+	ObjectOutputStream				oos						= null;
+	ObjectInputStream				ois						= null;
+//	ServerLoginThread					serverLoginThread		= null;
+	ForeServerThread				foreServerThread		= null;
+	WaitRoomServerThread			waitRoomServerThread	= null;
+	LoginDAOImpl					loginDAO				= null;
+	CheckDAO						cdao					= null;
 	// 로그인에 성공하여 대기실에 접속한 클라이언트의 [닉네임]과 [waitRoomServerThread 인스턴스 주소-동기화,
 	// broadCasting을 위함]를 담을 자료구조 선언
-	Map<String, WaitRoomServerThread>	clientList				= null;
+	Map<String, ForeServerThread>	clientList				= null;
 	// 방에 대한 정보(방번호, ROOM 인스턴스)를 원본으로 관리하기 위함
 //	Map<Integer, Room> 		roomList 				= null;
-	List<Room>							roomList				= null;
+	List<Room>						roomList				= null;
 
 	// 생성자
 	public SoS() {
@@ -52,6 +47,7 @@ public class SoS extends JFrame implements Runnable {
 		clientList = new HashMap<>();
 		roomList = new Vector<>();
 		loginDAO = new LoginDAOImpl();
+		cdao = new CheckDAO();
 		Thread th = new Thread(this);
 		th.start();
 
@@ -75,11 +71,13 @@ public class SoS extends JFrame implements Runnable {
 		String	msg		= null;
 		while (!isStop) {
 			try {
-				waitRoomClientSocket = waitRoomServerSocket.accept();
-				serverView.jta_sos.append(waitRoomClientSocket.toString());
-				oos_server = new ObjectOutputStream(waitRoomClientSocket.getOutputStream());
-				ois_server = new ObjectInputStream(waitRoomClientSocket.getInputStream());
-				serverLoginThread = new ServerLoginThread(this, oos_server, ois_server);
+				client = waitRoomServerSocket.accept();
+				serverView.jta_sos.append(client.toString());
+				oos = new ObjectOutputStream(client.getOutputStream());
+				ois = new ObjectInputStream(client.getInputStream());
+				foreServerThread = new ForeServerThread(this, oos, ois);
+				foreServerThread.start();
+//				serverLoginThread = new ServerLoginThread(this, oos_server, ois_server);
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
 			}

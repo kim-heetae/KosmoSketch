@@ -45,12 +45,12 @@ public class CheckDAO {
 		return result;
 	}
 
-	public static void main(String[] args) {
-		CheckDAO cdao = new CheckDAO();
-		// 닉네임 단위 테스트
-//		System.out.println(cdao.isDuplicatedNickname("은영"));
-		// 아이디 단위 테스트
-		System.out.println(cdao.isDuplicatedID("hit"));
-	}
+//	public static void main(String[] args) {
+//		CheckDAO cdao = new CheckDAO();
+//		// 닉네임 단위 테스트
+////		System.out.println(cdao.isDuplicatedNickname("은영"));
+//		// 아이디 단위 테스트
+//		System.out.println(cdao.isDuplicatedID("hit"));
+//	}
 
 }
