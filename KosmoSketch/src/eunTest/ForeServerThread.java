@@ -21,6 +21,7 @@ public class ForeServerThread extends Thread {
 	String				pw			= null;
 	String				nickname	= null;
 	String				email		= null;
+	Room				room		= null;
 
 	public ForeServerThread(SoS sos, ObjectOutputStream oos, ObjectInputStream ois) {
 		this.sos = sos;
@@ -33,7 +34,7 @@ public class ForeServerThread extends Thread {
 		boolean	isStop		= false;
 		String	msg			= null;
 		int		protocol	= 0;
-		while (!isStop) {
+		runStart: while (!isStop) {
 			try {
 				msg = ois.readObject().toString();
 				StringTokenizer st = new StringTokenizer(msg, Protocol._CUT);
@@ -54,10 +55,24 @@ public class ForeServerThread extends Thread {
 					// "로그인 성공"
 					else if ("로그인 성공".equals(result)) {
 						String nickName = loginDAO.ldto.getnickname();
+						this.nickname = nickName;
 						// 클라이언트측에서 _CLIENT_INFO 프로토콜을 받았다는 것 자체가 로그인에 성공하였음을 의미함. (접속 성공 시 딱 한번만 받는
 						// 프로토콜이다.)
-						oos.writeObject(Protocol._CLIENT_INFO + Protocol._CUT + nickName + Protocol._CUT + result);
-						sos.clientList.put(nickName, this);
+////////////////////////////단위테스트임
+//						Room room = new Room(sos.roomList.size()+1, "이거이거", "요기요기");
+//						sos.roomList.add(room);
+						
+						//닉네임이 이미 접속해 있으면
+						if(sos.clientList.containsKey(nickName)) {
+							oos.writeObject(Protocol._LOGIN_FAILURE + Protocol._CUT + "이미 로그인된 아이디입니다.");
+						}
+						else {
+							sos.clientList.put(nickName, this);
+							oos.writeObject(Protocol._CLIENT_INFO + Protocol._CUT + nickName + Protocol._CUT + result);
+							if(sos.roomList.size() != 0) {
+								sos.sendRoomInfo(oos);
+							}
+						}
 					}
 					break;
 				case Protocol._CHECK_ID:
@@ -72,13 +87,13 @@ public class ForeServerThread extends Thread {
 					}
 					break;
 				case Protocol._CHECK_NICKNAME:
-					String inputNickname = st.nextToken();
+					String pnickname = st.nextToken();
 					cdao = new CheckDAO();
-					resultMSG = cdao.isDuplicatedNickname(inputNickname);
+					resultMSG = cdao.isDuplicatedNickname(pnickname);
 					oos.writeObject(
 							Protocol._CHECK_NICKNAME + Protocol._CUT + resultMSG);
 					if("사용 가능한 닉네임입니다.".equals(resultMSG)) {
-						nickname = inputNickname;
+						nickname = pnickname;
 					} else {
 						nickname = null;
 					}
@@ -104,11 +119,16 @@ public class ForeServerThread extends Thread {
 					}
 					break;
 				case Protocol._JOIN:
+					pid = st.nextToken();
 					// 입력된 비밀번호를 받아옴
 					ppw = st.nextToken();
-					// 전역변수에 담음
+					pnickname = st.nextToken();
+					pemail = st.nextToken();
+					// 전역변수에 담음 // pw를 제외한 다른 값들은 중복확인시에 초기화되었음.
 					pw = ppw;
-					if(id != null && pw != null && nickname != null && email != null) {
+					System.out.println(id +", " + pw +", " + nickname +", " + email);
+					System.out.println("받아온 값====> " + pid +", " + ppw +", " + pnickname +", " + pemail);
+					if(id != null && pw != null && nickname != null && email != null && id.equals(pid) && nickname.equals(pnickname) && email.equals(pemail)) {
 						Map<String, String> newbie = new HashMap<>();
 						newbie.put("ID", id);
 						newbie.put("PW", pw);
@@ -122,14 +142,23 @@ public class ForeServerThread extends Thread {
 						oos.writeObject(String.valueOf(Protocol._JOIN_FAILURE));
 					}
 					break;
-//				case Protocol._LOGIN:
+				case Protocol._MAKEROOM:
+					String roomName = st.nextToken();
+					room = null;
+					room = new Room(sos.roomList.size() + 1, nickname, roomName);
+					sos.roomList.add(room);
+					String imsiMsg = Protocol._ROOM_INFO + Protocol._CUT + room.roomNum + Protocol._CUT + roomName + Protocol._CUT + room.nickNameList.size() + Protocol._CUT + room.isGamePlay;
+					sos.broadCasting(imsiMsg);
+					break;
+				case Protocol._LOGOUT:
+					sos.clientList.remove(nickname);
+					break;
+				case Protocol._EXIT:
+					sos.clientList.remove(nickname);
+					// 소켓관련Exception(oos, ois 직렬화 문제로 발생; SocketException, EOFException)을 해결하려면 서버스레드가 종료되어야 함.
+//					isStop = true;
 //					break;
-//				case Protocol._LOGIN:
-//					break;
-//				case Protocol._LOGIN:
-//					break;
-//				case Protocol._LOGIN:
-//					break;
+					break runStart;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

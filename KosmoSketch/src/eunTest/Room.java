@@ -15,6 +15,7 @@ public class Room {
 	List<String>	nickNameList	= new Vector<>();
 	String			roomName		= null;
 	int				roomNum			= 0;
+	boolean			isGamePlay		= false;
 	
 	public Room(int roomNum, String nickName, String roomName) {
 		this.roomNum = roomNum;

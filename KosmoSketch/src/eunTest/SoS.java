@@ -5,6 +5,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
@@ -44,10 +46,10 @@ public class SoS extends JFrame implements Runnable {
 		// 메소드 호출(또는 클래스 생성)
 		serverView = new SoSView();
 		serverView.jta_sos.append("Server is now running...");
-		clientList = new HashMap<>();
-		roomList = new Vector<>();
-		loginDAO = new LoginDAOImpl();
-		cdao = new CheckDAO();
+		clientList	= new HashMap<>();
+		roomList	= new Vector<>();
+		loginDAO	= new LoginDAOImpl();
+		cdao		= new CheckDAO();
 		Thread th = new Thread(this);
 		th.start();
 
@@ -58,11 +60,39 @@ public class SoS extends JFrame implements Runnable {
 	public void createServerSocket() {
 		try {
 			waitRoomServerSocket = new ServerSocket(Port._WAITROOM);
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-
+	//자신의 담당 클라이언트에게 현재 시점에 개설되어있는 방의 정보를 보냄
+	public void sendRoomInfo(ObjectOutputStream oos) {
+		if (roomList != null) {
+			for (Room room : roomList) {
+				try {
+					oos.writeObject(Protocol._ROOM_INFO + Protocol._CUT + room.roomNum + Protocol._CUT + room.roomName
+							+ Protocol._CUT + room.nickNameList.size() + Protocol._CUT + room.isGamePlay);
+				}
+				catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	public void broadCasting(String msg) {
+		Collection<ForeServerThread> list = new ArrayList<>();
+		list = clientList.values();
+		for(ForeServerThread plist : list) {
+			try {
+				plist.oos.writeObject(msg);
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	// 콜백메소드
 	// run()
 	@Override
@@ -73,12 +103,13 @@ public class SoS extends JFrame implements Runnable {
 			try {
 				client = waitRoomServerSocket.accept();
 				serverView.jta_sos.append(client.toString());
-				oos = new ObjectOutputStream(client.getOutputStream());
-				ois = new ObjectInputStream(client.getInputStream());
-				foreServerThread = new ForeServerThread(this, oos, ois);
+				oos					= new ObjectOutputStream(client.getOutputStream());
+				ois					= new ObjectInputStream(client.getInputStream());
+				foreServerThread	= new ForeServerThread(this, oos, ois);
 				foreServerThread.start();
 //				serverLoginThread = new ServerLoginThread(this, oos_server, ois_server);
-			} catch (IOException ioe) {
+			}
+			catch (IOException ioe) {
 				ioe.printStackTrace();
 			}
 		}

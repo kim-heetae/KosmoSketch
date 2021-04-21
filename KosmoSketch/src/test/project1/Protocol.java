@@ -5,6 +5,7 @@ public class Protocol {
 
 	public final static int		_LOGIN			= 1;
 	public final static int		_LOGIN_FAILURE	= 2;
+	public final static int		_LOGOUT			= 3;
 
 	public final static int		_CHECK_ID		= 10;
 	public final static int		_CHECK_NICKNAME	= 11;
@@ -17,8 +18,7 @@ public class Protocol {
 	public final static int		_JOIN			= 18;
 	public final static int		_JOIN_FAILURE	= 19;
 	public final static int		_JOIN_SUCCESS	= 20;
-	
-	
+
 	public final static int		_CLIENT_INFO	= 100;
 	public final static int		_READY			= 201;
 	public final static int		_NOT_READY		= 202;
@@ -35,7 +35,9 @@ public class Protocol {
 	public final static int		_CLOSEROOM		= 1002;
 	public final static int		_ROOMIN			= 1003;
 	public final static int		_ROOM_INFO		= 1004;
-	
+
 	public final static int		_PORT_NUM		= 2000;
-	
+
+	public final static int		TEST			= 99999;
+
 }

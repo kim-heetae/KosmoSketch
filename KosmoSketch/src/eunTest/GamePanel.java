@@ -11,92 +11,133 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import javax.swing.border.*;
- 
+
 public class GamePanel extends JPanel {
-	JPanel			jp_center, jp_south, jp_sChat, jp_chatANDlog, jp_sRight, jp_tools, jp_users, jp_user1, jp_user2,
-			jp_user3, jp_user4;
+	JPanel			jp_center		= null;
+	JPanel			jp_south		= null;
+	JPanel			jp_sChat		= null;
+	JPanel			jp_chatANDlog	= null;
+	JPanel			jp_sRight		= null;
+	JPanel			jp_tools		= null;
+	JPanel			jp_users		= null;
+	JPanel			jp_user1		= null;
+	JPanel			jp_user2		= null;
+	JPanel			jp_user3		= null;
+	JPanel			jp_user4		= null;
 	// cWest = center.west
 	// jp_user1S = user1의 score패널
-	JButton			jbtn_ready, jbtn_exit, jbtn_insert, jbtn_modeP, jbtn_cPick, jbtn_modeE, jbtn_eraseAll, jbtn_thick;
+	JButton			jbtn_ready		= null;
+	JButton			jbtn_exit		= null;
+	JButton			jbtn_insert		= null;
+	JButton			jbtn_modeP		= null;
+	JButton			jbtn_cPick		= null;
+	JButton			jbtn_modeE		= null;
+	JButton			jbtn_eraseAll	= null;
+	JButton			jbtn_thick		= null;
 
-	JLabel			jlb_logo, jlb_timer, jlb_nickName1, jlb_scoreTag1, jlb_cumulTag1, jlb_score1, jlb_cumul1,
-			jlb_nickName2, jlb_scoreTag2, jlb_cumulTag2, jlb_score2, jlb_cumul2, jlb_nickName3, jlb_scoreTag3,
-			jlb_cumulTag3, jlb_score3, jlb_cumul3, jlb_nickName4, jlb_scoreTag4, jlb_cumulTag4, jlb_score4, jlb_cumul4,
-			jlb_isReady1, jlb_isReady2, jlb_isReady3, jlb_isReady4;
+	JLabel			jlb_logo		= null;
+	JLabel			jlb_timer		= null;
+	JLabel			jlb_nickName1	= null;
+	JLabel			jlb_scoreTag1	= null;
+	JLabel			jlb_cumulTag1	= null;
+	JLabel			jlb_score1		= null;
+	JLabel			jlb_cumul1		= null;
+	JLabel			jlb_nickName2	= null;
+	JLabel			jlb_scoreTag2	= null;
+	JLabel			jlb_cumulTag2	= null;
+	JLabel			jlb_score2		= null;
+	JLabel			jlb_cumul2		= null;
+	JLabel			jlb_nickName3	= null;
+	JLabel			jlb_scoreTag3	= null;
+	JLabel			jlb_cumulTag3	= null;
+	JLabel			jlb_score3		= null;
+	JLabel			jlb_cumul3		= null;
+	JLabel			jlb_nickName4	= null;
+	JLabel			jlb_scoreTag4	= null;
+	JLabel			jlb_cumulTag4	= null;
+	JLabel			jlb_score4		= null;
+	JLabel			jlb_cumul4		= null;
+	JLabel			jlb_isReady1	= null;
+	JLabel			jlb_isReady2	= null;
+	JLabel			jlb_isReady3	= null;
+	JLabel			jlb_isReady4	= null;
 	// tag - "현재점수", "누적점수" non-tag - int
 
-	JScrollPane		jsp_chat;
+	JScrollPane		jsp_chat		= null;
 
-	JTextField		jtf_chat, jtf_thick;
+	JTextField		jtf_chat		= null;
+	JTextField		jtf_thick		= null;
 
-	JTextArea		jta_log;
+	JTextArea		jta_log			= null;
 
-	Canvas			canvas;
+	Canvas			canvas			= null;
 
-	JTable			jtb_rank;
+	JTable			jtb_rank		= null;
 
-	MainNorthLeft	mnl;
-	
-	ClientView clientView = null;
+	MainNorthLeft	mnl				= null;
+
+	ClientView		clientView		= null;
+
+	Clip			clip			= null;
+
+	int				width			= 1600;
+	int				height			= 1000;
 
 	public GamePanel(ClientView clientView) {
 		this.clientView = clientView;
 		initDisplay();
-		if(this.isDisplayable()) {
-			bgm();
-		}
 	}
 
 	public void initDisplay() {
 
-		mnl = new MainNorthLeft();
+		mnl				= new MainNorthLeft();
 
-		jp_center = new JPanel();
+		jp_center		= new JPanel();
 
-		jp_south = new JPanel();
-		jp_sChat = new JPanel();
-		jp_chatANDlog = new JPanel();
-		jp_sRight = new JPanel();
-		jp_tools = new JPanel();
-		jp_users = new JPanel();
-		jp_user1 = new JPanel();
-		jp_user2 = new JPanel();
-		jp_user3 = new JPanel();
-		jp_user4 = new JPanel();
+		jp_south		= new JPanel();
+		jp_sChat		= new JPanel();
+		jp_chatANDlog	= new JPanel();
+		jp_sRight		= new JPanel();
+		jp_tools		= new JPanel();
+		jp_users		= new JPanel();
+		jp_user1		= new JPanel();
+		jp_user2		= new JPanel();
+		jp_user3		= new JPanel();
+		jp_user4		= new JPanel();
 
 //cW 추가하기
 
-		jbtn_modeP = new JButton("펜모드");
-		jbtn_cPick = new JButton("색깔선택");
-		jbtn_modeE = new JButton("지우개모드");
-		jbtn_eraseAll = new JButton("전체지우기");
-		jbtn_thick = new JButton("굵기 ▶▶");
+		jbtn_modeP		= new JButton("펜모드");
+		jbtn_cPick		= new JButton("색깔선택");
+		jbtn_modeE		= new JButton("지우개모드");
+		jbtn_eraseAll	= new JButton("전체지우기");
+		jbtn_thick		= new JButton("굵기 ▶▶");
 		JButton[] jbtns_tool = { jbtn_modeP, jbtn_cPick, jbtn_modeE, jbtn_eraseAll, jbtn_thick };
-		jlb_nickName1 = new JLabel("유저1");
-		jlb_nickName2 = new JLabel("유저2");
-		jlb_nickName3 = new JLabel("유저3");
-		jlb_nickName4 = new JLabel("유저4");
-		JLabel[] jlb_nicknames = {jlb_nickName1, jlb_nickName2, jlb_nickName3, jlb_nickName4};
-		jlb_scoreTag1 = new JLabel("현재점수");
-		jlb_scoreTag2 = new JLabel("현재점수");
-		jlb_scoreTag3 = new JLabel("현재점수");
-		jlb_scoreTag4 = new JLabel("현재점수");
-		jlb_cumulTag1 = new JLabel("누적점수");
-		jlb_cumulTag2 = new JLabel("누적점수");
-		jlb_cumulTag3 = new JLabel("누적점수");
-		jlb_cumulTag4 = new JLabel("누적점수");
-		jlb_score1 = new JLabel("900");
-		jlb_score2 = new JLabel("900");
-		jlb_score3 = new JLabel("900");
-		jlb_score4 = new JLabel("900");
-		jlb_cumul1 = new JLabel("900");
-		jlb_cumul2 = new JLabel("900");
-		jlb_cumul3 = new JLabel("900");
-		jlb_cumul4 = new JLabel("900");
-		jlb_isReady1 = new JLabel("READY!");
-		jlb_isReady2 = new JLabel("READY!");
-		jlb_isReady3 = new JLabel("READY!");
-		jlb_isReady4 = new JLabel("READY!");
+		jlb_nickName1	= new JLabel("유저1");
+		jlb_nickName2	= new JLabel("유저2");
+		jlb_nickName3	= new JLabel("유저3");
+		jlb_nickName4	= new JLabel("유저4");
+		JLabel[] jlb_nicknames = { jlb_nickName1, jlb_nickName2, jlb_nickName3, jlb_nickName4 };
+		jlb_scoreTag1	= new JLabel("현재점수");
+		jlb_scoreTag2	= new JLabel("현재점수");
+		jlb_scoreTag3	= new JLabel("현재점수");
+		jlb_scoreTag4	= new JLabel("현재점수");
+		jlb_cumulTag1	= new JLabel("누적점수");
+		jlb_cumulTag2	= new JLabel("누적점수");
+		jlb_cumulTag3	= new JLabel("누적점수");
+		jlb_cumulTag4	= new JLabel("누적점수");
+		jlb_score1		= new JLabel("900");
+		jlb_score2		= new JLabel("900");
+		jlb_score3		= new JLabel("900");
+		jlb_score4		= new JLabel("900");
+		jlb_cumul1		= new JLabel("900");
+		jlb_cumul2		= new JLabel("900");
+		jlb_cumul3		= new JLabel("900");
+		jlb_cumul4		= new JLabel("900");
+		jlb_isReady1	= new JLabel("READY!");
+		jlb_isReady2	= new JLabel("READY!");
+		jlb_isReady3	= new JLabel("READY!");
+		jlb_isReady4	= new JLabel("READY!");
 		JLabel[] jlbs_ready = { jlb_isReady1, jlb_isReady2, jlb_isReady3, jlb_isReady4 };
 
 		// 버튼 디자인 설정
@@ -108,9 +149,7 @@ public class GamePanel extends JPanel {
 		}
 		jbtn_thick.setEnabled(false);
 		jbtn_thick.setBorder(new EmptyBorder(getInsets()));
-		
-		
-		
+
 //		jlb_nickName1.setBorder(new BevelBorder(BevelBorder.RAISED));
 //		jlb_nickName2.setBorder(new BevelBorder(BevelBorder.RAISED));
 //		jlb_nickName3.setBorder(new BevelBorder(BevelBorder.RAISED));
@@ -149,20 +188,20 @@ public class GamePanel extends JPanel {
 			jlb.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
 		}
 
-		jtf_chat = new JTextField(63);
-		jtf_thick = new JTextField(2);
+		jtf_chat	= new JTextField(63);
+		jtf_thick	= new JTextField(2);
 
-		jta_log = new JTextArea();
-		jsp_chat = new JScrollPane(jta_log, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+		jta_log		= new JTextArea();
+		jsp_chat	= new JScrollPane(jta_log, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-		canvas = new Canvas();
+		canvas		= new Canvas();
 		canvas.setBackground(Color.gray);
 
 		jbtn_insert = new JButton("입력");
 
 		jp_south.setLayout(new GridLayout(1, 2, 5, 0));
-		jp_south.setPreferredSize(new Dimension(1600, 300));	////////////////////////////////////////
+		jp_south.setPreferredSize(new Dimension(1600, 300)); ////////////////////////////////////////
 		jp_chatANDlog.setLayout(new BorderLayout());
 
 //		jp_sChat.setPreferredSize(new Dimension(800, 380));
@@ -188,7 +227,7 @@ public class GamePanel extends JPanel {
 		jp_sRight.add(jp_tools);
 
 		jp_users.setLayout(new GridLayout(2, 2, 5, 5));
-		jp_users.setPreferredSize(new Dimension(780, 250));	////////////////////////////
+		jp_users.setPreferredSize(new Dimension(780, 250)); ////////////////////////////
 
 //		jp_user1.setPreferredSize(new Dimension(395, 75));
 		jp_user1.setLayout(new GridLayout(2, 3, 10, 2));
@@ -207,7 +246,7 @@ public class GamePanel extends JPanel {
 //		jlb_nickName4.setPreferredSize(new Dimension(50, 55));
 //		jlb_nickName4.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
 //		jlb_nickName4.setHorizontalAlignment(JLabel.CENTER);
-		for(JLabel jlb : jlb_nicknames) {
+		for (JLabel jlb : jlb_nicknames) {
 			jlb.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
 			jlb.setHorizontalAlignment(JLabel.CENTER);
 			jlb.setOpaque(true);
@@ -288,27 +327,29 @@ public class GamePanel extends JPanel {
 //		jf.setLocationRelativeTo(null);
 
 	}
-	
+
 	public void setResizeFont(JLabel label) {
 		int size = label.getText().length();
-		label.setFont(label.getFont().deriveFont((float)120/size));
+		label.setFont(label.getFont().deriveFont((float) 120 / size));
 	}
-	
-	
+
 	public void bgm() {
-		 try {
-			AudioInputStream ais = AudioSystem.getAudioInputStream(new File("src\\kosmo\\sketch\\kosmo_nore.wav"));
-			Clip clip = AudioSystem.getClip();
+		try {
+			AudioInputStream ais = AudioSystem.getAudioInputStream(new File("src\\eunTest\\kosmo_nore.wav"));
+			clip = AudioSystem.getClip();
 //			clip.stop();
 			clip.open(ais);
 			clip.start();
-		 } catch (UnsupportedAudioFileException e) {
+		}
+		catch (UnsupportedAudioFileException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (LineUnavailableException e) {
+		}
+		catch (LineUnavailableException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

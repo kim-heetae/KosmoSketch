@@ -24,7 +24,7 @@ public class LoginView extends JPanel {
 	
 	JPasswordField jpf_pw;
 
-	JButton		jbtn_login, jbtn_join;
+	JButton		jbtn_login, jbtn_join, jbtn_exit;
 	
 	ClientView clientView = null;
 	
@@ -68,9 +68,11 @@ public class LoginView extends JPanel {
 		jp_south	= new JPanel(new FlowLayout());
 		jbtn_join	= new JButton("회원가입");
 		jbtn_login	= new JButton("로그인");
+		jbtn_exit	= new JButton("종료");
 		// 이벤트 관련 add
 		jbtn_join.addActionListener(clientView);
 		jbtn_login.addActionListener(clientView);
+		jbtn_exit.addActionListener(clientView);
 		jtf_id.addActionListener(clientView);
 		jpf_pw.addActionListener(clientView);
 		jtf_id.addKeyListener(clientView);
@@ -80,6 +82,7 @@ public class LoginView extends JPanel {
 		
 		jp_south.add(jbtn_join);
 		jp_south.add(jbtn_login);
+		jp_south.add(jbtn_exit);
 		this.add("South", jp_south);
 		// testFrame
 //		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
