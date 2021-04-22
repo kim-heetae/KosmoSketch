@@ -1,5 +1,5 @@
 package eunTest;
-
+// 주석을 달아보자.
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
