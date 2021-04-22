@@ -150,9 +150,11 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 			jbtn.setBorder(new BevelBorder(BevelBorder.RAISED));
 			jbtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			jbtn.setFont(new Font("휴먼모음T", Font.PLAIN, 27));
+			jbtn.addActionListener(clientView);
 //			jbtn.setToolTipText("툴팁텍스트");
 		}
 		jbtn_thick.setEnabled(false);
+		jbtn_thick.setBorder(new EmptyBorder(getInsets()));
 		jbtn_thick.setBorder(new EmptyBorder(getInsets()));
 
 //		jlb_nickName1.setBorder(new BevelBorder(BevelBorder.RAISED));
@@ -202,7 +204,6 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 
 		canvas = new JPanel();
 		canvas.setBackground(Color.gray);
-		
 
 		jbtn_insert = new JButton("입력");
 
@@ -217,6 +218,9 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 		jtf_chat.setPreferredSize(new Dimension(900, 30));
 		jp_sChat.add(jtf_chat);
 		jbtn_insert.setPreferredSize(new Dimension(80, 30));
+		jbtn_insert.addActionListener(clientView);
+		jbtn_ready.addActionListener(clientView);
+		jbtn_exit.addActionListener(clientView);
 		jp_sChat.add(jbtn_insert);
 		jp_chatANDlog.add("Center", jsp_chat);
 		jp_chatANDlog.add("South", jp_sChat);
@@ -323,15 +327,14 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 		this.add("Center", jp_center);
 		this.add("South", jp_south);
 
-		// 화면을 모두 구성한 뒤 초기화 해야 함??
-		System.out.println(canvas.getGraphics());
-		graphics = canvas.getGraphics();
-		System.out.println(graphics);
-		g = (Graphics2D)graphics;
-		System.out.println(g);
-		g.setColor(Color.blue);
-		
-		
+		// 화면을 모두 구성한 뒤 초기화 해야 함 -- 첫화면이 아니라서 그래픽이 올라갈 컴포넌트가 render 되지 않는 상태이고, 그러므로
+		// (GamePanel의 생성시점에는)graphics는 null이 되어버린다.
+//		graphics = getGraphics();
+//		System.out.println(graphics);
+//		g = (Graphics2D) graphics;
+//		System.out.println(g);
+//		g.setColor(Color.blue);
+
 		/////////////////
 //		JFrame jf = new JFrame();
 //		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -415,7 +418,7 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 		// TODO Auto-generated method stub
 
 	}
-
+	
 //	public static void main(String[] args) {
 //		GamePanel c = new GamePanel();
 //	}

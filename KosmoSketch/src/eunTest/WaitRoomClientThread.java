@@ -122,11 +122,16 @@ public class WaitRoomClientThread extends Thread {
 					//또는 방이 새로 생성되었을 때 새로고침 해준다.
 				case Protocol._ROOM_INFO:
 					clientView.oneRoom = null;
-					clientView.oneRoom = new Vector<String>();					
+					clientView.oneRoom = new Vector<String>();
 					clientView.oneRoom.add(st.nextToken());
 					clientView.oneRoom.add(st.nextToken());
 					clientView.oneRoom.add(st.nextToken() + "/4");
-					clientView.oneRoom.add(st.nextToken());
+					boolean isGamePlay = Boolean.getBoolean(st.nextToken());
+					if (isGamePlay) {
+						clientView.oneRoom.add("게임중");
+					} else {
+						clientView.oneRoom.add("대기중");
+					}
 					clientView.roomList.add(clientView.oneRoom);
 					refreshTable();
 /////////////////////////////////////////////////단위테스트 필요////////////////////////////////////////
