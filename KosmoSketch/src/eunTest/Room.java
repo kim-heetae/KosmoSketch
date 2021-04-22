@@ -24,7 +24,7 @@ public class Room {
 		try {
 			inoutServer		= new InOutServer(Port.getPort().getPortNum());
 			chatServer		= new ChatServer(Port.getPort().getPortNum());
-			timerServer		= new TimerServer(Port.getPort().getPortNum());
+//			timerServer		= new TimerServer(Port.getPort().getPortNum());
 			paintServer		= new PaintServer(this);
 			gameServer		= new GameServer(Port.getPort().getPortNum());
 		}

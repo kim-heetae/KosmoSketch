@@ -31,7 +31,7 @@ public class Paint extends JFrame {
     
     JTextField thicknessControl_tf; // 도구굵기가 정해질 텍스트필드
     
-    Color selectedColor; 
+   Color selectedColor; 
     // 현 변수에 컬러가 저장되어 추후에 펜색상을 정해주는 변수의 매개변수로 사용된다.
     
     Graphics graphics; // Graphics2D 클래스의 사용을 위해 선언

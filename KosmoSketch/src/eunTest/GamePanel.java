@@ -1,9 +1,6 @@
 package eunTest;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -16,7 +13,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 ////////////////////////////////////Listener는 테스트용임
-public class GamePanel extends JPanel implements MouseListener, MouseMotionListener {
+public class GamePanel extends JPanel {
 	JPanel			jp_center		= null;
 	JPanel			jp_south		= null;
 	JPanel			jp_sChat		= null;
@@ -78,6 +75,10 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 	// 그림그리기 구현을 위한 선언
 	Graphics		graphics		= null;
 	Graphics2D		g				= null;
+	JColorChooser	colorChooser	= null;
+	// 테스트용 변수
+	Color			selectedColor	= null;
+	////////////
 	int				startX			= 0;
 	int				startY			= 0;
 	int				endX			= 0;
@@ -112,6 +113,9 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 
 //cW 추가하기
 
+		jbtn_ready = new JButton("게임준비");
+		jbtn_exit = new JButton("나가기");
+		jbtn_modeP = new JButton("펜모드");
 		jbtn_modeP = new JButton("펜모드");
 		jbtn_cPick = new JButton("색깔선택");
 		jbtn_modeE = new JButton("지우개모드");
@@ -203,7 +207,9 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
 		canvas = new JPanel();
-		canvas.setBackground(Color.gray);
+		canvas.setBackground(Color.white);
+		canvas.addMouseListener(clientView);
+		canvas.addMouseMotionListener(clientView);
 
 		jbtn_insert = new JButton("입력");
 
@@ -260,7 +266,7 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 			jlb.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
 			jlb.setHorizontalAlignment(JLabel.CENTER);
 			jlb.setOpaque(true);
-			jlb.setBackground(Color.GRAY);
+			jlb.setBackground(Color.white);
 			setResizeFont(jlb);
 		}
 //		setResizeFont(jlb_nickName1);
@@ -370,55 +376,6 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 		}
 	}
 
-	////////////////////////////////////////////////////////// 테스트용
-	@Override
-	public void mouseDragged(MouseEvent e) {
-		endX = e.getX();
-		endY = e.getY();
-	}
-
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		if (e.getSource() == canvas) {
-			startX = e.getX();
-			startY = e.getY();
-			g.setStroke(new BasicStroke(2, BasicStroke.CAP_ROUND, 0)); // 선굵기
-			g.drawLine(startX + 10, startY + 33, endX + 10, endY + 33);
-			startX = endX;
-			startY = endY;
-		}
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-	
 //	public static void main(String[] args) {
 //		GamePanel c = new GamePanel();
 //	}

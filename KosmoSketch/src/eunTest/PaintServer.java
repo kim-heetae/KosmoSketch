@@ -42,7 +42,7 @@ public class PaintServer extends ServerSocket implements Runnable {
 				// 받아온 클라이언트 소켓의 정보로 oos, ois 생성 ===> 서버(스레드)와 클라이언트 스레드와의 소통 창구 마련
 				oos = new ObjectOutputStream(client.getOutputStream());
 				ois = new ObjectInputStream(client.getInputStream());
-				paintServerThread = new PaintServerThread(this);
+				paintServerThread = new PaintServerThread(this, oos, ois);
 				clientList.add(paintServerThread); // 기억해!! 클라이언트가 GamePanel에서 [나가기] 버튼을 누를 시 리스트에서 빼주어야 함.
 				
 			}

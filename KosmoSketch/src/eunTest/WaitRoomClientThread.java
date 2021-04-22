@@ -1,5 +1,7 @@
 package eunTest;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -10,6 +12,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import javax.swing.JColorChooser;
 import javax.swing.JOptionPane;
 
 import test.project1.Protocol;
@@ -33,24 +36,23 @@ public class WaitRoomClientThread extends Thread {
 	// 소켓 생성
 	public void init() {
 		try {
-			client	= new Socket("localhost", Port._WAITROOM);
-			oos		= new ObjectOutputStream(client.getOutputStream());
-			ois		= new ObjectInputStream(client.getInputStream());
-		}
-		catch (Exception e) {
+			client = new Socket("localhost", Port._WAITROOM);
+			oos = new ObjectOutputStream(client.getOutputStream());
+			ois = new ObjectInputStream(client.getInputStream());
+		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
 	}
+
 	// Room정보를 담는 대기실의 테이블을 새로고침하는 메소드
 	public void refreshTable() {
-		while(clientView.waitRoom.dtm_room.getRowCount() > 0) {
+		while (clientView.waitRoom.dtm_room.getRowCount() > 0) {
 			clientView.waitRoom.dtm_room.removeRow(0);
 		}
-		for(Vector<String> room : clientView.roomList) {
+		for (Vector<String> room : clientView.roomList) {
 			clientView.waitRoom.dtm_room.addRow(room);
 		}
 	}
-	
 
 	@Override
 	public void run() {
@@ -118,8 +120,8 @@ public class WaitRoomClientThread extends Thread {
 					clientView.add("Center", clientView.login);
 					clientView.revalidate();
 					break;
-					//대기실에 처음 입장했을 때 이미 생성되어 있는 정보를 받아온다.
-					//또는 방이 새로 생성되었을 때 새로고침 해준다.
+				// 대기실에 처음 입장했을 때 이미 생성되어 있는 정보를 받아온다.
+				// 또는 방이 새로 생성되었을 때 새로고침 해준다.
 				case Protocol._ROOM_INFO:
 					clientView.oneRoom = null;
 					clientView.oneRoom = new Vector<String>();
@@ -142,8 +144,8 @@ public class WaitRoomClientThread extends Thread {
 //					clientView.oneRoom.add(st.nextToken() + "/4");
 //					clientView.oneRoom.add(st.nextToken());
 //					refreshTable();
-					// 받아온 닉네임에 해당하는 클라이언트의 READY라벨 색을 변경한다. (white > orange)
-					// 라벨의 텍스트도 NOT READY > READY 로 변경한다.
+				// 받아온 닉네임에 해당하는 클라이언트의 READY라벨 색을 변경한다. (white > orange)
+				// 라벨의 텍스트도 NOT READY > READY 로 변경한다.
 //					break;
 				case Protocol._MAKEROOM:
 					clientView.game = new GamePanel(clientView);
@@ -153,6 +155,10 @@ public class WaitRoomClientThread extends Thread {
 					clientView.repaint();
 					clientView.add("Center", clientView.game);
 					clientView.revalidate();
+					// 그림을 그리기 위해 그래픽 도구 추가
+					clientView.game.graphics = clientView.game.canvas.getGraphics();
+					clientView.game.g = (Graphics2D)clientView.game.graphics;
+					clientView.game.g.setColor(Color.black);
 					clientView.game.bgm();
 					break;
 				case Protocol._LOGOUT:
@@ -180,12 +186,12 @@ public class WaitRoomClientThread extends Thread {
 				case Protocol._ROOM_UPDATE:
 					String roomnum = st.nextToken();
 					clientView.oneRoom = null;
-					clientView.oneRoom = new Vector<String>();					
+					clientView.oneRoom = new Vector<String>();
 					clientView.oneRoom.add(roomnum);
 					clientView.oneRoom.add(st.nextToken());
 					clientView.oneRoom.add(st.nextToken() + "/4");
 					clientView.oneRoom.add(st.nextToken());
-					clientView.roomList.set(Integer.parseInt(roomnum)-1, clientView.oneRoom);
+					clientView.roomList.set(Integer.parseInt(roomnum) - 1, clientView.oneRoom);
 					refreshTable();
 					break;
 				case Protocol._NOT_READY:
@@ -231,11 +237,9 @@ public class WaitRoomClientThread extends Thread {
 				//
 //						break;
 				}
-			}
-			catch (ClassNotFoundException e) {
+			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
-			}
-			catch (IOException e) {
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
