@@ -1,6 +1,9 @@
 package eunTest;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -12,7 +15,8 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class GamePanel extends JPanel {
+////////////////////////////////////Listener는 테스트용임
+public class GamePanel extends JPanel implements MouseListener, MouseMotionListener {
 	JPanel			jp_center		= null;
 	JPanel			jp_south		= null;
 	JPanel			jp_sChat		= null;
@@ -62,21 +66,22 @@ public class GamePanel extends JPanel {
 	JLabel			jlb_isReady3	= null;
 	JLabel			jlb_isReady4	= null;
 	// tag - "현재점수", "누적점수" non-tag - int
-
 	JScrollPane		jsp_chat		= null;
-
 	JTextField		jtf_chat		= null;
 	JTextField		jtf_thick		= null;
-
 	JTextArea		jta_log			= null;
-
-	Canvas			canvas			= null;
-
+	JPanel			canvas			= null;
 	JTable			jtb_rank		= null;
-
 	MainNorthLeft	mnl				= null;
-
 	ClientView		clientView		= null;
+
+	// 그림그리기 구현을 위한 선언
+	Graphics		graphics		= null;
+	Graphics2D		g				= null;
+	int				startX			= 0;
+	int				startY			= 0;
+	int				endX			= 0;
+	int				endY			= 0;
 
 	Clip			clip			= null;
 
@@ -90,54 +95,54 @@ public class GamePanel extends JPanel {
 
 	public void initDisplay() {
 
-		mnl				= new MainNorthLeft();
+		mnl = new MainNorthLeft();
 
-		jp_center		= new JPanel();
+		jp_center = new JPanel();
 
-		jp_south		= new JPanel();
-		jp_sChat		= new JPanel();
-		jp_chatANDlog	= new JPanel();
-		jp_sRight		= new JPanel();
-		jp_tools		= new JPanel();
-		jp_users		= new JPanel();
-		jp_user1		= new JPanel();
-		jp_user2		= new JPanel();
-		jp_user3		= new JPanel();
-		jp_user4		= new JPanel();
+		jp_south = new JPanel();
+		jp_sChat = new JPanel();
+		jp_chatANDlog = new JPanel();
+		jp_sRight = new JPanel();
+		jp_tools = new JPanel();
+		jp_users = new JPanel();
+		jp_user1 = new JPanel();
+		jp_user2 = new JPanel();
+		jp_user3 = new JPanel();
+		jp_user4 = new JPanel();
 
 //cW 추가하기
 
-		jbtn_modeP		= new JButton("펜모드");
-		jbtn_cPick		= new JButton("색깔선택");
-		jbtn_modeE		= new JButton("지우개모드");
-		jbtn_eraseAll	= new JButton("전체지우기");
-		jbtn_thick		= new JButton("굵기 ▶▶");
+		jbtn_modeP = new JButton("펜모드");
+		jbtn_cPick = new JButton("색깔선택");
+		jbtn_modeE = new JButton("지우개모드");
+		jbtn_eraseAll = new JButton("전체지우기");
+		jbtn_thick = new JButton("굵기 ▶▶");
 		JButton[] jbtns_tool = { jbtn_modeP, jbtn_cPick, jbtn_modeE, jbtn_eraseAll, jbtn_thick };
-		jlb_nickName1	= new JLabel("유저1");
-		jlb_nickName2	= new JLabel("유저2");
-		jlb_nickName3	= new JLabel("유저3");
-		jlb_nickName4	= new JLabel("유저4");
+		jlb_nickName1 = new JLabel("유저1");
+		jlb_nickName2 = new JLabel("유저2");
+		jlb_nickName3 = new JLabel("유저3");
+		jlb_nickName4 = new JLabel("유저4");
 		JLabel[] jlb_nicknames = { jlb_nickName1, jlb_nickName2, jlb_nickName3, jlb_nickName4 };
-		jlb_scoreTag1	= new JLabel("현재점수");
-		jlb_scoreTag2	= new JLabel("현재점수");
-		jlb_scoreTag3	= new JLabel("현재점수");
-		jlb_scoreTag4	= new JLabel("현재점수");
-		jlb_cumulTag1	= new JLabel("누적점수");
-		jlb_cumulTag2	= new JLabel("누적점수");
-		jlb_cumulTag3	= new JLabel("누적점수");
-		jlb_cumulTag4	= new JLabel("누적점수");
-		jlb_score1		= new JLabel("900");
-		jlb_score2		= new JLabel("900");
-		jlb_score3		= new JLabel("900");
-		jlb_score4		= new JLabel("900");
-		jlb_cumul1		= new JLabel("900");
-		jlb_cumul2		= new JLabel("900");
-		jlb_cumul3		= new JLabel("900");
-		jlb_cumul4		= new JLabel("900");
-		jlb_isReady1	= new JLabel("READY!");
-		jlb_isReady2	= new JLabel("READY!");
-		jlb_isReady3	= new JLabel("READY!");
-		jlb_isReady4	= new JLabel("READY!");
+		jlb_scoreTag1 = new JLabel("현재점수");
+		jlb_scoreTag2 = new JLabel("현재점수");
+		jlb_scoreTag3 = new JLabel("현재점수");
+		jlb_scoreTag4 = new JLabel("현재점수");
+		jlb_cumulTag1 = new JLabel("누적점수");
+		jlb_cumulTag2 = new JLabel("누적점수");
+		jlb_cumulTag3 = new JLabel("누적점수");
+		jlb_cumulTag4 = new JLabel("누적점수");
+		jlb_score1 = new JLabel("900");
+		jlb_score2 = new JLabel("900");
+		jlb_score3 = new JLabel("900");
+		jlb_score4 = new JLabel("900");
+		jlb_cumul1 = new JLabel("900");
+		jlb_cumul2 = new JLabel("900");
+		jlb_cumul3 = new JLabel("900");
+		jlb_cumul4 = new JLabel("900");
+		jlb_isReady1 = new JLabel("READY!");
+		jlb_isReady2 = new JLabel("READY!");
+		jlb_isReady3 = new JLabel("READY!");
+		jlb_isReady4 = new JLabel("READY!");
 		JLabel[] jlbs_ready = { jlb_isReady1, jlb_isReady2, jlb_isReady3, jlb_isReady4 };
 
 		// 버튼 디자인 설정
@@ -188,15 +193,16 @@ public class GamePanel extends JPanel {
 			jlb.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
 		}
 
-		jtf_chat	= new JTextField(63);
-		jtf_thick	= new JTextField(2);
+		jtf_chat = new JTextField(63);
+		jtf_thick = new JTextField(2);
 
-		jta_log		= new JTextArea();
-		jsp_chat	= new JScrollPane(jta_log, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+		jta_log = new JTextArea();
+		jsp_chat = new JScrollPane(jta_log, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-		canvas		= new Canvas();
+		canvas = new JPanel();
 		canvas.setBackground(Color.gray);
+		
 
 		jbtn_insert = new JButton("입력");
 
@@ -317,6 +323,15 @@ public class GamePanel extends JPanel {
 		this.add("Center", jp_center);
 		this.add("South", jp_south);
 
+		// 화면을 모두 구성한 뒤 초기화 해야 함??
+		System.out.println(canvas.getGraphics());
+		graphics = canvas.getGraphics();
+		System.out.println(graphics);
+		g = (Graphics2D)graphics;
+		System.out.println(g);
+		g.setColor(Color.blue);
+		
+		
 		/////////////////
 //		JFrame jf = new JFrame();
 //		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -340,19 +355,65 @@ public class GamePanel extends JPanel {
 //			clip.stop();
 			clip.open(ais);
 			clip.start();
-		}
-		catch (UnsupportedAudioFileException e) {
+		} catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (LineUnavailableException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	}
+
+	////////////////////////////////////////////////////////// 테스트용
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		endX = e.getX();
+		endY = e.getY();
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if (e.getSource() == canvas) {
+			startX = e.getX();
+			startY = e.getY();
+			g.setStroke(new BasicStroke(2, BasicStroke.CAP_ROUND, 0)); // 선굵기
+			g.drawLine(startX + 10, startY + 33, endX + 10, endY + 33);
+			startX = endX;
+			startY = endY;
 		}
-		catch (LineUnavailableException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+
 	}
 
 //	public static void main(String[] args) {

@@ -33,24 +33,23 @@ public class WaitRoomClientThread extends Thread {
 	// 소켓 생성
 	public void init() {
 		try {
-			client	= new Socket("localhost", Port._WAITROOM);
-			oos		= new ObjectOutputStream(client.getOutputStream());
-			ois		= new ObjectInputStream(client.getInputStream());
-		}
-		catch (Exception e) {
+			client = new Socket("localhost", Port._WAITROOM);
+			oos = new ObjectOutputStream(client.getOutputStream());
+			ois = new ObjectInputStream(client.getInputStream());
+		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
 	}
+
 	// Room정보를 담는 대기실의 테이블을 새로고침하는 메소드
 	public void refreshTable() {
-		while(clientView.waitRoom.dtm_room.getRowCount() > 0) {
+		while (clientView.waitRoom.dtm_room.getRowCount() > 0) {
 			clientView.waitRoom.dtm_room.removeRow(0);
 		}
-		for(Vector<String> room : clientView.roomList) {
+		for (Vector<String> room : clientView.roomList) {
 			clientView.waitRoom.dtm_room.addRow(room);
 		}
 	}
-	
 
 	@Override
 	public void run() {
@@ -75,7 +74,7 @@ public class WaitRoomClientThread extends Thread {
 					clientView.repaint();
 					clientView.add("Center", clientView.waitRoom);
 					clientView.revalidate();
-					//테스트: 대기실 입장 시 노래시작
+					// 테스트: 대기실 입장 시 노래시작
 					clientView.game.bgm();
 					clientView.oneRoom = new Vector<>();
 					clientView.roomList = new ArrayList<Vector<String>>();
@@ -120,15 +119,20 @@ public class WaitRoomClientThread extends Thread {
 					clientView.add("Center", clientView.login);
 					clientView.revalidate();
 					break;
-					//대기실에 처음 입장했을 때 이미 생성되어 있는 정보를 받아온다.
-					//또는 방이 새로 생성되었을 때 새로고침 해준다.
+				// 대기실에 처음 입장했을 때 이미 생성되어 있는 정보를 받아온다.
+				// 또는 방이 새로 생성되었을 때 새로고침 해준다.
 				case Protocol._ROOM_INFO:
 					clientView.oneRoom = null;
-					clientView.oneRoom = new Vector<String>();					
+					clientView.oneRoom = new Vector<String>();
 					clientView.oneRoom.add(st.nextToken());
 					clientView.oneRoom.add(st.nextToken());
 					clientView.oneRoom.add(st.nextToken() + "/4");
-					clientView.oneRoom.add(st.nextToken());
+					boolean isGamePlay = Boolean.getBoolean(st.nextToken());
+					if (isGamePlay) {
+						clientView.oneRoom.add("게임중");
+					} else {
+						clientView.oneRoom.add("대기중");
+					}
 					clientView.roomList.add(clientView.oneRoom);
 					refreshTable();
 /////////////////////////////////////////////////단위테스트 필요////////////////////////////////////////
@@ -139,8 +143,8 @@ public class WaitRoomClientThread extends Thread {
 //					clientView.oneRoom.add(st.nextToken() + "/4");
 //					clientView.oneRoom.add(st.nextToken());
 //					refreshTable();
-					// 받아온 닉네임에 해당하는 클라이언트의 READY라벨 색을 변경한다. (white > orange)
-					// 라벨의 텍스트도 NOT READY > READY 로 변경한다.
+				// 받아온 닉네임에 해당하는 클라이언트의 READY라벨 색을 변경한다. (white > orange)
+				// 라벨의 텍스트도 NOT READY > READY 로 변경한다.
 //					break;
 				case Protocol._NOT_READY:
 					// 받아온 닉네임에 해당하는 클라이언트의 READY라벨 색을 변경한다. (orange > white)
@@ -185,11 +189,9 @@ public class WaitRoomClientThread extends Thread {
 				//
 //						break;
 				}
-			}
-			catch (ClassNotFoundException e) {
+			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
-			}
-			catch (IOException e) {
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}

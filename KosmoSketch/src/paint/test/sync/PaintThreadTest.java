@@ -1,6 +1,8 @@
 package paint.test.sync;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -16,6 +18,7 @@ public class PaintThreadTest extends JFrame {
 	//그리는 도구(Graphics 대용): TextPane / TextPane 위에 TextComponent ...
 	
 	JPanel jp;
+	JButton jbtn;
 	Graphics graphics;
 	Graphics2D g;
 	int startX;
@@ -47,6 +50,9 @@ public class PaintThreadTest extends JFrame {
 	public void initDisplay() {
 		
 		jp = new JPanel();
+		jp.setOpaque(true);
+		jp.setBackground(Color.black);
+		jbtn = new JButton("전체 지우기");
 		
 		jp.addMouseListener(new MouseListener() {
 			
@@ -100,6 +106,19 @@ public class PaintThreadTest extends JFrame {
                 startY = endY;
 			}
 		});
+		
+		jbtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("버튼 누름");
+				System.out.println(this.getClass());
+//				remove(jp);
+				repaint();
+//				revalidate();
+			}
+		});
+		this.add("North", jbtn);
 		this.add("Center", jp);
 		this.setSize(1000, 800);
 		this.setVisible(true);
