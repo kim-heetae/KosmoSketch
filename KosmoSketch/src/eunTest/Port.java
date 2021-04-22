@@ -9,6 +9,13 @@ public class Port {
 
 	private static Port	port		= null;
 
+	public static int	_WAITROOM	= 9876;
+//	public static int	_INOUT		= 20000;
+//	public static int	_CHAT		= 30000;
+//	public static int	_TIMER		= 40000;
+	public static int	_PAINT		= 50000;
+//	public static int	_PORT		= 10000;
+
 	private Port() {
 	}
 
@@ -19,12 +26,6 @@ public class Port {
 		return port;
 	}
 
-	public static int	_WAITROOM	= 9876;
-//	public static int	_INOUT		= 20000;
-//	public static int	_CHAT		= 30000;
-//	public static int	_TIMER		= 40000;
-//	public static int	_PAINT		= 50000;
-//	public static int	_PORT		= 10000;
 
 	public synchronized int getPortNum() {
 		Random	portNumGenerator	= new Random();
