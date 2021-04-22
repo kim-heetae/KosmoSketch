@@ -5,7 +5,7 @@ public class GameClientThread extends Thread {
 	public void run() {
 		boolean isStop = false;
 		while(!isStop) {
-						
+				
 		}
 	}
 }
