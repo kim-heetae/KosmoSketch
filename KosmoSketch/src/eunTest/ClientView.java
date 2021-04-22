@@ -148,15 +148,6 @@ public class ClientView extends JFrame implements ActionListener, KeyListener, M
 			}
 		}
 		else if (obj == waitRoom.jbtn_logout) {
-			login = new LoginView(this);
-			this.remove(waitRoom);
-			// 테스트: 대기실을 나갈 때 노래 중지
-			game.clip.stop();
-			this.setSize(login.width, login.height);
-			this.repaint();
-			this.add("Center", login);
-			this.setTitle("로그인");
-			this.revalidate();
 			// 로그아웃함을 서버에 알려서 리스트에서 지울 수 있도록 함.
 			try {
 				clientThread.oos.writeObject(String.valueOf(Protocol._LOGOUT));
@@ -177,12 +168,6 @@ public class ClientView extends JFrame implements ActionListener, KeyListener, M
 		else if (obj == waitRoom.jbtn_createRoom) {
 			String roomName = JOptionPane.showInputDialog(this, "방 제목을 입력하세요.");
 			if (roomName != null) {
-				this.setTitle(roomName);
-				this.remove(waitRoom);
-				this.setSize(game.width, game.height);
-				this.repaint();
-				this.add("Center", game);
-				this.revalidate();
 				try {
 					clientThread.oos.writeObject(Protocol._MAKEROOM + Protocol._CUT + roomName);
 				}
@@ -222,6 +207,14 @@ public class ClientView extends JFrame implements ActionListener, KeyListener, M
 	public void mouseClicked(MouseEvent e) {
 		if(e.getSource() == waitRoom.jtb_room && e.getClickCount() == 2) {
 			System.out.println("clientView - waitRoomView 더블클릭됨");
+			int[] selectedRow = waitRoom.jtb_room.getSelectedRows();
+			int roomNum = Integer.parseInt(waitRoom.dtm_room.getValueAt(selectedRow[0], 0).toString());
+			try {
+				clientThread.oos.writeObject(Protocol._ROOMIN + Protocol._CUT + roomNum + "");
+			}
+			catch (IOException e1) {
+				e1.printStackTrace();
+			}
 //			waitRoom.jtb_room.
 //			waitRoom.jtb_room.getSelectedRow()
 		}
