@@ -12,6 +12,8 @@ public class LoginDTO {
 	
 	private String result;
 	
+	private int totalScore;
+	
 	public String getuser_Id() {
 
 		return user_Id;
@@ -66,6 +68,14 @@ public class LoginDTO {
 
 	public void setResult(String result) {
 		this.result = result;
+	}
+
+	public int getTotalScore() {
+		return totalScore;
+	}
+
+	public void setTotalScore(int totalScore) {
+		this.totalScore = totalScore;
 	}
 
 }

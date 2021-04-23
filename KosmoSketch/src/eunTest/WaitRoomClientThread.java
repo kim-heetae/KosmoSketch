@@ -21,10 +21,12 @@ public class WaitRoomClientThread extends Thread {
 
 	String				questioner	= null;
 	Socket				client		= null;
+	Socket				gameSocket	= null;
 	ObjectOutputStream	oos			= null;
 	ObjectInputStream	ois			= null;
 	ClientView			clientView	= null;
 	String				nickName	= null;
+	int					totalScore	= 0;
 
 	// 생성자
 	public WaitRoomClientThread(ClientView clientView) {
@@ -75,8 +77,9 @@ public class WaitRoomClientThread extends Thread {
 				// 로그인 성공 시: 서버 스레드가 닉네임을 알려줌
 				case Protocol._CLIENT_INFO: // _LOGIN_SUCCESS 프로토콜은 필요 없고, 바로 _CLIENT_INFO로 정보를 주자.
 					// 서버가 DB에 접근에서 가져온 [닉네임]을 받아온다.
-					String nickName = st.nextToken();
+					nickName = st.nextToken();
 					String msg_isLoggedIn = st.nextToken();
+					this.totalScore = Integer.parseInt(st.nextToken());
 					clientView.myNickname = nickName;
 					clientView.remove(clientView.login);
 					clientView.setSize(clientView.waitRoom.width, clientView.waitRoom.height);
@@ -167,6 +170,13 @@ public class WaitRoomClientThread extends Thread {
 					clientView.game.g = (Graphics2D)clientView.game.graphics;
 					clientView.game.g.setColor(Color.black);
 					clientView.game.bgm();
+					// 클라이언트가 방을 만들고 들어갈 때 라벨값 초기화
+					clientView.game.jlb_nickName1.setText(this.nickName);
+					clientView.game.setResizeFont(clientView.game.jlb_nickName1);
+					System.out.println(this.nickName);
+					
+					clientView.game.jlb_totalscore1.setText(String.valueOf(this.totalScore));
+					System.out.println(this.totalScore);
 					break;
 				case Protocol._LOGOUT:
 					clientView.login = new LoginView(clientView);
@@ -185,7 +195,9 @@ public class WaitRoomClientThread extends Thread {
 					clientView.add("Center", clientView.game);
 					clientView.setTitle(st.nextToken());
 					clientView.revalidate();
+					gameSocket = new Socket("localhost", port)
 					clientView.game.bgm();
+					
 					break;
 				case Protocol._ROOM_REJECTED:
 					JOptionPane.showMessageDialog(clientView, "입장가능 인원을 초과하였습니다.");
@@ -197,7 +209,12 @@ public class WaitRoomClientThread extends Thread {
 					clientView.oneRoom.add(roomnum);
 					clientView.oneRoom.add(st.nextToken());
 					clientView.oneRoom.add(st.nextToken() + "/4");
-					clientView.oneRoom.add(st.nextToken());
+					isGamePlay = Boolean.getBoolean(st.nextToken());
+					if (isGamePlay) {
+						clientView.oneRoom.add("게임중");
+					} else {
+						clientView.oneRoom.add("대기중");
+					}
 					clientView.roomList.set(Integer.parseInt(roomnum) - 1, clientView.oneRoom);
 					refreshTable();
 					break;

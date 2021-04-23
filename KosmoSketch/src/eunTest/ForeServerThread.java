@@ -22,6 +22,7 @@ public class ForeServerThread extends Thread {
 	String				nickname	= null;
 	String				email		= null;
 	Room				room		= null;
+	int					totalScore  = 0;
 
 	public ForeServerThread(SoS sos, ObjectOutputStream oos, ObjectInputStream ois) {
 		this.sos = sos;
@@ -56,6 +57,7 @@ public class ForeServerThread extends Thread {
 					else if ("로그인 성공".equals(result)) {
 						String nickName = loginDAO.ldto.getnickname();
 						this.nickname = nickName;
+						this.totalScore = loginDAO.ldto.getTotalScore();
 						// 클라이언트측에서 _CLIENT_INFO 프로토콜을 받았다는 것 자체가 로그인에 성공하였음을 의미함. (접속 성공 시 딱 한번만 받는
 						// 프로토콜이다.)
 ////////////////////////////단위테스트임
@@ -67,7 +69,7 @@ public class ForeServerThread extends Thread {
 							oos.writeObject(Protocol._LOGIN_FAILURE + Protocol._CUT + "이미 로그인된 아이디입니다.");
 						} else {
 							sos.clientList.put(nickName, this);
-							oos.writeObject(Protocol._CLIENT_INFO + Protocol._CUT + nickName + Protocol._CUT + result);
+							oos.writeObject(Protocol._CLIENT_INFO + Protocol._CUT + nickName + Protocol._CUT + result + Protocol._CUT + totalScore);
 							if (sos.roomList.size() != 0) {
 								sos.sendRoomInfo(oos);
 							}
@@ -152,7 +154,7 @@ public class ForeServerThread extends Thread {
 					sos.broadCasting(imsiMsg);
 					break;
 				case Protocol._ROOMIN:
-					int roomNum = Integer.parseInt(st.nextToken());
+					int roomNum = Integer.parseInt(st.nextToken())-1;
 					for (Room r : sos.roomList) {// 클라이언트가 접속을 시도한 방찾기
 						if (roomNum == r.roomNum) {// 방번호가 같은 방일때
 							this.room = r;
@@ -191,6 +193,11 @@ public class ForeServerThread extends Thread {
 								sos.broadCasting(Protocol._CLOSEROOM + Protocol._CUT + room.roomNum);
 								// 해당 방을 방리스트에서 삭제 - 이렇게 하면 자원관리도 끝???
 								sos.roomList.remove(room);
+								for(Room r : sos.roomList) {
+									if(r.roomNum > room.roomNum) {
+										r.roomNum --;
+									}
+								}
 							}							
 //						}
 //					}

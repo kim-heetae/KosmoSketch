@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace = "eunTest.login">
 	<select id="proc_login" parameterType="eunTest.LoginDTO" statementType="CALLABLE">
-		{CALL proc_login(#{user_Id} ,#{password} ,#{result, mode=OUT, jdbcType=VARCHAR, javaType=String} ,#{nickname, mode=OUT, jdbcType=VARCHAR, javaType=String})}
+		{CALL proc_login(#{user_Id} ,#{password} ,#{result, mode=OUT, jdbcType=VARCHAR, javaType=String} ,#{nickname, mode=OUT, jdbcType=VARCHAR, javaType=String} ,#{totalScore, mode=OUT, jdbcType=NUMERIC, javaType=int})}
 	</select>
 	<insert id="join" parameterType="eunTest.LoginDTO">
 		INSERT INTO usertbl VALUES(#{user_Id}, #{password}, #{nickname}, 0, #{email})
