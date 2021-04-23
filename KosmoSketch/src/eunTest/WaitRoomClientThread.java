@@ -49,6 +49,12 @@ public class WaitRoomClientThread extends Thread {
 		while (clientView.waitRoom.dtm_room.getRowCount() > 0) {
 			clientView.waitRoom.dtm_room.removeRow(0);
 		}
+//		for(Vector<String> room : clientView.roomList) {
+//			if(room)
+//		}
+		for (Vector<String> room : clientView.roomList) {
+			room.set(0, String.valueOf(clientView.roomList.indexOf(room)+1));
+		}
 		for (Vector<String> room : clientView.roomList) {
 			clientView.waitRoom.dtm_room.addRow(room);
 		}
