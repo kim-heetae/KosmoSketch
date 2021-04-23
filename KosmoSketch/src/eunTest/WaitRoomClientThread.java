@@ -71,6 +71,7 @@ public class WaitRoomClientThread extends Thread {
 					// 서버가 DB에 접근에서 가져온 [닉네임]을 받아온다.
 					String nickName = st.nextToken();
 					String msg_isLoggedIn = st.nextToken();
+					clientView.myNickname = nickName;
 					clientView.remove(clientView.login);
 					clientView.setSize(clientView.waitRoom.width, clientView.waitRoom.height);
 					clientView.setTitle(nickName + "님의 창");
@@ -192,6 +193,22 @@ public class WaitRoomClientThread extends Thread {
 					clientView.oneRoom.add(st.nextToken() + "/4");
 					clientView.oneRoom.add(st.nextToken());
 					clientView.roomList.set(Integer.parseInt(roomnum) - 1, clientView.oneRoom);
+					refreshTable();
+					break;
+				case Protocol._ROOMOUT:
+					int roomNum = Integer.parseInt(st.nextToken());
+					int room_clientNum = Integer.parseInt(st.nextToken());
+					System.out.println("방번호===> "+roomNum);
+					System.out.println("해당 방의 클라 수===> "+room_clientNum);
+					clientView.waitRoom.dtm_room.setValueAt(room_clientNum+"/4", roomNum-1, 2);
+//					clientView.
+					refreshTable();
+					break;
+				case Protocol._CLOSEROOM:
+					roomNum = Integer.parseInt(st.nextToken());
+					System.out.println("방번호===> "+roomNum);
+					clientView.waitRoom.dtm_room.removeRow(roomNum-1);
+					clientView.roomList.remove(roomNum-1);
 					refreshTable();
 					break;
 				case Protocol._NOT_READY:

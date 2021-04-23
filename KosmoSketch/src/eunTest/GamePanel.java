@@ -12,7 +12,6 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import javax.swing.border.*;
 
-////////////////////////////////////Listener는 테스트용임
 public class GamePanel extends JPanel {
 	JPanel			jp_center		= null;
 	JPanel			jp_south		= null;
@@ -27,8 +26,6 @@ public class GamePanel extends JPanel {
 	JPanel			jp_user4		= null;
 	// cWest = center.west
 	// jp_user1S = user1의 score패널
-	JButton			jbtn_ready		= null;
-	JButton			jbtn_exit		= null;
 	JButton			jbtn_insert		= null;
 	JButton			jbtn_modeP		= null;
 	JButton			jbtn_cPick		= null;
@@ -83,7 +80,7 @@ public class GamePanel extends JPanel {
 	int				startY			= 0;
 	int				endX			= 0;
 	int				endY			= 0;
-
+	
 	Clip			clip			= null;
 
 	int				width			= 1600;
@@ -96,7 +93,7 @@ public class GamePanel extends JPanel {
 
 	public void initDisplay() {
 
-		mnl = new MainNorthLeft();
+		mnl = new MainNorthLeft(this);
 
 		jp_center = new JPanel();
 
@@ -113,8 +110,6 @@ public class GamePanel extends JPanel {
 
 //cW 추가하기
 
-		jbtn_ready = new JButton("게임준비");
-		jbtn_exit = new JButton("나가기");
 		jbtn_modeP = new JButton("펜모드");
 		jbtn_modeP = new JButton("펜모드");
 		jbtn_cPick = new JButton("색깔선택");
@@ -225,8 +220,6 @@ public class GamePanel extends JPanel {
 		jp_sChat.add(jtf_chat);
 		jbtn_insert.setPreferredSize(new Dimension(80, 30));
 		jbtn_insert.addActionListener(clientView);
-		jbtn_ready.addActionListener(clientView);
-		jbtn_exit.addActionListener(clientView);
 		jp_sChat.add(jbtn_insert);
 		jp_chatANDlog.add("Center", jsp_chat);
 		jp_chatANDlog.add("South", jp_sChat);

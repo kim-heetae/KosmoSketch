@@ -35,37 +35,43 @@ public class MainNorthLeft extends JPanel {
 	JScrollPane			jsp_ranking		= null;
 	String[]			cols_ranking	= { "순위", "닉네임", "점수" };
 
-	public MainNorthLeft() {
+	GamePanel			gamePanel		= null;
+
+	public MainNorthLeft(GamePanel gamePanel) {
+		this.gamePanel = gamePanel;
 		initDisplay();
 	}
 
 	public void initDisplay() {
 
-		jp_north_left 		= new JPanel();
-		jp_for_logo 		= new JPanel();
-		jp_for_table 		= new JPanel();
-		jp_for_button 		= new JPanel();
-		jlb_logo 			= new JLabel("KosmoCatch");
-		jlb_timer 			= new JLabel("00:00:00");
-		jlb_ranking 		= new JLabel("■■■ 현재 게임의 랭킹 ■■■");
-		jbtn_ready 			= new JButton("게임준비");
-		jbtn_exit 			= new JButton("나가기");
-		dtm_ranking 		= new DefaultTableModel(new String[0][3], cols_ranking);
-		jtb_ranking 		= new JTable(dtm_ranking);
-		jsp_ranking 		= new JScrollPane(jtb_ranking);
-
-		jbtn_ready.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("[게임준비] 버튼 호출 완료");
-			}
-		});
-		jbtn_exit.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("[나가기] 버튼 호출 완료");
-			}
-		});
+		jp_north_left = new JPanel();
+		jp_for_logo = new JPanel();
+		jp_for_table = new JPanel();
+		jp_for_button = new JPanel();
+		jlb_logo = new JLabel("KosmoCatch");
+		jlb_timer = new JLabel("00:00:00");
+		jlb_ranking = new JLabel("■■■ 현재 게임의 랭킹 ■■■");
+		jbtn_ready = new JButton("게임준비");
+		jbtn_exit = new JButton("나가기");
+		dtm_ranking = new DefaultTableModel(new String[0][3], cols_ranking);
+		jtb_ranking = new JTable(dtm_ranking);
+		jsp_ranking = new JScrollPane(jtb_ranking);
+		
+		//테스트
+//		jbtn_ready.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				System.out.println("[게임준비] 버튼 호출 완료");
+//			}
+//		});
+//		jbtn_exit.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				System.out.println("[나가기] 버튼 호출 완료");
+//			}
+//		});
+		jbtn_ready.addActionListener(gamePanel.clientView);
+		jbtn_exit.addActionListener(gamePanel.clientView);
 		jbtn_ready.setFont(new Font("휴먼모음T", Font.BOLD, 30));
 		jbtn_exit.setFont(new Font("휴먼모음T", Font.BOLD, 30));
 //		jbtn_ready.setPreferredSize(new Dimension(100, 50));
@@ -85,7 +91,6 @@ public class MainNorthLeft extends JPanel {
 		jtb_ranking.setOpaque(true);
 		jtb_ranking.setBackground(Color.white);
 		jtb_ranking.setPreferredSize(new Dimension(300, 600));
-		
 
 		jp_north_left.setLayout(new BorderLayout());
 		jp_for_logo.setLayout(new BorderLayout());
@@ -106,9 +111,9 @@ public class MainNorthLeft extends JPanel {
 		this.setVisible(true);
 	}
 
-	//단위 테스트용 메인
+	// 단위 테스트용 메인
 //	public static void main(String[] args) {
 //		new MainNorthLeft();
 //	}
-	
+
 }

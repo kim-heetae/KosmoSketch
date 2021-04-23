@@ -24,9 +24,9 @@ public class ForeServerThread extends Thread {
 	Room				room		= null;
 
 	public ForeServerThread(SoS sos, ObjectOutputStream oos, ObjectInputStream ois) {
-		this.sos	= sos;
-		this.oos	= oos;
-		this.ois	= ois;
+		this.sos = sos;
+		this.oos = oos;
+		this.ois = ois;
 	}
 
 	@Override
@@ -34,8 +34,7 @@ public class ForeServerThread extends Thread {
 		boolean	isStop		= false;
 		String	msg			= null;
 		int		protocol	= 0;
-		runStart:
-		while (!isStop) {
+		runStart: while (!isStop) {
 			try {
 				msg = ois.readObject().toString();
 				StringTokenizer st = new StringTokenizer(msg, Protocol._CUT);
@@ -66,8 +65,7 @@ public class ForeServerThread extends Thread {
 						// 닉네임이 이미 접속해 있으면
 						if (sos.clientList.containsKey(nickName)) {
 							oos.writeObject(Protocol._LOGIN_FAILURE + Protocol._CUT + "이미 로그인된 아이디입니다.");
-						}
-						else {
+						} else {
 							sos.clientList.put(nickName, this);
 							oos.writeObject(Protocol._CLIENT_INFO + Protocol._CUT + nickName + Protocol._CUT + result);
 							if (sos.roomList.size() != 0) {
@@ -83,8 +81,7 @@ public class ForeServerThread extends Thread {
 					oos.writeObject(Protocol._CHECK_ID + Protocol._CUT + resultMSG);
 					if ("사용가능한 아이디입니다".equals(resultMSG)) {
 						id = inputID;
-					}
-					else {
+					} else {
 						id = null;
 					}
 					break;
@@ -95,8 +92,7 @@ public class ForeServerThread extends Thread {
 					oos.writeObject(Protocol._CHECK_NICKNAME + Protocol._CUT + resultMSG);
 					if ("사용 가능한 닉네임입니다.".equals(resultMSG)) {
 						nickname = pnickname;
-					}
-					else {
+					} else {
 						nickname = null;
 					}
 					break;
@@ -107,8 +103,7 @@ public class ForeServerThread extends Thread {
 					if (code == 404) {
 						oos.writeObject(String.valueOf(Protocol._EMAIL_FAILURE));
 						email = null;
-					}
-					else {
+					} else {
 						oos.writeObject(String.valueOf(Protocol._EMAIL_SUCCESS));
 						email = pemail;
 					}
@@ -117,8 +112,7 @@ public class ForeServerThread extends Thread {
 					int inputCode = Integer.parseInt(st.nextToken());
 					if (code == inputCode) {
 						oos.writeObject(String.valueOf(Protocol._CODE_SUCCESS));
-					}
-					else {
+					} else {
 						oos.writeObject(String.valueOf(Protocol._CODE_FAILURE));
 					}
 					break;
@@ -143,8 +137,7 @@ public class ForeServerThread extends Thread {
 						loginDAO.insertMember(id, pw, nickname, email);
 						System.out.println(newbie);
 						oos.writeObject(String.valueOf(Protocol._JOIN_SUCCESS));
-					}
-					else {
+					} else {
 						oos.writeObject(String.valueOf(Protocol._JOIN_FAILURE));
 					}
 					break;
@@ -172,11 +165,28 @@ public class ForeServerThread extends Thread {
 //								for(ForeServerThread fst : sos.clientList.values()) {
 //									sos.sendRoomInfo(fst.oos);
 //								}
-							}
-							else {// 해당 방이 꽉찼을때
-								oos.writeObject(Protocol._ROOM_REJECTED + "");
+							} else {// 해당 방이 꽉찼을때
+								oos.writeObject(String.valueOf(Protocol._ROOM_REJECTED));
 							}
 						}
+					}
+					break;
+				// 클라이언트가 게임방에서 나가기 버튼을 눌렀을 떄 받게 되는 메세지
+				// _ROOMOUT + # + 닉네임
+				case Protocol._ROOMOUT:
+					if (room.nickNameList.size() > 1) {
+						// 방의 클라이언트 닉네임 리스트에서 해당 클라이언트를 제거
+						room.nickNameList.remove(nickname);
+						// 해당 클라이언트가 방을 나갔음을 broadcasting - 참여중인 인원수를 수정할 수 있도록 해준다.
+						// 방번호 + 참여중인 인원수
+						sos.broadCasting(Protocol._ROOMOUT + Protocol._CUT + room.roomNum + Protocol._CUT
+								+ room.nickNameList.size());
+					}
+					// 혼자 남은 클라이언트가 나가기 버튼을 눌렀을 경우 - 방 폭발(CLOSE ROOM)
+					else {
+						sos.broadCasting(Protocol._CLOSEROOM + Protocol._CUT + room.roomNum);
+						// 해당 방을 방리스트에서 삭제 - 이렇게 하면 자원관리도 끝???
+						sos.roomList.remove(room);
 					}
 					break;
 				case Protocol._LOGOUT:
@@ -191,8 +201,7 @@ public class ForeServerThread extends Thread {
 //					break;
 					break runStart;
 				}
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}

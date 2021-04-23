@@ -30,6 +30,7 @@ public class ClientView extends JFrame implements ActionListener, KeyListener, M
 
 	String					input_ID		= null;
 	String					input_Nickname	= null;
+	String					myNickname		= null;
 	boolean					isMatchCode		= false;
 	Vector<String>			oneRoom			= null;
 	List<Vector<String>>	roomList		= null;
@@ -144,7 +145,7 @@ public class ClientView extends JFrame implements ActionListener, KeyListener, M
 			}
 		} else if (obj == waitRoom.jbtn_exit || obj == login.jbtn_exit) {
 			try {
-				clientThread.oos.writeObject(Protocol._EXIT);
+				clientThread.oos.writeObject(String.valueOf(Protocol._EXIT));
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
@@ -164,22 +165,41 @@ public class ClientView extends JFrame implements ActionListener, KeyListener, M
 		// 게임패널에서 [전체 지우기] 버튼을 눌렀을 때의 이벤트
 		} else if (obj == game.jbtn_eraseAll) {
 			game.canvas.repaint();
+		// 게임패널(-mnl패널)에서 나가기 버튼 눌렀을 때의 이벤트: 대기실로 이동
+		} else if (obj == game.mnl.jbtn_exit) {
+			try {
+				clientThread.oos.writeObject(String.valueOf(Protocol._ROOMOUT));
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			this.remove(this.game);
+			this.setSize(this.waitRoom.width, this.waitRoom.height);
+			this.setTitle(myNickname + "님의 창");
+			this.repaint();
+			this.add("Center", this.waitRoom);
+			this.revalidate();
+	
+//		} else if () {
+//		} else if () {
+//		} else if () {
+//		} else if () {
+//		} else if () {
 		}
-		//////////////////////////////////////////////////////////////////////////////////
 	}
-
+	
 	// jtf_id 와 jpf_pw 에서 TAB키를 눌렀을 때, 포커스가 이동하고 입력된 텍스트가 전체선택되도록 설정.
-	@Override
-	public void keyPressed(KeyEvent e) {
-		if (login.jtf_id.isFocusOwner() && e.getKeyCode() == KeyEvent.VK_TAB) {
-			login.jpf_pw.grabFocus();
-			login.jpf_pw.selectAll();
-		} else if (login.jpf_pw.isFocusOwner() && e.getKeyCode() == KeyEvent.VK_TAB) {
-			login.jtf_id.grabFocus();
-			login.jtf_id.selectAll();
+		@Override
+		public void keyPressed(KeyEvent e) {
+			if (login.jtf_id.isFocusOwner() && e.getKeyCode() == KeyEvent.VK_TAB) {
+				login.jpf_pw.grabFocus();
+				login.jpf_pw.selectAll();
+			}
+			else if (login.jpf_pw.isFocusOwner() && e.getKeyCode() == KeyEvent.VK_TAB) {
+				login.jtf_id.grabFocus();
+				login.jtf_id.selectAll();
+			}
 		}
-	}
-
+	
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
@@ -199,7 +219,7 @@ public class ClientView extends JFrame implements ActionListener, KeyListener, M
 			int[]	selectedRow	= waitRoom.jtb_room.getSelectedRows();
 			int		roomNum		= Integer.parseInt(waitRoom.dtm_room.getValueAt(selectedRow[0], 0).toString());
 			try {
-				clientThread.oos.writeObject(Protocol._ROOMIN + Protocol._CUT + roomNum + "");
+				clientThread.oos.writeObject(Protocol._ROOMIN + Protocol._CUT + roomNum);
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}

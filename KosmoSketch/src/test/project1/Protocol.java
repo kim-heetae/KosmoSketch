@@ -34,10 +34,11 @@ public class Protocol {
 	public final static int		_MAKEROOM		= 1001;
 	public final static int		_CLOSEROOM		= 1002;
 	public final static int		_ROOMIN			= 1003;
-	public final static int		_ROOM_INFO		= 1004;
-	public final static int		_ROOM_WELCOME	= 1005;
-	public final static int		_ROOM_REJECTED	= 1006;
-	public final static int		_ROOM_UPDATE	= 1007;
+	public final static int		_ROOMOUT		= 1004;
+	public final static int		_ROOM_INFO		= 1005;
+	public final static int		_ROOM_WELCOME	= 1006;
+	public final static int		_ROOM_REJECTED	= 1007;
+	public final static int		_ROOM_UPDATE	= 1008;
 
 	public final static int		_PORT_NUM		= 2000;
 
