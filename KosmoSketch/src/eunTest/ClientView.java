@@ -25,20 +25,25 @@ import test.project1.Protocol;
 
 public class ClientView extends JFrame implements ActionListener, KeyListener, MouseListener, MouseMotionListener {
 
-	LoginView				login			= null;
-	JoinView				join			= null;
-	WaitRoomView			waitRoom		= null;
-	GamePanel				game			= null;
-	RankView				rank			= null;
-	WaitRoomClientThread	clientThread	= null;
+	LoginView				login				= null;
+	JoinView				join				= null;
+	WaitRoomView			waitRoom			= null;
+	GamePanel				game				= null;
+	RankView				rank				= null;
+	WaitRoomClientThread	clientThread		= null;
+	ChatClientThread		chatCilentThread	= null;
+	TimerClientThread		timerCilentThread	= null;
+	PaintClientThread		paintCilentThread	= null;
+	GameClientThread		gameCilentThread	= null;
 
-	String					input_ID		= null;
-	String					input_Nickname	= null;
-	String					myNickname		= null;
-	boolean					isMatchCode		= false;
-	Vector<String>			oneRoom			= null;
-	List<Vector<String>>	roomList		= null;
-	int						roomNum			= 0;
+	String					input_ID			= null;
+	String					input_Nickname		= null;
+	String					myNickname			= null;
+	boolean					isMatchCode			= false;
+	Vector<String>			oneRoom				= null;
+	List<Vector<String>>	roomList			= null;
+	int						roomNum				= 0;
+	int						totalScore			= 0;
 
 	public ClientView() {
 		// 화면에 붙일 패널 생성
@@ -156,17 +161,18 @@ public class ClientView extends JFrame implements ActionListener, KeyListener, M
 			}
 			System.exit(0);
 		}
-		// [방만들기] 버튼을 눌렀을 때의 이벤트 구현	//////////////////////////////구현에만 목적을 두었으니 시간 나면 정리해봅시다...
+		// [방만들기] 버튼을 눌렀을 때의 이벤트 구현 //////////////////////////////구현에만 목적을 두었으니 시간 나면
+		// 정리해봅시다...
 		else if (obj == waitRoom.jbtn_createRoom) {
-			JDialog jd = new JDialog();
-			JButton ok = new JButton("확인");
-			JTextField jtf_title = new JTextField(20);
+			JDialog		jd			= new JDialog();
+			JButton		ok			= new JButton("확인");
+			JTextField	jtf_title	= new JTextField(20);
 			ok.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					jd.setVisible(false);
 					String roomName = jtf_title.getText();
-					if(roomName != null && !"".equals(roomName) && roomName.length() != 0 ) {
+					if (roomName != null && !"".equals(roomName) && roomName.length() != 0) {
 						try {
 							clientThread.oos.writeObject(Protocol._MAKEROOM + Protocol._CUT + roomName);
 						} catch (IOException e1) {
@@ -182,7 +188,7 @@ public class ClientView extends JFrame implements ActionListener, KeyListener, M
 				public void actionPerformed(ActionEvent e) {
 					jd.setVisible(false);
 					String roomName = jtf_title.getText();
-					if(roomName != null && !"".equals(roomName) && roomName.length() != 0 ) {
+					if (roomName != null && !"".equals(roomName) && roomName.length() != 0) {
 						try {
 							clientThread.oos.writeObject(Protocol._MAKEROOM + Protocol._CUT + roomName);
 						} catch (IOException e1) {
@@ -263,7 +269,14 @@ public class ClientView extends JFrame implements ActionListener, KeyListener, M
 			this.add("Center", this.waitRoom);
 			this.revalidate();
 
-//		} else if () {
+		} else if (obj == game.mnl.jbtn_ready) {
+//			if(game.)
+			try {
+				gameCilentThread.oos.writeObject(Protocol._READY + Protocol._CUT + myNickname);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 //		} else if () {
 //		} else if () {
 //		} else if () {

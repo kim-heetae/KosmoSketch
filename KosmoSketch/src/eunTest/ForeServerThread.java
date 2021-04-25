@@ -22,7 +22,7 @@ public class ForeServerThread extends Thread {
 	String				nickname	= null;
 	String				email		= null;
 	Room				room		= null;
-	int					totalScore  = 0;
+	int					totalScore	= 0;
 
 	public ForeServerThread(SoS sos, ObjectOutputStream oos, ObjectInputStream ois) {
 		this.sos = sos;
@@ -69,7 +69,8 @@ public class ForeServerThread extends Thread {
 							oos.writeObject(Protocol._LOGIN_FAILURE + Protocol._CUT + "이미 로그인된 아이디입니다.");
 						} else {
 							sos.clientList.put(nickName, this);
-							oos.writeObject(Protocol._CLIENT_INFO + Protocol._CUT + nickName + Protocol._CUT + result + Protocol._CUT + totalScore);
+							oos.writeObject(Protocol._CLIENT_INFO + Protocol._CUT + nickName + Protocol._CUT + result
+									+ Protocol._CUT + totalScore);
 							if (sos.roomList.size() != 0) {
 								sos.sendRoomInfo(oos);
 							}
@@ -150,29 +151,39 @@ public class ForeServerThread extends Thread {
 					room = new Room(sos.roomList.size() + 1, nickname, roomName);
 					sos.roomList.add(room);
 					String imsiMsg = Protocol._ROOM_INFO + Protocol._CUT + room.roomNum + Protocol._CUT + roomName
-							+ Protocol._CUT + room.nickNameList.size() + Protocol._CUT + room.isGamePlay;
+							+ Protocol._CUT + room.nickNameList.size() + Protocol._CUT + room.gameServer.isGamePlay;
 					sos.broadCasting(imsiMsg);
 					break;
 				case Protocol._ROOMIN:
-					int roomNum = Integer.parseInt(st.nextToken())-1;
+					int roomNum = Integer.parseInt(st.nextToken()) - 1;
 					for (Room r : sos.roomList) {// 클라이언트가 접속을 시도한 방찾기
 						if (roomNum == r.roomNum) {// 방번호가 같은 방일때
 							this.room = r;
 							if (r.nickNameList.size() < 4) {// 해당 방의 인원이 4명보다 작을때
-								r.nickNameList.add(nickname);
-								oos.writeObject(Protocol._ROOM_WELCOME + Protocol._CUT + r.roomName);
+								// 현재 비어있는 라벨이 어느 라벨인지 알려면 room에 선언된 맵타입의 클라이언트리스트를 살펴야 한다.
+								// 키값이 곧 인덱스이므로 0부터 4까지 i를 증가시켜가면서 비어있는 가장 작은 수(인덱스)가 몇번인지 찾은 뒤
+								// 해당 인덱스를 키값으로 클라이언트 정보(닉네임)을  map에 추가(put)한다.
+								ThisFor: for(int i=0; i<4; i++) {
+									 if(!r.nickNameList.containsValue(i)) {
+										r.nickNameList.put(nickname, i);
+										break ThisFor;
+									 }/////////////////end of if
+								}//////////////////////end of for(ThisFor)
+								oos.writeObject(Protocol._ROOM_WELCOME + Protocol._CUT + r.roomName + Protocol._CUT
+										+ r.chatPort + Protocol._CUT + r.timerPort + Protocol._CUT + r.paintPort
+										+ Protocol._CUT + r.gamePort);
 								imsiMsg = (Protocol._ROOM_UPDATE + Protocol._CUT + r.roomNum + Protocol._CUT
 										+ r.roomName + Protocol._CUT + r.nickNameList.size() + Protocol._CUT
-										+ r.isGamePlay);
+										+ r.gameServer.isGamePlay);
 								sos.broadCasting(imsiMsg);
 //								for(ForeServerThread fst : sos.clientList.values()) {
 //									sos.sendRoomInfo(fst.oos);
 //								}
 							} else {// 해당 방이 꽉찼을때
 								oos.writeObject(String.valueOf(Protocol._ROOM_REJECTED));
-							}
-						}
-					}
+							}/////////////////////////////end of if
+						}/////////////////////////////////end of if
+					}/////////////////////////////////////end of for
 					break;
 				// 클라이언트가 게임방에서 나가기 버튼을 눌렀을 떄 받게 되는 메세지
 				// _ROOMOUT + # + 닉네임
@@ -180,25 +191,25 @@ public class ForeServerThread extends Thread {
 //					int roomnum = Integer.parseInt(st.nextToken());
 //					for(Room r : sos.roomList) {
 //						if(r.roomNum == roomnum) {
-							if (room.nickNameList.size() > 1) {
-								// 방의 클라이언트 닉네임 리스트에서 해당 클라이언트를 제거
-								room.nickNameList.remove(nickname);
-								// 해당 클라이언트가 방을 나갔음을 broadcasting - 참여중인 인원수를 수정할 수 있도록 해준다.
-								// 방번호 + 참여중인 인원수
-								sos.broadCasting(Protocol._ROOMOUT + Protocol._CUT + room.roomNum + Protocol._CUT
-										+ room.nickNameList.size());
-							}
-							// 혼자 남은 클라이언트가 나가기 버튼을 눌렀을 경우 - 방 폭발(CLOSE ROOM)
-							else {
-								sos.broadCasting(Protocol._CLOSEROOM + Protocol._CUT + room.roomNum);
-								// 해당 방을 방리스트에서 삭제 - 이렇게 하면 자원관리도 끝???
-								sos.roomList.remove(room);
-								for(Room r : sos.roomList) {
-									if(r.roomNum > room.roomNum) {
-										r.roomNum --;
-									}
-								}
-							}							
+					if (room.nickNameList.size() > 1) {
+						// 방의 클라이언트 닉네임 리스트에서 해당 클라이언트를 제거
+						room.nickNameList.remove(nickname);
+						// 해당 클라이언트가 방을 나갔음을 broadcasting - 참여중인 인원수를 수정할 수 있도록 해준다.
+						// 방번호 + 참여중인 인원수
+						sos.broadCasting(Protocol._ROOMOUT + Protocol._CUT + room.roomNum + Protocol._CUT
+								+ room.nickNameList.size());
+					}
+					// 혼자 남은 클라이언트가 나가기 버튼을 눌렀을 경우 - 방 폭발(CLOSE ROOM)
+					else {
+						sos.broadCasting(Protocol._CLOSEROOM + Protocol._CUT + room.roomNum);
+						// 해당 방을 방리스트에서 삭제 - 이렇게 하면 자원관리도 끝???
+						sos.roomList.remove(room);
+						for (Room r : sos.roomList) {
+							if (r.roomNum > room.roomNum) {
+								r.roomNum--;
+							}/////////////////end of if
+						}/////////////////////end of for
+					}/////////////////////////end of if
 //						}
 //					}
 					break;
@@ -213,7 +224,7 @@ public class ForeServerThread extends Thread {
 //					isStop = true;
 //					break;
 					break runStart;
-				}
+				}//////////////////////////end of 
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

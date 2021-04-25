@@ -3,11 +3,13 @@ package eunTest;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import test.project1.Protocol;
 
 public class ChatServerThread extends Thread {
+	
 	ChatServer chatServer = null;
 	ObjectOutputStream oos = null;
 	ObjectInputStream ois = null;

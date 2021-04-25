@@ -24,7 +24,7 @@ import java.io.ObjectOutputStream;
 import java.util.StringTokenizer;
 
 import test.project1.Protocol;
-
+/////////////////////////////////////////XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX안씀
 public class WaitRoomServerThread implements Runnable {
 
 	SoS					sos		= null;

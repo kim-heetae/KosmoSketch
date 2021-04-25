@@ -33,15 +33,21 @@ public class RankView extends JPanel {
 	String[]			cols				= { "순위", "닉네임", "누적점수" };
 	
 	ClientView clientView = null;
-
+	
+	///////////////test
+//	public RankView() {
+//		initDisplay();
+//	}
+	///////////////test
 	public RankView(ClientView clientView) {
 		this.clientView = clientView;
 		initDisplay();
 	}
 
 	public void initDisplay() {
-
-//		JFrame jf = new JFrame();
+		///////////////test	
+		JFrame jf = new JFrame();
+		///////////////test
 
 		jp_north				= new JPanel();
 		jp_south				= new JPanel();
@@ -86,10 +92,12 @@ public class RankView extends JPanel {
 		this.add("Center", jsp);
 		this.add("South", jp_south);
 
+		///////////////test
 //		jf.add("Center", this);
 //		jf.setSize(500, 800);
 //		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //		jf.setVisible(true);
+		///////////////test
 	}
 
 //	public static void main(String[] args) {

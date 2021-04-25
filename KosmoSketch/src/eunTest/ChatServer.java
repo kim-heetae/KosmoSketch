@@ -14,12 +14,13 @@ import eunTest.Port;
 
 public class ChatServer extends ServerSocket implements Runnable {
 
-	Socket client = null;
-	Thread chatThread = null;
-	JTextArea 	jta_log = new JTextArea();
-	Vector<ChatServerThread> 	globalList 	= null;
-	List<ChatServerThread> chatServerThreadList = null;
-	int portNum = 0;
+	Socket					client					= null;
+	Thread					chatThread				= null;
+	JTextArea				jta_log					= new JTextArea();
+	ChatServerThread		chatServerThread		= null;
+	List<ChatServerThread>	chatServerThreadList	= null;
+	int						portNum					= 0;
+
 //	public ChatServer() throws IOException {
 //		super(Port._CHAT);
 //		chatThread = new Thread(this);
@@ -30,26 +31,25 @@ public class ChatServer extends ServerSocket implements Runnable {
 		portNum = port;
 		chatThread = new Thread(this);
 		chatThread.start();
-		//List는 인터페이스, Vector는 List를 구현하는 구현체 클래스임.
-		
+		// List는 인터페이스, Vector는 List를 구현하는 구현체 클래스임.
+
 	}
+
 	@Override
 	public void run() {
 		boolean isStop = false;
 		chatServerThreadList = new Vector<>();
-		globalList = new Vector<>();
 		try {
-			while(!isStop) {
+			while (!isStop) {
 				client = this.accept();
 				ChatServerThread chatServerThread = new ChatServerThread(this);
 				chatServerThreadList.add(chatServerThread);
-			}			 
-		}
-		catch (IOException e) {
+			}
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 }

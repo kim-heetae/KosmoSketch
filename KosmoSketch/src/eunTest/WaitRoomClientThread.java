@@ -7,12 +7,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import javax.swing.JColorChooser;
 import javax.swing.JOptionPane;
 
 import test.project1.Protocol;
@@ -26,7 +23,7 @@ public class WaitRoomClientThread extends Thread {
 	ObjectInputStream	ois			= null;
 	ClientView			clientView	= null;
 	String				nickName	= null;
-	int					totalScore	= 0;
+
 
 	// 생성자
 	public WaitRoomClientThread(ClientView clientView) {
@@ -79,7 +76,7 @@ public class WaitRoomClientThread extends Thread {
 					// 서버가 DB에 접근에서 가져온 [닉네임]을 받아온다.
 					nickName = st.nextToken();
 					String msg_isLoggedIn = st.nextToken();
-					this.totalScore = Integer.parseInt(st.nextToken());
+					clientView.totalScore = Integer.parseInt(st.nextToken());
 					clientView.myNickname = nickName;
 					clientView.remove(clientView.login);
 					clientView.setSize(clientView.waitRoom.width, clientView.waitRoom.height);
@@ -171,12 +168,12 @@ public class WaitRoomClientThread extends Thread {
 					clientView.game.g.setColor(Color.black);
 					clientView.game.bgm();
 					// 클라이언트가 방을 만들고 들어갈 때 라벨값 초기화
-					clientView.game.jlb_nickName1.setText(this.nickName);
-					clientView.game.setResizeFont(clientView.game.jlb_nickName1);
+					clientView.game.jlb_nickName0.setText(this.nickName);
+					clientView.game.setResizeFont(clientView.game.jlb_nickName0);
 					System.out.println(this.nickName);
 					
-					clientView.game.jlb_totalscore1.setText(String.valueOf(this.totalScore));
-					System.out.println(this.totalScore);
+					clientView.game.jlb_totalscore1.setText(String.valueOf(clientView.totalScore));
+					System.out.println(clientView.totalScore);
 					break;
 				case Protocol._LOGOUT:
 					clientView.login = new LoginView(clientView);
@@ -188,6 +185,7 @@ public class WaitRoomClientThread extends Thread {
 					clientView.revalidate();
 					break;
 				case Protocol._ROOM_WELCOME:
+					// 게임패널로 화면 갱신
 					clientView.game = new GamePanel(clientView);
 					clientView.remove(clientView.waitRoom);
 					clientView.setSize(clientView.game.width, clientView.game.height);
@@ -195,7 +193,16 @@ public class WaitRoomClientThread extends Thread {
 					clientView.add("Center", clientView.game);
 					clientView.setTitle(st.nextToken());
 					clientView.revalidate();
-					gameSocket = new Socket("localhost", port)
+					// 서버들의 포트번호를 받아오자.
+					int chatPort = Integer.parseInt(st.nextToken());
+					int timerPort = Integer.parseInt(st.nextToken());
+					int paintPort = Integer.parseInt(st.nextToken());
+					int gamePort = Integer.parseInt(st.nextToken());
+					gameSocket = new Socket("localhost", gamePort);
+					clientView.gameCilentThread = new GameClientThread(gameSocket, clientView);
+					clientView.gameCilentThread.start();
+					
+					////////////////////////////////////////////////나머지 서버에도 연결해주어야 함//////기억해~~
 					clientView.game.bgm();
 					
 					break;

@@ -49,6 +49,15 @@ public class Protocol {
 //	public final static int					= 3005;
 //	public final static int					= 3006;
 
+	// 게임(GameServer - GameClient)관련 프로토콜
+	public final static int		_LABEL_UPDATE	= 10001;
+	
+	
+	
+	
+	
+	
+	
 	public final static int		TEST			= 99999;
 
 }

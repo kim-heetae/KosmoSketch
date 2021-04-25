@@ -13,14 +13,14 @@ import java.util.Vector;
 //////////////////////////////나 자신이 서버소켓이다////////////////////////
 public class PaintServer extends ServerSocket implements Runnable {
 
-	Socket					client				= null;
-	PaintServerThread		paintServerThread	= null;
+	Socket					client					= null;
+	PaintServerThread		paintServerThread		= null;
 	// painting과 관련한 broadcasting을 위해서 클라이언트(서버스레드) 목록을 관리할 필요가 있다.
-	List<PaintServerThread>	clientList			= new Vector<>();
-	ObjectOutputStream		oos					= null;
-	ObjectInputStream		ois					= null;
-	
-	Room					room				= null;
+	List<PaintServerThread>	paintServerThreadList	= new Vector<>();
+	ObjectOutputStream		oos						= null;
+	ObjectInputStream		ois						= null;
+
+	Room					room					= null;
 
 	public PaintServer(Room room) throws IOException {
 		// ServerSocket을 상속하였기 때문에 super(int port)(부모생성자호출)를 통해 포트번호를 초기화해주어야 한다.
@@ -43,18 +43,18 @@ public class PaintServer extends ServerSocket implements Runnable {
 				oos = new ObjectOutputStream(client.getOutputStream());
 				ois = new ObjectInputStream(client.getInputStream());
 				paintServerThread = new PaintServerThread(this, oos, ois);
-				clientList.add(paintServerThread); // 기억해!! 클라이언트가 GamePanel에서 [나가기] 버튼을 누를 시 리스트에서 빼주어야 함.
-				
+				paintServerThreadList.add(paintServerThread); // 기억해!! 클라이언트가 GamePanel에서 [나가기] 버튼을 누를 시 리스트에서 빼주어야 함.
+
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 	}
-	
+
 	// 방에 있는 클라이언트들에게 말하기 구현
 	public void broadCasting(String msg) {
-		
+
 	}
 
 }

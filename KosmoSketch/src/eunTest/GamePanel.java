@@ -15,6 +15,9 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public class GamePanel extends JPanel {
+	
+	// 변수 접어놓음
+	//region
 	JPanel			jp_center			= null;
 	JPanel			jp_south			= null;
 	JPanel			jp_sChat			= null;
@@ -22,10 +25,10 @@ public class GamePanel extends JPanel {
 	JPanel			jp_sRight			= null;
 	JPanel			jp_tools			= null;
 	JPanel			jp_users			= null;
+	JPanel			jp_user0			= null;
 	JPanel			jp_user1			= null;
 	JPanel			jp_user2			= null;
 	JPanel			jp_user3			= null;
-	JPanel			jp_user4			= null;
 	// cWest = center.west
 	// jp_user1S = user1의 score패널
 	JButton			jbtn_insert			= null;
@@ -37,36 +40,36 @@ public class GamePanel extends JPanel {
 
 	JLabel			jlb_logo			= null;
 	JLabel			jlb_timer			= null;
+	JLabel			jlb_nickName0		= new JLabel("");
+	JLabel			jlb_score0			= new JLabel("0");
+	JLabel			jlb_totalscore0		= new JLabel("0");
+	JLabel			jlb_isReady0		= new JLabel("READY!");
 	JLabel			jlb_nickName1		= new JLabel("");
-	JLabel			jlb_score1			= new JLabel("0");
-	JLabel			jlb_totalscore1		= new JLabel("0");
+	JLabel			jlb_score1			= new JLabel("1");
+	JLabel			jlb_totalscore1		= new JLabel("1");
 	JLabel			jlb_isReady1		= new JLabel("READY!");
 	JLabel			jlb_nickName2		= new JLabel("");
-	JLabel			jlb_score2			= new JLabel("0");
-	JLabel			jlb_totalscore2		= new JLabel("0");
+	JLabel			jlb_score2			= new JLabel("2");
+	JLabel			jlb_totalscore2		= new JLabel("2");
 	JLabel			jlb_isReady2		= new JLabel("READY!");
 	JLabel			jlb_nickName3		= new JLabel("");
-	JLabel			jlb_score3			= new JLabel("0");
-	JLabel			jlb_totalscore3		= new JLabel("0");
+	JLabel			jlb_score3			= new JLabel("3");
+	JLabel			jlb_totalscore3		= new JLabel("3");
 	JLabel			jlb_isReady3		= new JLabel("READY!");
-	JLabel			jlb_nickName4		= new JLabel("");
-	JLabel			jlb_score4			= new JLabel("0");
-	JLabel			jlb_totalscore4		= new JLabel("0");
-	JLabel			jlb_isReady4		= new JLabel("READY!");
+	JLabel[]		jlb_user0			= { jlb_nickName0, jlb_score0, jlb_totalscore0, jlb_isReady0 };
 	JLabel[]		jlb_user1			= { jlb_nickName1, jlb_score1, jlb_totalscore1, jlb_isReady1 };
 	JLabel[]		jlb_user2			= { jlb_nickName2, jlb_score2, jlb_totalscore2, jlb_isReady2 };
 	JLabel[]		jlb_user3			= { jlb_nickName3, jlb_score3, jlb_totalscore3, jlb_isReady3 };
-	JLabel[]		jlb_user4			= { jlb_nickName4, jlb_score4, jlb_totalscore4, jlb_isReady4 };
 	// 닉네임 - 현재점수 - 누적점수 - ready 순으로 배열에 담았음
 	List<JLabel[]>	users				= new ArrayList<>();
+	JLabel			jlb_scoreTag0		= null;
 	JLabel			jlb_scoreTag1		= null;
 	JLabel			jlb_scoreTag2		= null;
 	JLabel			jlb_scoreTag3		= null;
-	JLabel			jlb_scoreTag4		= null;
+	JLabel			jlb_totalscoreTag0	= null;
 	JLabel			jlb_totalscoreTag1	= null;
 	JLabel			jlb_totalscoreTag2	= null;
 	JLabel			jlb_totalscoreTag3	= null;
-	JLabel			jlb_totalscoreTag4	= null;
 	JLabel[]		jlb_nicknames		= null;
 	// tag - "현재점수", "누적점수" non-tag - int
 	JScrollPane		jsp_chat			= null;
@@ -94,7 +97,8 @@ public class GamePanel extends JPanel {
 
 	int				width				= 1600;
 	int				height				= 1000;
-
+	//endregion
+	
 	public GamePanel(ClientView clientView) {
 		this.clientView = clientView;
 		initDisplay();
@@ -112,10 +116,10 @@ public class GamePanel extends JPanel {
 		jp_sRight = new JPanel();
 		jp_tools = new JPanel();
 		jp_users = new JPanel();
+		jp_user0 = new JPanel();
 		jp_user1 = new JPanel();
 		jp_user2 = new JPanel();
 		jp_user3 = new JPanel();
-		jp_user4 = new JPanel();
 
 //cW 추가하기
 		jbtn_modeP = new JButton("펜모드");
@@ -126,23 +130,23 @@ public class GamePanel extends JPanel {
 		jbtn_thick = new JButton("굵기 ▶▶");
 		JButton[] jbtns_tool = { jbtn_modeP, jbtn_cPick, jbtn_modeE, jbtn_eraseAll, jbtn_thick };
 		jlb_nicknames = new JLabel[4];
-		jlb_nicknames[0] = jlb_nickName1;
-		jlb_nicknames[1] = jlb_nickName2;
-		jlb_nicknames[2] = jlb_nickName3;
-		jlb_nicknames[3] = jlb_nickName4;
+		jlb_nicknames[0] = jlb_nickName0;
+		jlb_nicknames[1] = jlb_nickName1;
+		jlb_nicknames[2] = jlb_nickName2;
+		jlb_nicknames[3] = jlb_nickName3;
+		jlb_scoreTag0 = new JLabel("현재점수");
 		jlb_scoreTag1 = new JLabel("현재점수");
 		jlb_scoreTag2 = new JLabel("현재점수");
 		jlb_scoreTag3 = new JLabel("현재점수");
-		jlb_scoreTag4 = new JLabel("현재점수");
+		jlb_totalscoreTag0 = new JLabel("누적점수");
 		jlb_totalscoreTag1 = new JLabel("누적점수");
 		jlb_totalscoreTag2 = new JLabel("누적점수");
 		jlb_totalscoreTag3 = new JLabel("누적점수");
-		jlb_totalscoreTag4 = new JLabel("누적점수");
+		users.add(jlb_user0);
 		users.add(jlb_user1);
 		users.add(jlb_user2);
 		users.add(jlb_user3);
-		users.add(jlb_user4);
-		JLabel[] jlbs_ready = { jlb_isReady1, jlb_isReady2, jlb_isReady3, jlb_isReady4 };
+		JLabel[] jlbs_ready = { jlb_isReady0, jlb_isReady1, jlb_isReady2, jlb_isReady3 };
 
 		// 버튼 디자인 설정
 		for (JButton jbtn : jbtns_tool) {
@@ -182,10 +186,10 @@ public class GamePanel extends JPanel {
 //		jlb_isReady4.setBorder(new BevelBorder(BevelBorder.RAISED));
 
 		jp_users.setBorder(new TitledBorder(new LineBorder(Color.red), "In GAME"));
+		jp_user0.setBorder(new BevelBorder(BevelBorder.RAISED));
 		jp_user1.setBorder(new BevelBorder(BevelBorder.RAISED));
 		jp_user2.setBorder(new BevelBorder(BevelBorder.RAISED));
 		jp_user3.setBorder(new BevelBorder(BevelBorder.RAISED));
-		jp_user4.setBorder(new BevelBorder(BevelBorder.RAISED));
 
 		for (JLabel jlb : jlbs_ready) {
 			jlb.setBackground(Color.white);
@@ -248,10 +252,10 @@ public class GamePanel extends JPanel {
 		jp_users.setPreferredSize(new Dimension(780, 250)); ////////////////////////////
 
 //		jp_user1.setPreferredSize(new Dimension(395, 75));
+		jp_user0.setLayout(new GridLayout(2, 3, 10, 2));
 		jp_user1.setLayout(new GridLayout(2, 3, 10, 2));
 		jp_user2.setLayout(new GridLayout(2, 3, 10, 2));
 		jp_user3.setLayout(new GridLayout(2, 3, 10, 2));
-		jp_user4.setLayout(new GridLayout(2, 3, 10, 2));
 
 //		jlb_nickName1.setPreferredSize(new Dimension(50, 55));
 //		jlb_nickName1.setFont(jlb_nickName1.getFont().deriveFont(3));
@@ -274,52 +278,52 @@ public class GamePanel extends JPanel {
 //		setResizeFont(jlb_nickName1);
 //		System.out.println(jlb_nickName1.getFontMetrics(jlb_nickName1.getFont()));	////////////////////////////////////////
 
+		jlb_scoreTag0.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
 		jlb_scoreTag1.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
 		jlb_scoreTag2.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
 		jlb_scoreTag3.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
-		jlb_scoreTag4.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
+		jlb_score0.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
 		jlb_score1.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
 		jlb_score2.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
 		jlb_score3.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
-		jlb_score4.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
+		jlb_totalscoreTag0.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
 		jlb_totalscoreTag1.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
 		jlb_totalscoreTag2.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
 		jlb_totalscoreTag3.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
-		jlb_totalscoreTag4.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
+		jlb_totalscore0.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
 		jlb_totalscore1.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
 		jlb_totalscore2.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
 		jlb_totalscore3.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
-		jlb_totalscore4.setFont(new Font("휴먼모음T", Font.PLAIN, 30));
 
+		jp_user0.add(jlb_nickName0);
 		jp_user1.add(jlb_nickName1);
 		jp_user2.add(jlb_nickName2);
 		jp_user3.add(jlb_nickName3);
-		jp_user4.add(jlb_nickName4);
+		jp_user0.add(jlb_scoreTag0);
 		jp_user1.add(jlb_scoreTag1);
 		jp_user2.add(jlb_scoreTag2);
 		jp_user3.add(jlb_scoreTag3);
-		jp_user4.add(jlb_scoreTag4);
+		jp_user0.add(jlb_score0);
 		jp_user1.add(jlb_score1);
 		jp_user2.add(jlb_score2);
 		jp_user3.add(jlb_score3);
-		jp_user4.add(jlb_score4);
+		jp_user0.add(jlb_isReady0);
 		jp_user1.add(jlb_isReady1);
 		jp_user2.add(jlb_isReady2);
 		jp_user3.add(jlb_isReady3);
-		jp_user4.add(jlb_isReady4);
+		jp_user0.add(jlb_totalscoreTag0);
 		jp_user1.add(jlb_totalscoreTag1);
 		jp_user2.add(jlb_totalscoreTag2);
 		jp_user3.add(jlb_totalscoreTag3);
-		jp_user4.add(jlb_totalscoreTag4);
+		jp_user0.add(jlb_totalscore0);
 		jp_user1.add(jlb_totalscore1);
 		jp_user2.add(jlb_totalscore2);
 		jp_user3.add(jlb_totalscore3);
-		jp_user4.add(jlb_totalscore4);
 
+		jp_users.add(jp_user0);
 		jp_users.add(jp_user1);
 		jp_users.add(jp_user2);
 		jp_users.add(jp_user3);
-		jp_users.add(jp_user4);
 		jp_sRight.add(jp_users);
 
 		jp_south.add(jp_sRight);
