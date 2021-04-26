@@ -16,14 +16,13 @@ import test.project1.Protocol;
 
 public class WaitRoomClientThread extends Thread {
 
-	String				questioner	= null;
-	Socket				client		= null;
-	Socket				gameSocket	= null;
-	ObjectOutputStream	oos			= null;
-	ObjectInputStream	ois			= null;
-	ClientView			clientView	= null;
-	String				nickName	= null;
-
+	String				questioner			= null;
+	Socket				client				= null;
+	Socket				gameSocket			= null;
+	ObjectOutputStream	oos					= null;
+	ObjectInputStream	ois					= null;
+	ClientView			clientView			= null;
+	String				nickName			= null;
 
 	// 생성자
 	public WaitRoomClientThread(ClientView clientView) {
@@ -52,7 +51,7 @@ public class WaitRoomClientThread extends Thread {
 //			if(room)
 //		}
 		for (Vector<String> room : clientView.roomList) {
-			room.set(0, String.valueOf(clientView.roomList.indexOf(room)+1));
+			room.set(0, String.valueOf(clientView.roomList.indexOf(room) + 1));
 		}
 		for (Vector<String> room : clientView.roomList) {
 			clientView.waitRoom.dtm_room.addRow(room);
@@ -164,16 +163,26 @@ public class WaitRoomClientThread extends Thread {
 					clientView.revalidate();
 					// 그림을 그리기 위해 그래픽 도구 추가
 					clientView.game.graphics = clientView.game.canvas.getGraphics();
-					clientView.game.g = (Graphics2D)clientView.game.graphics;
+					clientView.game.g = (Graphics2D) clientView.game.graphics;
 					clientView.game.g.setColor(Color.black);
-					clientView.game.bgm();
-					// 클라이언트가 방을 만들고 들어갈 때 라벨값 초기화
-					clientView.game.jlb_nickName0.setText(this.nickName);
-					clientView.game.setResizeFont(clientView.game.jlb_nickName0);
-					System.out.println(this.nickName);
-					
-					clientView.game.jlb_totalscore1.setText(String.valueOf(clientView.totalScore));
-					System.out.println(clientView.totalScore);
+
+					// 서버들의 포트번호를 받아오자.
+					int chatPort = Integer.parseInt(st.nextToken());
+					int timerPort = Integer.parseInt(st.nextToken());
+					int paintPort = Integer.parseInt(st.nextToken());
+					int gamePort = Integer.parseInt(st.nextToken());
+					System.out.println("게임포트번호==> "+ gamePort);
+					gameSocket = new Socket("localhost", gamePort);
+					clientView.gameCilentThread = new GameClientThread(gameSocket, clientView);
+					clientView.gameCilentThread.start();
+///////////////////////////////////////////////////////////////일단 노래 꺼놓음
+//					clientView.game.bgm();
+////////////////////// 클라이언트가 방을 만들고 들어갈 때 라벨값 초기화 -- 여기서 직접하지말고  gameServerThread 를 통해 broadCasting 받자.
+//					clientView.game.jlb_nickName0.setText(this.nickName);
+//					clientView.game.setResizeFont(clientView.game.jlb_nickName0);
+//					System.out.println(this.nickName);
+//					clientView.game.jlb_totalscore0.setText(String.valueOf(clientView.totalScore));
+//					System.out.println(clientView.totalScore);
 					break;
 				case Protocol._LOGOUT:
 					clientView.login = new LoginView(clientView);
@@ -194,17 +203,18 @@ public class WaitRoomClientThread extends Thread {
 					clientView.setTitle(st.nextToken());
 					clientView.revalidate();
 					// 서버들의 포트번호를 받아오자.
-					int chatPort = Integer.parseInt(st.nextToken());
-					int timerPort = Integer.parseInt(st.nextToken());
-					int paintPort = Integer.parseInt(st.nextToken());
-					int gamePort = Integer.parseInt(st.nextToken());
+					chatPort = Integer.parseInt(st.nextToken());
+					timerPort = Integer.parseInt(st.nextToken());
+					paintPort = Integer.parseInt(st.nextToken());
+					gamePort = Integer.parseInt(st.nextToken());
 					gameSocket = new Socket("localhost", gamePort);
 					clientView.gameCilentThread = new GameClientThread(gameSocket, clientView);
 					clientView.gameCilentThread.start();
-					
-					////////////////////////////////////////////////나머지 서버에도 연결해주어야 함//////기억해~~
-					clientView.game.bgm();
-					
+
+					//////////////////////////////////////////////// 나머지 서버에도 연결해주어야 함//////기억해~~
+					//////////////////////나중에 노래 다시 틀자~~
+//					clientView.game.bgm();
+
 					break;
 				case Protocol._ROOM_REJECTED:
 					JOptionPane.showMessageDialog(clientView, "입장가능 인원을 초과하였습니다.");
@@ -228,17 +238,17 @@ public class WaitRoomClientThread extends Thread {
 				case Protocol._ROOMOUT:
 					int roomNum = Integer.parseInt(st.nextToken());
 					int room_clientNum = Integer.parseInt(st.nextToken());
-					System.out.println("방번호===> "+roomNum);
-					System.out.println("해당 방의 클라 수===> "+room_clientNum);
-					clientView.waitRoom.dtm_room.setValueAt(room_clientNum+"/4", roomNum-1, 2);
+					System.out.println("방번호===> " + roomNum);
+					System.out.println("해당 방의 클라 수===> " + room_clientNum);
+					clientView.waitRoom.dtm_room.setValueAt(room_clientNum + "/4", roomNum - 1, 2);
 //					clientView.
 					refreshTable();
 					break;
 				case Protocol._CLOSEROOM:
 					roomNum = Integer.parseInt(st.nextToken());
-					System.out.println("방번호===> "+roomNum);
-					clientView.waitRoom.dtm_room.removeRow(roomNum-1);
-					clientView.roomList.remove(roomNum-1);
+					System.out.println("방번호===> " + roomNum);
+					clientView.waitRoom.dtm_room.removeRow(roomNum - 1);
+					clientView.roomList.remove(roomNum - 1);
 					refreshTable();
 					break;
 				case Protocol._NOT_READY:

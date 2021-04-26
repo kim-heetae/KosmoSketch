@@ -143,9 +143,11 @@ public class GamePanel extends JPanel {
 		jlb_totalscoreTag2 = new JLabel("누적점수");
 		jlb_totalscoreTag3 = new JLabel("누적점수");
 		users.add(jlb_user0);
+		System.out.println(jlb_user0);
 		users.add(jlb_user1);
 		users.add(jlb_user2);
 		users.add(jlb_user3);
+		System.out.println("users===> "+users);
 		JLabel[] jlbs_ready = { jlb_isReady0, jlb_isReady1, jlb_isReady2, jlb_isReady3 };
 
 		// 버튼 디자인 설정

@@ -13,7 +13,7 @@ public class Room {
 	PaintServer				paintServer		= null;
 	GameServer				gameServer		= null;
 	SoS						sos				= null;
-	Map<String, Integer>	nickNameList	= new Hashtable<>();
+	Map<Integer, String>	nickNameList	= new Hashtable<>();
 	String					roomName		= null;
 	int						roomNum			= 0;
 
@@ -23,9 +23,10 @@ public class Room {
 	int						paintPort		= 0;
 	int						gamePort		= 0;
 
-	public Room(int roomNum, String nickName, String roomName) {
+	public Room(SoS sos, int roomNum, String nickName, String roomName) {
+		this.sos = sos;
 		this.roomNum = roomNum;
-		this.nickNameList.put(nickName, 0);
+		this.nickNameList.put(0, nickName);
 		this.roomName = roomName;
 		this.chatPort = Port.getPort().getPortNum();
 		this.timerPort = Port.getPort().getPortNum();
@@ -84,6 +85,11 @@ public class Room {
 			List<GameServerThread> plist = list;
 			for(GameServerThread gameServerThreadList : plist) {
 				try {
+					System.out.println("=============================");
+					System.out.println(plist);
+					System.out.println(msg);
+					System.out.println("=============================");
+					
 					gameServerThreadList.oos.writeObject(msg);
 				} catch (IOException e) {
 					e.printStackTrace();

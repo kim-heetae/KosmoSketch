@@ -26,14 +26,12 @@ public class Port {
 		return port;
 	}
 
-
 	public synchronized int getPortNum() {
 		Random	portNumGenerator	= new Random();
 		int		portNum				= 0;
 		do {
 			portNum = portNumGenerator.nextInt(60001);
-		}
-		while (portNum < 10000 || portList.contains(portNum));
+		} while (portNum < 10000 || portList.contains(portNum));
 		portList.add(portNum);
 		return portNum;
 	}
@@ -71,13 +69,12 @@ public class Port {
 //		}
 //		return portNum;
 //	}
-
+	// 방이 사라질 때 포트번호를 반납해야한다.
 	public synchronized void returnPort(int portNum) {
 		System.out.println(portList.contains(portNum));
 		if (portList.contains(portNum)) {
 			portList.remove(portList.indexOf(portNum));
-		}
-		else {
+		} else {
 			System.out.println("해당하는 포트번호가 없습니다.");
 		}
 	}

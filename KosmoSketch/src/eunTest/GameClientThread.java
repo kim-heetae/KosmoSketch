@@ -23,6 +23,9 @@ public class GameClientThread extends Thread {
 			// 게임서버스레드에게 나의 닉네임과(DB-서버를 거쳐 받아온)누적점수를 알려준다.
 			oos.writeObject(Protocol._CLIENT_INFO + Protocol._CUT + clientView.myNickname + Protocol._CUT
 					+ clientView.totalScore);
+			// 내가 들어왔다는 사실을 
+			oos.writeObject(Protocol._NEWBIE_IN + Protocol._CUT + clientView.myNickname + Protocol._CUT
+					+ clientView.totalScore);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -48,12 +51,20 @@ public class GameClientThread extends Thread {
 					int labelTotalScore = Integer.parseInt(st.nextToken());
 					// 이제 라벨에 붙이자!
 					clientView.game.users.get(labelIndex)[0].setText(labelNickName);
-					System.out.println(clientView.game.users.get(labelIndex)[0]);
-					System.out.println(clientView.game.users.get(labelIndex)[2]);
+					clientView.game.setResizeFont(clientView.game.users.get(labelIndex)[0]);
+//					System.out.println(clientView.game.users.get(labelIndex)[0]);
+//					System.out.println(clientView.game.users.get(labelIndex));
+//					System.out.println("요기"+clientView.game.users.get(labelIndex)[2]);
 					clientView.game.users.get(labelIndex)[2].setText(String.valueOf(labelTotalScore));
 					break;
-//				case Protocol._:
-//					break;
+				case Protocol._NEWBIE_IN:
+					labelIndex = Integer.parseInt(st.nextToken());
+					labelNickName = st.nextToken();
+					labelTotalScore = Integer.parseInt(st.nextToken());
+					clientView.game.users.get(labelIndex)[0].setText(labelNickName);
+					clientView.game.setResizeFont(clientView.game.users.get(labelIndex)[0]);
+					clientView.game.users.get(labelIndex)[2].setText(String.valueOf(labelTotalScore));
+					break;
 //				case Protocol._:
 //					break;
 //				case Protocol._:

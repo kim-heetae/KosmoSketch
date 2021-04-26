@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
+import java.util.Vector;
 
 public class GameServer extends ServerSocket implements Runnable {
 
@@ -28,8 +29,9 @@ public class GameServer extends ServerSocket implements Runnable {
 		super(port);
 		this.room = room;
 		this.portNum = port;
-		Thread timerThread = new Thread(this);
-		timerThread.start();
+		gameServerThreadList = new Vector<>();
+		Thread th = new Thread(this);
+		th.start();
 	}
 
 	@Override
@@ -38,6 +40,13 @@ public class GameServer extends ServerSocket implements Runnable {
 		try {
 			while (!isStop) {
 				client = this.accept();
+//				System.out.println("====================================");
+//				System.out.println(room);
+//				System.out.println(room.sos);
+//				System.out.println(room.sos.serverView);
+//				System.out.println(room.sos.serverView.jta_sos);
+//				System.out.println("====================================");
+				room.sos.serverView.jta_sos.append("게임 서버에 연결된 클라이언트 정보: "+client);
 				oos = new ObjectOutputStream(client.getOutputStream());
 				ois = new ObjectInputStream(client.getInputStream());
 				gameServerThread = new GameServerThread(this, oos, ois);
