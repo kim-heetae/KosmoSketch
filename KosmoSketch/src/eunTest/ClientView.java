@@ -313,7 +313,7 @@ public class ClientView extends JFrame implements ActionListener, KeyListener, M
 		if (e.getSource() == waitRoom.jtb_room && e.getClickCount() == 2) {
 			System.out.println("clientView - waitRoomView 더블클릭됨");
 			int selectedRow = waitRoom.jtb_room.getSelectedRow();
-			roomNum = Integer.parseInt(waitRoom.dtm_room.getValueAt(selectedRow, 0).toString()) + 1;
+			roomNum = Integer.parseInt(waitRoom.dtm_room.getValueAt(selectedRow, 0).toString());
 			System.out.println(selectedRow);
 			try {
 				clientThread.oos.writeObject(Protocol._ROOMIN + Protocol._CUT + roomNum);
