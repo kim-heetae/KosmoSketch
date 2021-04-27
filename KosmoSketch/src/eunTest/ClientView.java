@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Vector;
 
@@ -23,7 +24,7 @@ import javax.swing.JTextField;
 
 import test.project1.Protocol;
 
-public class ClientView extends JFrame implements ActionListener, KeyListener, MouseListener, MouseMotionListener {
+public class ClientView extends JFrame implements ActionListener, KeyListener, MouseListener, MouseMotionListener, Serializable {
 
 	LoginView				login				= null;
 	JoinView				join				= null;
@@ -259,6 +260,7 @@ public class ClientView extends JFrame implements ActionListener, KeyListener, M
 		} else if (obj == game.mnl.jbtn_exit) {
 			try {
 				clientThread.oos.writeObject(String.valueOf(Protocol._ROOMOUT));
+				gameCilentThread.oos.writeObject(String.valueOf(Protocol._ROOMOUT));
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
@@ -314,7 +316,6 @@ public class ClientView extends JFrame implements ActionListener, KeyListener, M
 			System.out.println("clientView - waitRoomView 더블클릭됨");
 			int selectedRow = waitRoom.jtb_room.getSelectedRow();
 			roomNum = Integer.parseInt(waitRoom.dtm_room.getValueAt(selectedRow, 0).toString());
-			System.out.println(selectedRow);
 			try {
 				clientThread.oos.writeObject(Protocol._ROOMIN + Protocol._CUT + roomNum);
 			} catch (IOException e1) {

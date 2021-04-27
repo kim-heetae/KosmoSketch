@@ -3,12 +3,13 @@ package eunTest;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
 import java.util.Vector;
 
-public class GameServer extends ServerSocket implements Runnable {
+public class GameServer extends ServerSocket implements Runnable, Serializable {
 
 	// 서버가 되기 위해 필요한 선언
 	Socket					client					= null;

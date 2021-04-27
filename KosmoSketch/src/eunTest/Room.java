@@ -1,12 +1,13 @@
 package eunTest;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
 // (●'◡'●)
-public class Room {
+public class Room implements Serializable {
 	InOutServer				inoutServer		= null;
 	ChatServer				chatServer		= null;
 	TimerServer				timerServer		= null;

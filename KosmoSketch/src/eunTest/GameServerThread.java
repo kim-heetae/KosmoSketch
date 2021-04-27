@@ -2,13 +2,14 @@ package eunTest;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
 import test.project1.Protocol;
 
-public class GameServerThread extends Thread {
+public class GameServerThread extends Thread implements Serializable {
 
 	GameServer			gameServer	= null;
 	ObjectOutputStream	oos			= null;
@@ -39,7 +40,7 @@ public class GameServerThread extends Thread {
 				case Protocol._CLIENT_INFO: // 내 클라이언트가 입장 시 뿌려준 정보임
 					this.nickName = st.nextToken();
 					for(int i=0; i<gameServer.room.nickNameList.size(); i++) {
-						if(gameServer.room.nickNameList.get(i) == nickName) {
+						if(gameServer.room.nickNameList.get(i).equals(nickName)) {
 							myMapIndex = i;
 						}
 					}
@@ -67,8 +68,8 @@ public class GameServerThread extends Thread {
 					System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 					gameServer.room.broadCasting(broadMSG, gameServer.gameServerThreadList);
 					break;
-//				case Protocol._:
-//					break;
+				case Protocol._ROOMOUT:
+					break runStart;
 //				case Protocol._:
 //					break;
 //				case Protocol._:

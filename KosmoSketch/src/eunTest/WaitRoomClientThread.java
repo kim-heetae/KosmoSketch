@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -14,7 +15,7 @@ import javax.swing.JOptionPane;
 
 import test.project1.Protocol;
 
-public class WaitRoomClientThread extends Thread {
+public class WaitRoomClientThread extends Thread implements Serializable{
 
 	String				questioner			= null;
 	Socket				client				= null;
@@ -223,16 +224,16 @@ public class WaitRoomClientThread extends Thread {
 					String roomnum = st.nextToken();
 					clientView.oneRoom = null;
 					clientView.oneRoom = new Vector<String>();
-					clientView.oneRoom.add(roomnum);
-					clientView.oneRoom.add(st.nextToken());
-					clientView.oneRoom.add(st.nextToken() + "/4");
-					isGamePlay = Boolean.getBoolean(st.nextToken());
+					clientView.oneRoom.add(roomnum);	// 방 번호
+					clientView.oneRoom.add(st.nextToken());	// 방 이름
+					clientView.oneRoom.add(st.nextToken() + "/4");	// 방에 들어와 있는 인원 수
+					isGamePlay = Boolean.getBoolean(st.nextToken());	// 방의 상태
 					if (isGamePlay) {
 						clientView.oneRoom.add("게임중");
 					} else {
 						clientView.oneRoom.add("대기중");
 					}
-					clientView.roomList.set(Integer.parseInt(roomnum) - 1, clientView.oneRoom);
+					clientView.roomList.set(Integer.parseInt(roomnum)-1, clientView.oneRoom);
 					refreshTable();
 					break;
 				case Protocol._ROOMOUT:

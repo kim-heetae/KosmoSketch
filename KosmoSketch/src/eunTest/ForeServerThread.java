@@ -2,6 +2,7 @@ package eunTest;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
@@ -9,7 +10,7 @@ import java.util.StringTokenizer;
 
 import test.project1.Protocol;
 
-public class ForeServerThread extends Thread {
+public class ForeServerThread extends Thread implements Serializable{
 
 	SoS					sos			= null;
 	ObjectOutputStream	oos			= null;
@@ -162,10 +163,10 @@ public class ForeServerThread extends Thread {
 					break;
 				case Protocol._ROOMIN:
 //					System.out.println(nickname+" 여기 실행되니? room in 왜 실행되니...");	--여기 실행안됨~~!
-					int roomNum = Integer.parseInt(st.nextToken()) - 1;
+					int roomNum = Integer.parseInt(st.nextToken());	// 말 그대로 방번호임(1부터 시작...)
 					System.out.println(roomNum);
 //					for (Room r : sos.roomList) {// 클라이언트가 접속을 시도한 방찾기///////////////////////////////////여기 수정했음 -- 김은영
-					this.room = sos.roomList.get(roomNum);
+					this.room = sos.roomList.get(roomNum-1);
 //						if (roomNum == r.roomNum) {// 방번호가 같은 방일때
 					if (room.nickNameList.size() < 4) {// 해당 방의 인원이 4명보다 작을때
 						// 현재 비어있는 라벨이 어느 라벨인지 알려면 room에 선언된 맵타입의 클라이언트리스트를 살펴야 한다.
@@ -174,25 +175,20 @@ public class ForeServerThread extends Thread {
 						oos.writeObject(Protocol._ROOM_WELCOME + Protocol._CUT + room.roomName + Protocol._CUT
 								+ room.chatPort + Protocol._CUT + room.timerPort + Protocol._CUT + room.paintPort
 								+ Protocol._CUT + room.gamePort);
+						for (int i = 0; i < 4; i++) {
+							if (!room.nickNameList.keySet().contains(i)) {
+								room.nickNameList.put(i, nickname);
+								// Map이라는 자료구조 특성상 값으로 키를 찾을 수 없는 듯.. 그래서 전역변수로 내 위치를 저장해준다.
+//								myMapIndex = i;
+								break;
+							} ///////////////// end of if
+						} ////////////////////// end of for(ThisFor)
 						// 각각의 클라이언트가 보고 있는 대기실의 room정보가 업데이트 될 수 있도록 함.
+						// <<대기실>>에 있는 클라이언트의 화면이 바뀌도록 할 메세지임
 						imsiMsg = (Protocol._ROOM_UPDATE + Protocol._CUT + room.roomNum + Protocol._CUT + room.roomName
 								+ Protocol._CUT + room.nickNameList.size() + Protocol._CUT
 								+ room.gameServer.isGamePlay);
 						sos.broadCasting(imsiMsg);
-						for (int i = 0; i < 4; i++) {
-							System.out.println("room.nickNameList.keySet().contains(i): "+room.nickNameList.keySet().contains(i));
-							if (!room.nickNameList.keySet().contains(i)) {
-								System.out.println(i + "를 가지고 있니? " + room.nickNameList.keySet().contains(i));
-								room.nickNameList.put(i, nickname);
-								// Map이라는 자료구조 특성상 값으로 키를 찾을 수 없는 듯.. 그래서 전역변수로 내 위치를 저장해준다.
-//								myMapIndex = i;
-								System.out.println("Map====>" + room.nickNameList);
-								System.out.println("닉네임" + nickname + "이 담길 i값===> " + i);
-								System.out.println("ThisFor 안에 if문");
-								break;
-							} ///////////////// end of if
-							System.out.println("ThisFor if문 바깥쪽");
-						} ////////////////////// end of for(ThisFor)
 //								for(ForeServerThread fst : sos.clientList.values()) {
 //									sos.sendRoomInfo(fst.oos);
 //								}
@@ -213,11 +209,12 @@ public class ForeServerThread extends Thread {
 //						room.nickNameList.remove(myMapIndex);
 						// 해당 클라이언트가 방을 나갔음을 broadcasting - 참여중인 인원수를 수정할 수 있도록 해준다.
 						// 방번호 + 참여중인 인원수
+						room.nickNameList.remove(room.gameServer.gameServerThread.myMapIndex);
 						sos.broadCasting(Protocol._ROOMOUT + Protocol._CUT + room.roomNum + Protocol._CUT
 								+ room.nickNameList.size());
 					}
 					// 혼자 남은 클라이언트가 나가기 버튼을 눌렀을 경우 - 방 폭발(CLOSE ROOM)
-					else {
+					else {				
 						sos.broadCasting(Protocol._CLOSEROOM + Protocol._CUT + room.roomNum);
 						// 해당 방을 방리스트에서 삭제 - 이렇게 하면 자원관리도 끝???
 						sos.roomList.remove(room);

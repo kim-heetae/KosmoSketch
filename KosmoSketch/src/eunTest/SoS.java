@@ -3,6 +3,7 @@ package eunTest;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import javax.swing.JFrame;
 
 import test.project1.Protocol;
 
-public class SoS extends JFrame implements Runnable {
+public class SoS extends JFrame implements Runnable, Serializable {
 
 	// 선언부
 	ServerSocket					waitRoomServerSocket	= null;
@@ -34,7 +35,7 @@ public class SoS extends JFrame implements Runnable {
 	Map<String, ForeServerThread>	clientList				= null;
 	// 방에 대한 정보(방번호, ROOM 인스턴스)를 원본으로 관리하기 위함
 //	Map<Integer, Room> 		roomList 				= null;
-	List<Room>						roomList				= null;
+	List<Room>						roomList				= null; 
 
 	// 생성자
 	public SoS() {
